@@ -51,6 +51,9 @@ return packer.startup(function(use)
 
 	-- Colorschemes
 	use("EdenEast/nightfox.nvim")
+	use("savq/melange")
+	use("drewtempelmeyer/palenight.vim")
+	use("folke/tokyonight.nvim")
 
 	-- can't get rid of
 	-- cmp plugins
@@ -91,6 +94,9 @@ return packer.startup(function(use)
 
 	-- i love inlay hints
 	use("lvimuser/lsp-inlayhints.nvim")
+
+	-- remote containers?
+	use("chipsenkbeil/distant.nvim")
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins

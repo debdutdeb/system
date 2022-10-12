@@ -24,10 +24,7 @@ M.setup = function()
 		underline = true,
 		severity_sort = true,
 		float = {
-			focusable = false,
-			style = "minimal",
-			border = false,
-			source = "always",
+			source = "if_many",
 			header = "",
 			prefix = "",
 		},
@@ -36,12 +33,12 @@ M.setup = function()
 	vim.diagnostic.config(config)
 
 	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-		border = false,
+		border = nil,
 		width = 60,
 	})
 
 	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-		border = false,
+		border = nil,
 		width = 60,
 	})
 end

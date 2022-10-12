@@ -1,7 +1,7 @@
 local options = {
 	backup = false, -- creates a backup file
 	clipboard = "unnamedplus", -- allows neovim to access the system clipboard
-	cmdheight = 1, -- more space in the neovim command line for displaying messages
+	cmdheight = 2, -- more space in the neovim command line for displaying messages
 	completeopt = { "menuone", "noselect" }, -- mostly just for cmp
 	conceallevel = 0, -- so that `` is visible in markdown files
 	fileencoding = "utf-8", -- the encoding written to a file
@@ -34,8 +34,9 @@ local options = {
 	wrap = true, -- display lines as one long line
 	scrolloff = 8, -- is one of my fav
 	sidescrolloff = 8,
-	guifont = "monospace:h17", -- the font used in graphical neovim applications
+	guifont = "UbuntuMono Nerd Font:h20", -- the font used in graphical neovim applications
 	colorcolumn = "80",
+	guicursor = "a:blinkon0",
 }
 
 vim.opt.shortmess:append("c")
@@ -57,3 +58,4 @@ vim.g.maplocalleader = " "
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
+

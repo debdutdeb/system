@@ -26,10 +26,10 @@ nnoremap("<C-k>", "<C-w>k")
 nnoremap("<C-l>", "<C-w>l")
 
 -- Resize with arrows
-nnoremap("<C-Up>", ":resize -2<CR>")
-nnoremap("<C-Down>", ":resize +2<CR>")
-nnoremap("<C-Left>", ":vertical resize -2<CR>")
-nnoremap("<C-Right>", ":vertical resize +2<CR>")
+nnoremap("<C-S-Up>", ":resize -2<CR>")
+nnoremap("<C-S-Down>", ":resize +2<CR>")
+nnoremap("<C-S-Left>", ":vertical resize -2<CR>")
+nnoremap("<C-S-Right>", ":vertical resize +2<CR>")
 
 -- Navigate buffers
 nnoremap("<S-l>", ":bnext<CR>")
@@ -38,6 +38,9 @@ nnoremap("<S-h>", ":bprevious<CR>")
 -- Move text up and down
 nnoremap("<A-j>", "<Esc>:m .+1<CR>==gi")
 nnoremap("<A-k>", "<Esc>:m .-2<CR>==gi")
+
+--
+-- nnoremap(":", telescope_builtin.commands(telescope_themes.get_ivy({ border = false })))
 
 -- Insert --
 -- Press jk fast to exit insert mode
@@ -138,6 +141,6 @@ end)
 leadernnoremap("sk", function()
 	telescope_builtin.keymaps(telescope_themes.get_cursor({ border = false }))
 end)
-leadernnoremap("sC", function()
+leadernnoremap("sc", function()
 	telescope_builtin.commands(telescope_themes.get_cursor({ border = false, previewer = false }))
 end)
