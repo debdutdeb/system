@@ -24,9 +24,11 @@ null_ls.setup({
 		formatting.black.with({ extra_args = { "--fast" } }),
 		formatting.stylua,
 		formatting.shfmt,
-    -- formatting.shellharden,
-    code_actions.shellcheck,
-    diagnostics.shellcheck
+		-- formatting.shellharden,
+		code_actions.shellcheck,
+		diagnostics.shellcheck,
+		formatting.clang_format,
+		-- diagnostics.clang_check,
 		-- diagnostics.flake8
 	},
 })

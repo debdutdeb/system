@@ -18,6 +18,8 @@ local servers = {
 	"rust_analyzer",
 	"marksman",
 	"html",
+	"kotlin_language_server",
+	"jdtls",
 }
 
 lsp_installer.setup({

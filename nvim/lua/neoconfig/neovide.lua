@@ -4,9 +4,9 @@ end
 
 vim.g.neovide_scale_factor = 0
 vim.g.neovide_transparency = 0
-vim.g.transparency = 0.8
-vim.g.neovide_floating_blur_amount_x = 0.2
-vim.g.neovide_floating_blur_amount_y = 0.2
+vim.g.transparency = 0.9
+vim.g.neovide_floating_blur_amount_x = 0.4
+vim.g.neovide_floating_blur_amount_y = 0.4
 
 vim.cmd([[
   let g:neovide_background_color = '#0f1117'.printf('%x', float2nr(255 * g:transparency))
