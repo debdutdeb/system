@@ -25,6 +25,10 @@ nnoremap("<C-j>", "<C-w>j")
 nnoremap("<C-k>", "<C-w>k")
 nnoremap("<C-l>", "<C-w>l")
 
+-- For wraps
+nnoremap("j", 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
+nnoremap("k", 'v:count == 0 ? "gk" : "k"', { expr = true, silent = true })
+
 -- Resize with arrows
 nnoremap("<C-S-Up>", ":resize -2<CR>")
 nnoremap("<C-S-Down>", ":resize +2<CR>")
@@ -144,3 +148,5 @@ end)
 leadernnoremap("sc", function()
 	telescope_builtin.commands(telescope_themes.get_cursor({ border = false, previewer = false }))
 end)
+
+leadernnoremap("/", "<cmd>nohl<cr>")

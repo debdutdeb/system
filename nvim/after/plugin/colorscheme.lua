@@ -1,6 +1,7 @@
 vim.cmd([[
 try
   " colorscheme nightfox
+  " colorscheme palenight
   colorscheme tokyonight
 catch /^Vim\%((\a\+)\)\=:E185/
   colorscheme default
@@ -13,4 +14,3 @@ endtry
 
 -- palenight
 vim.g.palenight_terminal_italics = 1
-

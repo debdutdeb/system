@@ -80,7 +80,7 @@ local function lsp_keymaps(bufnr)
 	set_keymap(bufnr, "n", "[d", with_callback(opts, vim.diagnostic.goto_prev))
 	set_keymap(bufnr, "n", "gl", with_callback(opts, vim.diagnostic.open_float))
 	set_keymap(bufnr, "n", "]d", with_callback(opts, vim.diagnostic.goto_next))
-	set_keymap(bufnr, "n", "<leader>q", with_callback(opts, vim.diagnostic.setloclist))
+	set_keymap(bufnr, "n", "<leader>x", with_callback(opts, vim.diagnostic.setloclist))
 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format{async=true}' ]])
 end
 
