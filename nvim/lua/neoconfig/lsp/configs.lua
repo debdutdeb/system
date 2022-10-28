@@ -20,6 +20,7 @@ local servers = {
 	"html",
 	"kotlin_language_server",
 	"jdtls",
+	"perlnavigator",
 }
 
 lsp_installer.setup({
