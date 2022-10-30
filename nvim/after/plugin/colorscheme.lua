@@ -16,15 +16,6 @@ end
 
 set_colorscheme(current_colorscheme)
 
--- just to fix the above highlight
--- thanks treesitter
-
 -- palenight
 vim.g.palenight_terminal_italics = 1
 
-nnoremap("<leader>cc", function ()
-	colorpicker.pick_colorscheme(function (color)
-		colorpicker.save_colorscheme(color)
-		set_colorscheme(color)
-	end)
-end, { silent = true })

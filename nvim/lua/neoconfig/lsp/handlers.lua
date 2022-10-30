@@ -86,7 +86,7 @@ end
 
 M.on_attach = function(client, bufnr)
 	-- TODO: refactor this into a method that checks if string in list
-	if client.name == "tsserver" or client.name == "clangd" then
+	if client.name == "tsserver" or client.name == "clangd" or client.name == "perlnavigator" then
 		client.server_capabilities.document_formatting = false
 	end
 	lsp_keymaps(bufnr)

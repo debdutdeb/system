@@ -4,6 +4,19 @@ if not status_ok then
 end
 
 local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+
+local coloscheme_handlers = require("neoconfig.colorscheme")
+
+function actions.save_colorscheme(prompt_bufnr)
+	local color = action_state.get_selected_entry(prompt_bufnr).value
+	if coloscheme_handlers.get_colorscheme() == color then
+		return
+	end
+	coloscheme_handlers.save_colorscheme(color)
+	vim.cmd("colorscheme " .. color)
+	actions.close(prompt_bufnr)
+end
 
 telescope.setup({
 	defaults = {
@@ -46,6 +59,8 @@ telescope.setup({
 				["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 				["<C-l>"] = actions.complete_tag,
 				["<C-_>"] = actions.which_key, -- keys from pressing <C-/>
+
+				["<C-s>"] = actions.save_colorscheme,
 			},
 
 			n = {

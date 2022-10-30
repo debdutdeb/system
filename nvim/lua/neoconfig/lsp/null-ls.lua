@@ -30,5 +30,6 @@ null_ls.setup({
 		formatting.clang_format,
 		-- diagnostics.clang_check,
 		-- diagnostics.flake8
+		formatting.perltidy,
 	},
 })
