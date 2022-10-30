@@ -45,7 +45,6 @@ return packer.startup(function(use)
 
 	use({ "wbthomason/packer.nvim", commit = "00ec5adef58c5ff9a07f11f45903b9dbbaa1b422" }) -- Have packer manage itself
 	use({ "nvim-lua/plenary.nvim", commit = "968a4b9afec0c633bc369662e78f8c5db0eba249" }) -- Useful lua functions used by lots of plugins
-	use({ "JoosepAlviste/nvim-ts-context-commentstring", commit = "88343753dbe81c227a1c1fd2c8d764afb8d36269" })
 	use({ "lewis6991/impatient.nvim", commit = "969f2c5c90457612c09cf2a13fee1adaa986d350" })
 
 	-- Colorschemes
@@ -91,13 +90,13 @@ return packer.startup(function(use)
 	-- thanks primeagen (what is your real name??)
 	use("ThePrimeagen/harpoon")
 
-	-- i love inlay hints
-	use("lvimuser/lsp-inlayhints.nvim")
-
 	-- remote containers?
-	use("chipsenkbeil/distant.nvim")
+	-- use("chipsenkbeil/distant.nvim")
 
 	use("towolf/vim-helm")
+
+	-- debug access protocol
+	use("mfussenegger/nvim-dap")
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins

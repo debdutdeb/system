@@ -5,7 +5,7 @@ require("neoconfig.lsp")
 require("neoconfig.telescope")
 require("neoconfig.treesitter")
 require("neoconfig.treesitter_context")
--- require("neoconfig.impatient")
+require("neoconfig.impatient")
 require("neoconfig.autocommands")
 -- require("neoconfig.nightfox")
 

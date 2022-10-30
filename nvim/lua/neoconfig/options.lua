@@ -9,8 +9,8 @@ local options = {
 	ignorecase = true, -- ignore case in search patterns
 	mouse = "", --  disable the mouse (I hate it)
 	pumheight = 10, -- pop up menu height
-	showmode = false, -- we don't need to see things like -- INSERT -- anymore
-	showtabline = 2, -- always show tabs
+	showmode = false, -- we don't need to see things like -- INSERT -- anymore (the font and colors are too much on my face)
+	showtabline = 1, -- always show tabs
 	smartcase = true, -- smart case
 	smartindent = true, -- make indenting smarter again
 	splitbelow = true, -- force all horizontal splits to go below current window
@@ -35,8 +35,9 @@ local options = {
 	scrolloff = 8, -- is one of my fav
 	sidescrolloff = 8,
 	guifont = "UbuntuMono Nerd Font:h20", -- the font used in graphical neovim applications -- namely neovide
-	colorcolumn = "80",
+	colorcolumn = "100",
 	guicursor = "a:blinkon0",
+	winbar = "%{%v:lua.require('neoconfig.winbar').current_mode()%}" -- showing my current mode without the fuss
 }
 
 vim.opt.shortmess:append("c")
