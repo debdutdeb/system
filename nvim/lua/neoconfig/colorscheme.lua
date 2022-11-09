@@ -16,7 +16,6 @@ end
 
 function M.get_colorscheme()
 	local file = io.open("/Users/debdut/.config/nvim/after/plugin/.colorscheme", "r")
-	vim.notify(vim.inspect(file))
 	if file == nil then
 		vim.notify("failed to open colorscheme file")
 		return ""
