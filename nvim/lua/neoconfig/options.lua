@@ -37,7 +37,7 @@ local options = {
 	guifont = "UbuntuMono Nerd Font:h20", -- the font used in graphical neovim applications -- namely neovide
 	colorcolumn = "100",
 	guicursor = "a:blinkon0",
-	winbar = "%{%v:lua.require('neoconfig.winbar').current_mode()%}" -- showing my current mode without the fuss
+	-- winbar = "%{%v:lua.require('neoconfig.winbar').current_mode()%}", -- showing my current mode without the fuss
 }
 
 vim.opt.shortmess:append("c")
@@ -60,3 +60,21 @@ vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
+function _G.lsp_progress()
+	if #vim.lsp.buf_get_clients() == 0 then
+		return ""
+	end
+
+	local lsp = vim.lsp.util.get_progress_messages()[1]
+	if lsp then
+		local name = lsp.name or ""
+		local msg = lsp.message or ""
+		local percentage = lsp.percentage or 0
+		local title = lsp.title or ""
+		return string.format(" %%<%s: %s %s (%s%%%%) ", name, title, msg, percentage)
+	end
+	return ""
+end
+
+vim.opt.statusline =
+	[[%{%v:lua.require('neoconfig.winbar').current_mode()%}%{%v:lua.lsp_progress()%}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M]]

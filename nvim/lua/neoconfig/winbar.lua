@@ -4,7 +4,7 @@ local MODES = {
 	c = "COMMAND",
 	v = "VISUAL",
 	i = "INSERT",
-	x = "VISUAL BLOCK",
+	X = "VISUAL BLOCK",
 	n = "NORMAL",
 	t = "TERM",
 }

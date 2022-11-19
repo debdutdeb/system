@@ -21,6 +21,8 @@ local servers = {
 	"kotlin_language_server",
 	"jdtls",
 	"perlnavigator",
+	"pyright",
+	"intelephense",
 }
 
 lsp_installer.setup({

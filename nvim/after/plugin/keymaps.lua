@@ -107,7 +107,7 @@ leadernnoremap("b", function()
 	-- I mean I'm not viewing a preview, why waste so much space?
 	telescope_builtin.buffers(telescope_themes.get_cursor({ previewer = false, border = false }))
 end)
-leadernnoremap("cc", function()
+leadernnoremap("sl", function()
 	-- I didn't want a previewer for this, just the preview in the background text
 	telescope_builtin.colorscheme(
 		vim.tbl_deep_extend("force", { enable_preview = true }, telescope_themes.get_dropdown({ border = false }))
