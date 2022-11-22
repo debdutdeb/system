@@ -23,6 +23,7 @@ local servers = {
 	"perlnavigator",
 	"pyright",
 	"intelephense",
+	"terraformls",
 }
 
 lsp_installer.setup({

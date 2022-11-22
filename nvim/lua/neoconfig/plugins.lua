@@ -96,7 +96,9 @@ return packer.startup(function(use)
 	use("towolf/vim-helm")
 
 	-- debug access protocol
-	use("mfussenegger/nvim-dap")
+	use("mfussenegger/nvim-dap") -- TODO
+
+	use("hashivim/vim-terraform")
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
