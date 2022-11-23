@@ -3,15 +3,29 @@ if not status_ok then
 	return
 end
 
+local grammers = {
+	"tsx",
+	"javascript",
+	"bash",
+	"go",
+	"rust",
+	"typescript",
+	"cpp",
+}
+
 configs.setup({
-	-- ensure_installed = "", -- one of "all" or a list of languages
+	ensure_installed = grammers, -- one of "all" or a list of languages
+	-- the following is causing some issues :' )
 	ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
 	highlight = {
 		enable = true, -- false will disable the whole extension
-		disable = { "css" }, -- list of language that will be disabled
 	},
 	autopairs = {
-		enable = true,
+		enable = false, -- nyah
 	},
-	indent = { enable = true, disable = { "python", "css" } },
+	indent = {
+		enable = true,
+		disable = { --[["python", "css"--]]
+		},
+	},
 })
