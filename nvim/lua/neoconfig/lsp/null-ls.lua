@@ -23,10 +23,16 @@ null_ls.setup({
 		}),
 		formatting.black.with({ extra_args = { "--fast" } }),
 		formatting.stylua,
-		formatting.shfmt,
+		formatting.shfmt.with({
+			filetypes = { "sh", "bash" },
+		}),
 		-- formatting.shellharden,
-		code_actions.shellcheck,
-		diagnostics.shellcheck,
+		code_actions.shellcheck.with({
+			filetypes = { "sh", "bash" },
+		}),
+		diagnostics.shellcheck.with({
+			filetypes = { "sh", "bash" },
+		}),
 		formatting.clang_format,
 		-- diagnostics.clang_check,
 		-- diagnostics.flake8

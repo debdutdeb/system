@@ -16,4 +16,4 @@ require("neoconfig.tokyonight")
 -- require("neoconfig.load_local_config")
 
 require("neoconfig.neovide")
-
+require("neoconfig.luasnip")

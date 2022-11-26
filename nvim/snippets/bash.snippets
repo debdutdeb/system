@@ -1,0 +1,3 @@
+snippet source-guard
+	[[ -n "${__SOURCE_GUARD_${0:import_name}+@@@}" ]] && return
+	export __SOURCE_GUARD_${0:import_name}=
