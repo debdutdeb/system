@@ -1,3 +1,9 @@
 snippet source-guard
 	[[ -n "${__SOURCE_GUARD_${0:import_name}+@@@}" ]] && return
 	export __SOURCE_GUARD_${0:import_name}=
+
+snippet source
+	source "$(dirname "$(realpath "\$0")")"/${0:path}
+
+snippet dbg
+	DEBUG "${0:variable}: \$${0:variable}"
