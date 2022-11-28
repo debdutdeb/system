@@ -27,4 +27,10 @@ augroup end
 autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 
 au BufRead,BufNewFile *.bash setfiletype bash
+
+augroup remember_folds
+autocmd!
+au BufWinLeave ?* mkview 1
+au BufWinEnter ?* silent! loadview 1
+augroup END
 ]])
