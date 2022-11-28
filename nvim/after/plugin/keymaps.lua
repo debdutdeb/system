@@ -96,6 +96,10 @@ leadernnoremap("lr", vim.lsp.buf.rename)
 leadernnoremap("ls", "<cmd>Telescope lsp_document_symbols<cr>")
 leadernnoremap("lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
 
+nnoremap("gr", function()
+	telescope_builtin.lsp_references(telescope_themes.get_dropdown({ border = false }))
+end)
+
 leadernnoremap("f", function()
 	-- ivy because it helps to actually read the contents better before moving into a file
 	telescope_builtin.find_files(telescope_themes.get_ivy({ border = false }))
