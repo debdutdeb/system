@@ -53,6 +53,7 @@ return packer.startup(function(use)
 	use("drewtempelmeyer/palenight.vim")
 	use("folke/tokyonight.nvim")
 	use("jacoborus/tender.vim")
+	use("rebelot/kanagawa.nvim")
 
 	-- can't get rid of
 	-- cmp plugins
