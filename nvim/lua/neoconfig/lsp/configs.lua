@@ -32,7 +32,7 @@ local DEFAULT_SETTINGS = {
 		icons = {
 			package_installed = "[installed]",
 			package_pending = "[pending]",
-			package_uninstalled = "[uninstalled]",
+			package_uninstalled = "[not installed]",
 		},
 		keymaps = {
 			toggle_package_expand = "<CR>",
