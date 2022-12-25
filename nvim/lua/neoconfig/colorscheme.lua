@@ -5,7 +5,7 @@ function M.save_colorscheme(colorscheme)
 		vim.notify("no colorscheme passed")
 		return
 	end
-	local file = io.open("/Users/debdut/.config/nvim/after/plugin/.colorscheme", "w")
+	local file = io.open(vim.fn.expand("$HOME/.config/nvim/after/plugin/.colorscheme"), "w")
 	if file == nil then
 		vim.notify("failed to open colorscheme file")
 		return
@@ -15,7 +15,7 @@ function M.save_colorscheme(colorscheme)
 end
 
 function M.get_colorscheme()
-	local file = io.open("/Users/debdut/.config/nvim/after/plugin/.colorscheme", "r")
+	local file = io.open(vim.fn.expand("$HOME/.config/nvim/after/plugin/.colorscheme"), "r")
 	if file == nil then
 		vim.notify("failed to open colorscheme file")
 		return ""

@@ -36,7 +36,7 @@ local options = {
 	sidescrolloff = 8,
 	guifont = "UbuntuMono Nerd Font:h20", -- the font used in graphical neovim applications -- namely neovide
 	colorcolumn = "100",
-	guicursor = "a:blinkon0",
+	guicursor = "",
 	-- winbar = "%{%v:lua.require('neoconfig.winbar').current_mode()%}", -- showing my current mode without the fuss
 }
 

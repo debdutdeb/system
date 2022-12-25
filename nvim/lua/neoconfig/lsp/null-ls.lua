@@ -37,5 +37,7 @@ null_ls.setup({
 		-- diagnostics.clang_check,
 		-- diagnostics.flake8
 		formatting.perltidy,
+		diagnostics.eslint_d, -- like eslint but faster?
+		code_actions.gitsigns,
 	},
 })

@@ -11,6 +11,7 @@ local grammers = {
 	"rust",
 	"typescript",
 	"cpp",
+	"jsonc", -- for devcontainers
 }
 
 configs.setup({

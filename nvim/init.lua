@@ -1,5 +1,5 @@
-require("neoconfig.plugins")
 require("neoconfig.options")
+require("neoconfig.plugins")
 require("neoconfig.cmp")
 require("neoconfig.lsp")
 require("neoconfig.telescope")
