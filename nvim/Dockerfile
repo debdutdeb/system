@@ -34,6 +34,12 @@ RUN curl -fsSL https://github.com/neovim/neovim/releases/download/nightly/nvim-l
 	mkdir /home/$USER/.local/share/nvim /home/$USER/.config -p && \
 	chown $UID:$GID /home/$USER/.local /home/$USER/.config -R 
 
+# Install go because I love go :P
+ADD https://go.dev/dl/go1.19.4.linux-amd64.tar.gz /tmp/go1.19.4.linux-amd64.tar.gz
+
+RUN tar -C /usr/local -xzf /tmp/go1.19.4.linux-amd64.tar.gz && \
+	rm /tmp/go1.19.4.linux-amd64.tar.gz
+
 COPY --chown=$UID:$GID . /home/$USER/.config/nvim
 
 USER $USER
@@ -41,5 +47,7 @@ USER $USER
 VOLUME [ "/home/$USER/.local/share/nvim" ]
 
 WORKDIR /home/$USER
+
+ENV PATH $PATH:/usr/local/go/bin
 
 CMD ["/bin/bash"]
