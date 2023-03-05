@@ -12,7 +12,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 	python3 \
 	python-is-python3 \
 	git \
-	ca-certificates
+	ca-certificates \
+	unzip \
+	sudo
+
+RUN echo "ALL ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers.d/passwordless-sudo
 
 RUN mkdir -p /opt/nvm && \
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh |NVM_DIR=/opt/nvm  bash && \

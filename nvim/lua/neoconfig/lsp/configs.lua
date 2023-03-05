@@ -11,6 +11,8 @@ end
 local lspconfig = require("lspconfig")
 local plenary_path = require("plenary.path")
 
+require("neoconfig.lsp.helm_ls") -- setup custom lsp server
+
 local DEFAULT_SETTINGS = {
 	install_root_dir = plenary_path:new(vim.fn.stdpath("data")):joinpath(plenary_path:new("mason")):absolute(),
 	PATH = "prepend",
@@ -52,7 +54,7 @@ local servers = {
 	"yamlls",
 	"bashls",
 	"jsonls",
-	"sumneko_lua",
+	"lua_ls", -- FIXME this
 	"tsserver",
 	"gopls",
 	"dockerls",
@@ -75,6 +77,8 @@ mason_lsp_config.setup({
 	ensure_installed = servers,
 	automatic_installation = false,
 })
+
+table.insert(servers, "helm_ls")
 
 local lsp_handlers = require("neoconfig.lsp.handlers")
 

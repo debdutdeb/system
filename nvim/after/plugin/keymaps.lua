@@ -161,3 +161,7 @@ leadernnoremap("sc", function()
 end)
 
 leadernnoremap("/", "<cmd>nohl<cr>")
+
+-- often I have to delete the entire block including the starting line
+leadernnoremap("dd", "da{dd")
+

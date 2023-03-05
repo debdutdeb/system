@@ -34,3 +34,14 @@ au BufWinLeave ?* mkview 1
 au BufWinEnter ?* silent! loadview 1
 augroup END
 ]])
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+	pattern = "plugins.lua",
+	group = vim.api.nvim_create_augroup("PackerUserConfig", {
+		clear = false,
+	}),
+	callback = function(_)
+		vim.cmd("so | PackerSync")
+	end,
+	desc = "Update all plugins if the plugins.lua is updated",
+})
