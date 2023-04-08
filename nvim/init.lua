@@ -26,3 +26,5 @@ require("neoconfig.luasnip")
 require("neoconfig.comments")
 
 require("neoconfig.commands")
+
+require("neoconfig.oil")

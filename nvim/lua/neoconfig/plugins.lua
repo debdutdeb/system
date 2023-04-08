@@ -114,6 +114,8 @@ local PLUGINS = {
 
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
+
+	"stevearc/oil.nvim",
 }
 
 return packer.startup(function(use)
