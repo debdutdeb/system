@@ -125,7 +125,8 @@ leadernnoremap("F", function()
 	-- definitely want to see as much as possible
 	telescope_builtin.live_grep(telescope_themes.get_ivy({ border = false }))
 end)
-leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
+-- leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
+leadernnoremap("e", "<cmd>Oil<cr>") -- open Oil
 
 -- Packer
 leadernnoremap("pc", "<cmd>PackerCompile<cr>")
@@ -165,3 +166,4 @@ leadernnoremap("/", "<cmd>nohl<cr>")
 -- often I have to delete the entire block including the starting line
 leadernnoremap("dd", "da{dd")
 
+leadernnoremap("ka", "<cmd>Kapply<cr>")

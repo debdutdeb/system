@@ -116,6 +116,9 @@ local PLUGINS = {
 	"JoosepAlviste/nvim-ts-context-commentstring",
 
 	"stevearc/oil.nvim",
+
+	-- just for KApply honestly
+	{ "rottencandy/vimkubectl", tag = "0.12.0" },
 }
 
 return packer.startup(function(use)
