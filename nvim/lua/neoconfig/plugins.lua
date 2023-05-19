@@ -117,8 +117,9 @@ local PLUGINS = {
 
 	"stevearc/oil.nvim",
 
-	-- just for KApply honestly
-	{ "rottencandy/vimkubectl", tag = "0.12.0" },
+	-- just for Kapply honestly
+	-- { "rottencandy/vimkubectl", tag = "0.12.0" },
+	"rottencandy/vimkubectl",
 }
 
 return packer.startup(function(use)

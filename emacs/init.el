@@ -223,8 +223,9 @@
 ;; lsp stuff?
 (use-package go-mode)
 (use-package typescript-mode)
+(use-package yaml-mode)
 
-(set-face-attribute 'default nil :font "Source Code Pro" :height 160)
+(set-face-attribute 'default nil :font "UbuntuMono Nerd Font" :height 200)
 
 (provide 'init)
 (custom-set-variables

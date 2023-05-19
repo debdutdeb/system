@@ -45,3 +45,11 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 	end,
 	desc = "Update all plugins if the plugins.lua is updated",
 })
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		if vim.api.nvim_buf_get_name(0) == "" then
+			require("telescope.builtin").find_files()
+		end
+	end,
+})
