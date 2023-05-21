@@ -111,6 +111,8 @@ local PLUGINS = {
 	"mfussenegger/nvim-dap", -- TODO
 	"leoluz/nvim-dap-go",
 	"rcarriga/nvim-dap-ui", -- requires nim-dap
+	"theHamsta/nvim-dap-virtual-text",
+	"nvim-telescope/telescope-dap.nvim",
 
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",

@@ -61,21 +61,4 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 
-function _G.lsp_progress()
-	if #vim.lsp.buf_get_clients() == 0 then
-		return ""
-	end
-
-	local lsp = vim.lsp.util.get_progress_messages()[1]
-	if lsp then
-		local name = lsp.name or ""
-		local msg = lsp.message or ""
-		local percentage = lsp.percentage or 0
-		local title = lsp.title or ""
-		return string.format(" %%<%s: %s %s (%s%%%%) ", name, title, msg, percentage)
-	end
-	return ""
-end
-
-vim.opt.statusline =
-	[[%{%v:lua.require('neoconfig.winbar').current_mode()%}%{%v:lua.lsp_progress()%}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M]]
+vim.opt.statusline = require("neoconfig.winbar").get_statusline()

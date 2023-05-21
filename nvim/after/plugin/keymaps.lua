@@ -164,6 +164,6 @@ end)
 leadernnoremap("/", "<cmd>nohl<cr>")
 
 -- often I have to delete the entire block including the starting line
-leadernnoremap("dd", "da{dd")
+-- leadernnoremap("dd", "da{dd")
 
 leadernnoremap("ka", "<cmd>Kapply<cr>")
