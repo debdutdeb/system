@@ -58,7 +58,7 @@ local servers = {
 	"tsserver",
 	"gopls",
 	"dockerls",
-	"solargraph",
+	-- "solargraph",
 	"clangd",
 	"rust_analyzer",
 	"marksman",
@@ -69,6 +69,7 @@ local servers = {
 	"pyright",
 	"intelephense",
 	"terraformls",
+	"raku_navigator",
 }
 
 mason.setup(DEFAULT_SETTINGS)
