@@ -10,6 +10,7 @@ install_nvim() {
 	tar xzf /tmp/nvim-linux64.tar.gz -C /opt/nvim --strip-components=1
 	echo "PATH=/opt/nvim/bin:$PATH" >>~/.bashrc
 	rm /tmp/nvim-linux64.tar.gz
+	cd -
 }
 
 install_nvm() {
@@ -23,13 +24,23 @@ install_node16() {
 }
 
 install_dependencies() {
-	sudo apt-get install \
-		unzip \
-		curl \
-		git \
-		cmake \
-		build-essential \
-		golang --no-install-recommends -y
+	sudo apt-get update &&
+		sudo apt-get install \
+			unzip \
+			curl \
+			git \
+			cmake \
+			build-essential \
+			golang --no-install-recommends -y
+}
+
+install_neovim_config() {
+	cd /tmp || return
+	git clone https://github.com/debdutdeb/.files
+	[[ -d ~/.config ]] || mkdir ~/.config
+	cp -r .files/nvim ~/.config
+	rm -rf .files
+	cd -
 }
 
 setup() {
@@ -37,6 +48,7 @@ setup() {
 	install_nvm
 	install_node16
 	install_nvim
+	install_neovim_config
 	echo "# run 'exec bash' to refresh the shell"
 }
 
