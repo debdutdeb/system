@@ -17,6 +17,7 @@ install_nvm() {
 	sudo mkdir /opt/nvm
 	sudo chown "$(id -u):$(id -g)" /opt/nvm
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | NVM_DIR=/opt/nvm bash
+	source /opt/nvm/nvm.sh
 }
 
 install_node16() {
