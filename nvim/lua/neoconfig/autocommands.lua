@@ -49,7 +49,11 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		if vim.api.nvim_buf_get_name(0) == "" then
-			require("telescope.builtin").find_files()
+			local ok, telescope = pcall(require, "telescope.builtin")
+			if not ok then
+				return
+			end
+			telescope.find_files()
 		end
 	end,
 })
