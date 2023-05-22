@@ -10,7 +10,8 @@ local MODES = {
 }
 
 function _G.current_mode()
-	return MODES[vim.api.nvim_get_mode().mode]
+	local mode = vim.api.nvim_get_mode().mode
+	return MODES[mode] or mode
 end
 
 function _G.lsp_progress()
