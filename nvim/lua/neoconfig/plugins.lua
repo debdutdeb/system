@@ -113,7 +113,13 @@ local PLUGINS = {
 	"rcarriga/nvim-dap-ui", -- requires nim-dap
 	"theHamsta/nvim-dap-virtual-text",
 	"nvim-telescope/telescope-dap.nvim",
-
+	"mxsdev/nvim-dap-vscode-js",
+	{
+		"microsoft/vscode-js-debug",
+		opt = true,
+		run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+		tag = "v1.*",
+	},
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
 

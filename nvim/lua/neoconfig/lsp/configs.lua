@@ -70,6 +70,7 @@ local servers = {
 	"intelephense",
 	"terraformls",
 	"raku_navigator",
+	"zls",
 }
 
 mason.setup(DEFAULT_SETTINGS)
@@ -87,6 +88,7 @@ for _, server in pairs(servers) do
 	local opts = {
 		on_attach = lsp_handlers.on_attach,
 		capabilities = lsp_handlers.capabilities,
+		autostart = false,
 	}
 	local has_custom_opts, server_custom_opts = pcall(require, "neoconfig.lsp.settings." .. server)
 	if has_custom_opts then

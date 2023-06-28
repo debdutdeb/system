@@ -11,3 +11,4 @@ vim.api.nvim_create_user_command("LoadLocalPlugin", function(opts)
 		ret.setup()
 	end
 end, { nargs = 1 })
+

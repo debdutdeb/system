@@ -18,7 +18,8 @@ local grammers = {
 	"hcl",
 	"comment", -- for todo fixme etc
 	"markdown",
-	"markdown_inline",
+	-- "markdown_inline",
+	"zig",
 }
 
 configs.setup({

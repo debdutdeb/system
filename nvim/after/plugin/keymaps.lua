@@ -167,3 +167,20 @@ leadernnoremap("/", "<cmd>nohl<cr>")
 -- leadernnoremap("dd", "da{dd")
 
 leadernnoremap("ka", "<cmd>Kapply<cr>")
+
+local function is_lsp_running()
+	for _, client in pairs(vim.lsp.get_active_clients()) do
+		if client.name ~= "null-ls" then
+			return true
+		end
+	end
+	return false
+end
+
+leadernnoremap("<leader>l", function()
+	if is_lsp_running() then
+		vim.cmd("LspStop")
+	else
+		vim.cmd("LspStart")
+	end
+end)

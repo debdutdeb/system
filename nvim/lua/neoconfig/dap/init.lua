@@ -12,6 +12,7 @@ if ok then
 end
 
 require("neoconfig.dap.delve")
+require("neoconfig.dap.typescript")
 
 dapui.setup()
 
