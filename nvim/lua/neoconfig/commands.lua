@@ -20,6 +20,11 @@ local plenary_filetype = require("plenary.filetype")
 local lsp_servers_configured = require("neoconfig.lsp.servers")
 
 vim.api.nvim_create_user_command("LspRootDir", function(opts)
+	-- use LspInfo instead
+	vim.cmd(":LspInfo")
+	if true then
+		return
+	end
 	local file = vim.api.nvim_buf_get_name(0)
 	local get_configured_server = function()
 		for _, client in pairs(lspconfig_util.get_other_matching_providers(plenary_filetype.detect(file))) do
