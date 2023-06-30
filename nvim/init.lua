@@ -11,7 +11,7 @@ require("neoconfig.telescope")
 require("neoconfig.treesitter")
 require("neoconfig.treesitter_context")
 -- require("neoconfig.impatient")
-require("neoconfig.autocommands")
+--require("neoconfig.autocommands")
 -- require("neoconfig.nightfox")
 -- require("neoconfig.kanagawa")
 

@@ -50,28 +50,7 @@ local DEFAULT_SETTINGS = {
 	},
 }
 
-local servers = {
-	"yamlls",
-	"bashls",
-	"jsonls",
-	"lua_ls", -- FIXME this
-	"tsserver",
-	"gopls",
-	"dockerls",
-	-- "solargraph",
-	"clangd",
-	"rust_analyzer",
-	"marksman",
-	"html",
-	"kotlin_language_server",
-	"jdtls",
-	"perlnavigator",
-	"pyright",
-	"intelephense",
-	"terraformls",
-	"raku_navigator",
-	"zls",
-}
+local servers = require("neoconfig.lsp.servers")
 
 mason.setup(DEFAULT_SETTINGS)
 
