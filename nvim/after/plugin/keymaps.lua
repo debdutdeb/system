@@ -86,7 +86,6 @@ leadernnoremap("lw", "<cmd>Telescope lsp_workspace_diagnostics<cr>")
 leadernnoremap("lf", function()
 	vim.lsp.buf.format({ async = true })
 end)
-leadernnoremap("lI", "<cmd>LspInstallInfo<cr>")
 leadernnoremap("lR", "<cmd>LspRestart<cr>")
 leadernnoremap("lj", vim.lsp.diagnostic.goto_prev)
 leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
@@ -96,7 +95,7 @@ leadernnoremap("lr", vim.lsp.buf.rename)
 leadernnoremap("ls", "<cmd>Telescope lsp_document_symbols<cr>")
 leadernnoremap("lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
 
-nnoremap("gr", function()
+nnoremap("lI", function()
 	telescope_builtin.lsp_references(telescope_themes.get_dropdown({ border = false }))
 end)
 
@@ -177,10 +176,12 @@ local function is_lsp_running()
 	return false
 end
 
-leadernnoremap("<leader>l", function()
+-- lsp toggle
+leadernnoremap("lt", function()
 	if is_lsp_running() then
 		vim.cmd("LspStop")
 	else
 		vim.cmd("LspStart")
 	end
 end)
+
