@@ -17,7 +17,7 @@ end, { nargs = 1 })
 local lspconfig_configs = require("lspconfig.configs")
 local lspconfig_util = require("lspconfig.util")
 local plenary_filetype = require("plenary.filetype")
-local lsp_servers_configured = require("neoconfig.lsp.servers")
+local lsp_servers_configured = require("debdut.lsp.servers")
 
 vim.api.nvim_create_user_command("LspRootDir", function(opts)
 	-- use LspInfo instead
@@ -45,4 +45,4 @@ end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("Format", function(_opts)
 	vim.lsp.buf.format({ async = true })
-end)
+end, { nargs = 0 })
