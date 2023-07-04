@@ -188,3 +188,15 @@ leadernnoremap("lt", function()
 		vim.cmd("LspStart")
 	end
 end)
+
+
+-- lsp keymaps
+nnoremap("gD", vim.lsp.buf.declaration)
+nnoremap("gd", vim.lsp.buf.definition)
+nnoremap("K", vim.lsp.buf.hover)
+nnoremap("gi", vim.lsp.buf.implementation)
+nnoremap("<C-k>", vim.lsp.buf.signature_help)
+nnoremap("[d", vim.diagnostic.goto_prev)
+nnoremap("]d", vim.diagnostic.goto_next)
+nnoremap("gl", vim.diagnostic.open_float)
+leadernnoremap("x", vim.diagnostic.setloclist)

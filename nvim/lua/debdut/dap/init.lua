@@ -11,8 +11,8 @@ if ok then
 	dap_virtual_text.setup()
 end
 
-require("neoconfig.dap.delve")
--- require("neoconfig.dap.typescript")
+require("debdut.dap.delve")
+-- require("debdut.dap.typescript")
 
 dapui.setup()
 
@@ -36,7 +36,7 @@ end
 vim.fn.sign_define("DapBreakpoint", { text = "Bp", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "St", texthl = "", linehl = "", numhl = "" })
 
-local nnoremap = require("neoconfig.keymap").nnoremap
+local nnoremap = require("debdut.keymap").nnoremap
 
 nnoremap("<leader>dc", dap_continue)
 nnoremap("<leader>dj", dap.step_over)

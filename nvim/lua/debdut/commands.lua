@@ -42,3 +42,7 @@ vim.api.nvim_create_user_command("LspRootDir", function(opts)
 	local root_dir = config.get_root_dir(lspconfig_util.path.dirname(file))
 	vim.notify(root_dir)
 end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("Format", function(_opts)
+	vim.lsp.buf.format({ async = true })
+end)

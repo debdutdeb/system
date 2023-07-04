@@ -72,8 +72,6 @@ lazy.setup({
 		end,
 	},
 
-	"lvimuser/lsp-inlayhints.nvim",
-
 	-- can't get rid of
 	-- LSP
 	"neovim/nvim-lspconfig", -- enable LSP
@@ -82,7 +80,7 @@ lazy.setup({
 		lazy = false,
 		dependencies = {
 			"williamboman/mason-lspconfig.nvim",
-			---------
+			--
 			"neovim/nvim-lspconfig",
 			--
 			"nvim-lua/plenary.nvim",
@@ -93,18 +91,38 @@ lazy.setup({
 				ensure_installed = require("debdut.lsp.servers"),
 				automatic_installation = true,
 			})
+			--  TODO maybe move this somewhere
+			require("mason-nvim-dap").setup()
+		end,
+	},
+	{
+		"RRethy/vim-illuminate",
+		config = function()
+			-- default configuration
+			require("illuminate").configure(require("debdut.illuminate"))
 		end,
 	},
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = {
+			"hrsh7th/nvim-cmp",
+			"RRethy/vim-illuminate",
+		},
 		config = function()
 			require("debdut.lsp")
 		end,
 	},
 	{
-		"jose-elias-alvarez/null-ls.nvim", -- for formatters and linters
+		-- TODO: add ensure_installed
+		"jay-babu/mason-null-ls.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"williamboman/mason.nvim",
+			"jose-elias-alvarez/null-ls.nvim",
+		},
 		config = function()
 			require("debdut.null-ls")
+			require("mason-null-ls").setup({ automatic_installation = false })
 		end,
 	},
 
@@ -149,11 +167,25 @@ lazy.setup({
 	"towolf/vim-helm", -- TODO replace
 
 	-- debug access protocol
-	-- "mfussenegger/nvim-dap", -- TODO
-	-- "leoluz/nvim-dap-go",
-	-- "rcarriga/nvim-dap-ui", -- requires nim-dap
-	-- "theHamsta/nvim-dap-virtual-text",
-	-- "nvim-telescope/telescope-dap.nvim",
+	{
+		"mfussenegger/nvim-dap", -- TODO
+		dependencies = {
+			"leoluz/nvim-dap-go",
+			"rcarriga/nvim-dap-ui", -- requires nim-dap
+			"theHamsta/nvim-dap-virtual-text",
+			"nvim-telescope/telescope-dap.nvim",
+		},
+		config = function()
+			require("debdut.dap")
+		end,
+	},
+	{
+		"jay-babu/mason-nvim-dap.nvim",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"mfussenegger/nvim-dap",
+		},
+	},
 
 	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
