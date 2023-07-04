@@ -39,7 +39,8 @@ function _G.dap_progress()
 end
 
 function M.get_statusline()
-	return [[%{luaeval("current_mode()")}_%{luaeval("lsp_progress()")}_%{luaeval("dap_progress()")}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M]]
+	return
+		[[%{luaeval("current_mode()")}_%{luaeval("lsp_progress()")}_%{luaeval("dap_progress()")}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M]]
 end
 
 return M

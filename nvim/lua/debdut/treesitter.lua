@@ -1,8 +1,3 @@
-local status_ok, configs = pcall(require, "nvim-treesitter.configs")
-if not status_ok then
-	return
-end
-
 local grammers = {
 	"tsx",
 	"javascript",
@@ -22,7 +17,7 @@ local grammers = {
 	"zig",
 }
 
-configs.setup({
+return {
 	ensure_installed = grammers, -- one of "all" or a list of languages
 	-- the following is causing some issues :' )
 	ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
@@ -55,4 +50,4 @@ configs.setup({
 			show_help = "?",
 		},
 	},
-})
+}

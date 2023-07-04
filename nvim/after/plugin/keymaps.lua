@@ -1,4 +1,4 @@
-local Remap = require("neoconfig.keymap")
+local Remap = require("debdut.keymap")
 -- don't fail at startup
 -- but it's ok to fail verbosely if later any function call fails
 local _, telescope = pcall(require, "telescope")
@@ -86,7 +86,7 @@ leadernnoremap("lw", "<cmd>Telescope lsp_workspace_diagnostics<cr>")
 leadernnoremap("lf", function()
 	vim.lsp.buf.format({ async = true })
 end)
-leadernnoremap("lR", "<cmd>LspRestart<cr>")
+-- leadernnoremap("lR", "<cmd>LspRestart<cr>")
 leadernnoremap("lj", vim.lsp.diagnostic.goto_prev)
 leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
 leadernnoremap("lq", vim.lsp.diagnostic.set_loclist)
@@ -95,8 +95,12 @@ leadernnoremap("lr", vim.lsp.buf.rename)
 leadernnoremap("ls", "<cmd>Telescope lsp_document_symbols<cr>")
 leadernnoremap("lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
 
-nnoremap("lI", function()
+nnoremap("lR", function()
 	telescope_builtin.lsp_references(telescope_themes.get_dropdown({ border = false }))
+end)
+
+nnoremap("lI", function()
+	telescope_builtin.lsp_implementations(telescope_themes.get_dropdown({ border = false }))
 end)
 
 leadernnoremap("f", function()
@@ -184,4 +188,3 @@ leadernnoremap("lt", function()
 		vim.cmd("LspStart")
 	end
 end)
-

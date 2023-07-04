@@ -10,6 +10,7 @@ local diagnostics = null_ls.builtins.diagnostics
 local code_actions = null_ls.builtins.code_actions
 
 local function get_prettier_path()
+	-- TODO: fix this
 	local root_path = "node_modules/.bin/prettier"
 	return require("lspconfig.util").root_pattern(root_path) and root_path or "prettier"
 end

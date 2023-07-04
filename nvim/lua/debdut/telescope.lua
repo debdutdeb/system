@@ -1,12 +1,7 @@
-local status_ok, telescope = pcall(require, "telescope")
-if not status_ok then
-	return
-end
-
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
-local coloscheme_handlers = require("neoconfig.colorscheme")
+local coloscheme_handlers = require("debdut.colorscheme")
 
 function actions.save_colorscheme(prompt_bufnr)
 	local color = action_state.get_selected_entry(prompt_bufnr).value
@@ -18,9 +13,8 @@ function actions.save_colorscheme(prompt_bufnr)
 	actions.close(prompt_bufnr)
 end
 
-telescope.setup({
+return {
 	defaults = {
-
 		--[[ prompt_prefix = " ",
 		selection_caret = " ", ]]
 		path_display = { "smart" },
@@ -119,6 +113,4 @@ telescope.setup({
 			-- the default case_mode is "smart_case"
 		},
 	},
-})
-
-telescope.load_extension("fzf")
+}

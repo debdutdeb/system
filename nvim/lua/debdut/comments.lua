@@ -1,11 +1,6 @@
-local ok, comments = pcall(require, "Comment")
-if not ok then
-	return
-end
+local comment_context_ok, comment_context = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
 
-local _, comment_context = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
-
-comments.setup({
+return {
 	---Add a space b/w comment and the line
 	padding = true,
 	---Whether the cursor should stay at its position
@@ -45,11 +40,11 @@ comments.setup({
 	},
 	---Function to call before (un)comment
 	pre_hook = (function()
-		if comment_context ~= nil then
+		if comment_context_ok then
 			return comment_context.create_pre_hook()
 		end
 		return nil
 	end)(),
 	---Function to call after (un)comment
 	post_hook = nil,
-})
+}

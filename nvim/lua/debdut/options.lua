@@ -61,4 +61,4 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 
-vim.opt.statusline = require("neoconfig.winbar").get_statusline()
+vim.opt.statusline = require("debdut.winbar").get_statusline()

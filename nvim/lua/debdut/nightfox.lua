@@ -1,9 +1,4 @@
-local status_ok, nightfox = pcall(require, "nightfox")
-if not status_ok then
-	return
-end
-
-nightfox.setup({
+return {
 	options = {
 		compile_path = vim.fn.stdpath("cache") .. "/nightfox",
 		compile_file_suffix = "_compiled",
@@ -31,4 +26,4 @@ nightfox.setup({
 	palettes = {},
 	specs = {},
 	groups = {},
-})
+}

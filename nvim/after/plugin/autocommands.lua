@@ -35,17 +35,6 @@ au BufWinEnter ?* silent! loadview 1
 augroup END
 ]])
 
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-	pattern = "plugins.lua",
-	group = vim.api.nvim_create_augroup("PackerUserConfig", {
-		clear = false,
-	}),
-	callback = function(_)
-		vim.cmd("so | PackerSync")
-	end,
-	desc = "Update all plugins if the plugins.lua is updated",
-})
-
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		if vim.api.nvim_buf_get_name(0) == "" then
@@ -58,7 +47,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 })
 
-local lspconfig_configs = require("lspconfig.configs")
+--[[ local lspconfig_configs = require("lspconfig.configs")
 local lspconfig_util = require("lspconfig.util")
 local plenary_filetype = require("plenary.filetype")
 local lsp_servers_configured = require("neoconfig.lsp.servers")
@@ -92,11 +81,11 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 		if not config then
 			return
 		end
-		local root_dir = config.get_root_dir(lspconfig_util.path.dirname(args.match))
+		local root_dir = config.get_root_dir(args.match)
 		if vim.fs.find(autostart_patterns, { upward = false, limit = 1, type = "file", path = root_dir })[1] ~= nil then
 			config.launch(args.buf)
 		end
 	end,
 	-- https://github.com/neovim/nvim-lspconfig/blob/0011c435282f043a018e23393cae06ed926c3f4a/lua/lspconfig/configs.lua#L64
 	group = vim.api.nvim_create_augroup("lspconfig", { clear = false }),
-})
+}) ]]

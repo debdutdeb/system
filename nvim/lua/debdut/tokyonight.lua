@@ -1,10 +1,4 @@
-local ok, tokyonight = pcall(require, "tokyonight")
-if not ok then
-  vim.notify("not found")
-	return
-end
-
-tokyonight.setup({
+return {
 	style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
 	light_style = "day", -- The theme is used when the background is set to light
 	transparent = true, -- Enable this to disable setting the background color
@@ -36,4 +30,4 @@ tokyonight.setup({
 	---@param highlights Highlights
 	---@param colors ColorScheme
 	-- on_highlights = function(highlights, colors) end,
-})
+}

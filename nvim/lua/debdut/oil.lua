@@ -1,10 +1,4 @@
-local ok, oil = pcall(require, "oil")
-
-if not ok then
-	return
-end
-
-oil.setup({
+return {
 	-- Id is automatically added at the beginning, and name at the end
 	-- See :help oil-columns
 	columns = {
@@ -116,4 +110,4 @@ oil.setup({
 			winblend = 0,
 		},
 	},
-})
+}
