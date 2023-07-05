@@ -52,11 +52,6 @@ local lspconfig_util = require("lspconfig.util")
 local plenary_filetype = require("plenary.filetype")
 local lsp_servers_configured = require("debdut.lsp.servers")
 
-local function launch_config(config, bufnr)
-	vim.notify_once(("[config] starting language server: %s"):format(config.name), vim.log.levels.INFO)
-	config.launch(bufnr)
-end
-
 local function __maybe_start_lsp(args)
 	local autostart_patterns = {
 		"neovim_autostart_lsp",
@@ -83,14 +78,11 @@ local function __maybe_start_lsp(args)
 	end
 	local config = lspconfig_configs[get_configured_server()]
 	if not config then
-		return vim.notify_once(
-			("[config] no config found for language server %s"):format(language_server),
-			vim.log.levels.WARN
-		)
+		return
 	end
 	-- try to find the trigger files in current and parents before lsp root
 	if #lspconfig_util.root_pattern(unpack(autostart_patterns))(args.match or args.file) ~= 0 then
-		return launch_config(config, args.buf)
+		return config.launch(args.buf)
 	end
 	coroutine.resume(coroutine.create(function()
 		local root_dir
@@ -111,14 +103,11 @@ local function __maybe_start_lsp(args)
 			)
 		end
 		if not root_dir then
-			return vim.notify_once(
-				("[config] failed to find root directory for language server %s"):format(language_server),
-				vim.log.levels.WARN
-			)
+			return
 		end
 
 		if #vim.fs.find(autostart_patterns, { upward = false, limit = 1, type = "file", path = root_dir }) ~= 0 then
-			launch_config(config, args.buf)
+			config.launch(args.buf)
 		end
 	end))
 end
