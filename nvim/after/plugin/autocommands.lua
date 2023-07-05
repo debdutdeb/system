@@ -63,7 +63,7 @@ local function __maybe_start_lsp(args)
 	}
 	local ft = plenary_filetype.detect(args.file or args.match)
 	for _, client in pairs(lspconfig_util.get_active_clients_list_by_ft(ft)) do
-		if client.name ~= "null-ls" then
+		if client ~= "null-ls" then
 			return
 		end
 	end
