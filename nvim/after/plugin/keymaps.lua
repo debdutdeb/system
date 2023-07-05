@@ -200,3 +200,11 @@ nnoremap("[d", vim.diagnostic.goto_prev)
 nnoremap("]d", vim.diagnostic.goto_next)
 nnoremap("gl", vim.diagnostic.open_float)
 leadernnoremap("x", vim.diagnostic.setloclist)
+
+-- shut up
+for _, key_fn in pairs({ nnoremap, inoremap, vnoremap, xnoremap }) do
+	key_fn("<Up>", nil)
+	key_fn("<Down>", nil)
+	key_fn("<Right>", nil)
+	key_fn("<Left>", nil)
+end
