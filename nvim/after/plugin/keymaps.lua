@@ -189,7 +189,6 @@ leadernnoremap("lt", function()
 	end
 end)
 
-
 -- lsp keymaps
 nnoremap("gD", vim.lsp.buf.declaration)
 nnoremap("gd", vim.lsp.buf.definition)
