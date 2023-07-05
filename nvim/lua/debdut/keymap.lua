@@ -17,4 +17,15 @@ M.vnoremap = bind("v")
 M.xnoremap = bind("x")
 M.inoremap = bind("i")
 
+local function bind_send_keys(mode)
+	return function(key)
+		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, false)
+	end
+end
+
+M.nsend_keys = bind_send_keys("n")
+M.vsend_keys = bind_send_keys("v")
+M.xsend_keys = bind_send_keys("x")
+M.isend_keys = bind_send_keys("i")
+
 return M
