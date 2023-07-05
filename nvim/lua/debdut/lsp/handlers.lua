@@ -1,12 +1,3 @@
-local status_ok, illuminate = pcall(require, "illuminate")
-local function lsp_highlight_document(client)
-	-- Set autocommands conditional on server_capabilities
-	if status_ok then
-		illuminate.on_attach(client)
-	end
-	-- end
-end
-
 local M = {}
 
 M.on_attach = function(client, bufnr)

@@ -99,7 +99,6 @@ lazy.setup({
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"hrsh7th/nvim-cmp",
-			"RRethy/vim-illuminate",
 		},
 		config = function()
 			require("debdut.lsp")
