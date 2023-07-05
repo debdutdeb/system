@@ -96,13 +96,6 @@ lazy.setup({
 		end,
 	},
 	{
-		"RRethy/vim-illuminate",
-		config = function()
-			-- default configuration
-			require("illuminate").configure(require("debdut.illuminate"))
-		end,
-	},
-	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"hrsh7th/nvim-cmp",
@@ -148,6 +141,11 @@ lazy.setup({
 	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/playground",
+			"nvim-treesitter/nvim-treesitter-refactor",
+		},
 		config = function()
 			require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
 		end,
@@ -156,7 +154,6 @@ lazy.setup({
 		"nvim-treesitter/nvim-treesitter-context",
 		opts = require("debdut.treesitter_context"),
 	},
-	"nvim-treesitter/playground",
 
 	-- thanks primeagen (what is your real name??,
 	"ThePrimeagen/harpoon",

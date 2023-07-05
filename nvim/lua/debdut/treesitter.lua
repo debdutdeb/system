@@ -17,8 +17,14 @@ local grammers = {
 	"zig",
 }
 
+local plenary_path = require("plenary.path")
+
 return {
-	ensure_installed = grammers, -- one of "all" or a list of languages
+	parser_install_dir = plenary_path
+		:new(vim.fn.stdpath("data"))
+		:joinpath(plenary_path:new("treesitter_grammers"))
+		:absolute(),
+	-- ensure_installed = grammers, -- one of "all" or a list of languages FIXME since changing the path it's just spamming reinstall every time I reopen vim
 	-- the following is causing some issues :' )
 	ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
 	highlight = {
@@ -48,6 +54,18 @@ return {
 			update = "R",
 			goto_node = "<cr>",
 			show_help = "?",
+		},
+	},
+	refactor = {
+		navigation = {
+			enable = true,
+			keymaps = {
+				goto_definition = false,
+				list_definitions = false,
+				list_definitions_toc = false,
+				goto_next_usage = "<C-a>",
+				goto_previous_usage = "<C-p>",
+			},
 		},
 	},
 }

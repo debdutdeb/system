@@ -14,7 +14,6 @@ M.on_attach = function(client, bufnr)
 	if client.name == "tsserver" or client.name == "clangd" or client.name == "perlnavigator" then
 		client.server_capabilities.document_formatting = false
 	end
-	lsp_highlight_document(client)
 	if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
 		vim.diagnostic.disable(bufnr)
 		vim.defer_fn(function()
