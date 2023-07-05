@@ -124,7 +124,11 @@ local function __maybe_start_lsp(args)
 end
 
 vim.api.nvim_create_autocmd("BufReadPost", {
-	callback = __maybe_start_lsp,
+	callback = function(args)
+		vim.defer_fn(function()
+			__maybe_start_lsp(args)
+		end, 2000)
+	end,
 	-- https://github.com/neovim/nvim-lspconfig/blob/0011c435282f043a018e23393cae06ed926c3f4a/lua/lspconfig/configs.lua#L64
 	group = vim.api.nvim_create_augroup("lspconfig", { clear = false }),
 })
