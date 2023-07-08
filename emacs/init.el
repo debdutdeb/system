@@ -23,9 +23,14 @@
 (setq inhibit-startup-message t
       visible-bell nil
       ring-bell-function 'deb/ring-bell-function
-      display-line-numbers-type 'relative)
+      display-line-numbers-type 'relative
+      cursor-type 'box
+      auto-save-default nil)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'prog-mode-hook 'display-line-numbers-mode)
+
+;; custom el code
+(add-to-list 'load-path "~/.config/emacs/custom")
 
 
 (use-package evil
@@ -33,7 +38,13 @@
   (evil-mode)
   :init
   (setq evil-want-keybinding nil
-	evil-want-C-u-scroll t))
+	evil-want-C-u-scroll t
+	evil-insert-state-cursor 'box
+	evil-normal-state-cursor 'box
+	evil-motion-state-cursor 'box
+	evil-operator-state-cursor 'box
+	evil-replace-state-cursor 'box
+	evil-visual-state-cursor 'box))
 
 (use-package swiper
   :ensure t
@@ -58,5 +69,12 @@
 
 (require 'treesit)
 
-;; (message (kbd "C-b"))
+(load-library "clang-format.elc")
 
+;; TODO refactor to a separate library like null-ls
+(define-prefix-command 'formatting)
+(global-set-key (kbd "C-c l") 'formatting)
+
+;;
+(global-set-key (kbd "C-c l f") 'clang-format-buffer)
+(global-set-key (kbd "C-c l r") 'clang-format-region)

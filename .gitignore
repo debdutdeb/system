@@ -1,4 +1,9 @@
-emacs/*
-
-
-!emacs/init.el
+emacs/.*
+emacs/eln-cache
+emacs/auto-save-list
+emacs/elpa
+emacs/eshell
+emacs/recentf
+emacs/straight
+emacs/tree-sitter
+emacs/custom/**.elc
