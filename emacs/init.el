@@ -16,8 +16,17 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
+;; don't do anything basically
+(defun deb/ring-bell-function ())
+
 (tool-bar-mode -1)
-(setq inhibit-startup-message t)
+(setq inhibit-startup-message t
+      visible-bell nil
+      ring-bell-function 'deb/ring-bell-function
+      display-line-numbers-type 'relative)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(add-to-list 'prog-mode-hook 'display-line-numbers-mode)
+
 
 (use-package evil
   :config
