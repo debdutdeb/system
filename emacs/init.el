@@ -32,6 +32,9 @@
 ;; custom el code
 (add-to-list 'load-path "~/.config/emacs/custom")
 
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode))
 
 (use-package evil
   :config
@@ -44,7 +47,9 @@
 	evil-motion-state-cursor 'box
 	evil-operator-state-cursor 'box
 	evil-replace-state-cursor 'box
-	evil-visual-state-cursor 'box))
+	evil-visual-state-cursor 'box
+	;; maybe use undo-redo ? FIXME
+	evil-undo-system 'undo-tree))
 
 (use-package swiper
   :ensure t
@@ -78,3 +83,4 @@
 ;;
 (global-set-key (kbd "C-c l f") 'clang-format-buffer)
 (global-set-key (kbd "C-c l r") 'clang-format-region)
+
