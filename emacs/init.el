@@ -84,3 +84,35 @@
 (global-set-key (kbd "C-c l f") 'clang-format-buffer)
 (global-set-key (kbd "C-c l r") 'clang-format-region)
 
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-l"
+	lsp-auto-configure t
+	lsp-enable-file-watchers nil
+	lsp-modeline-diagnostics-enable nil)
+  :hook
+  ((rust-mode . lsp-deferred)
+   (c-mode . lsp-deferred)
+   (go-mode . lsp-deferred))
+  :commands (lsp lsp-deferred)
+  :config
+  (use-package lsp-ui
+    :commands lsp-ui-mode
+    :init (setq lsp-ui-doc-enable nil
+		lsp-ui-doc-use-webkit nil
+		lsp-ui-doc-position 'at-point
+		lsp-ui-doc-include-signature t)
+    :config (setq lsp-ui-peek-enable nil
+		  lsp-ui-flycheck-enable nil
+		  lsp-ui-peek-always-show nil
+		  lsp-ui-imenu-enable nil)))
+
+(use-package company
+  :hook (after-init . global-company-mode)
+  :config
+  (setq company-idle-delay 0.1
+	company-tooltip-limit 10
+	company-minimum-prefix-length 2
+	company-tooltip-flip-when-above t
+	company-tooltip-align-annotations t))
