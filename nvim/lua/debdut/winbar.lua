@@ -19,15 +19,7 @@ function _G.lsp_progress()
 		return ""
 	end
 
-	local lsp = vim.lsp.util.get_progress_messages()[1]
-	if lsp then
-		local name = lsp.name or ""
-		local msg = lsp.message or ""
-		local percentage = lsp.percentage or 0
-		local title = lsp.title or ""
-		return string.format(" %%<%s: %s %s (%s%%%%) ", name, title, msg, percentage)
-	end
-	return ""
+	return vim.lsp.status()
 end
 
 function _G.dap_progress()
@@ -39,8 +31,7 @@ function _G.dap_progress()
 end
 
 function M.get_statusline()
-	return
-		[[%{luaeval("current_mode()")}_%{luaeval("lsp_progress()")}_%{luaeval("dap_progress()")}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M]]
+	return [[%{luaeval("current_mode()")}_%{luaeval("lsp_progress()")}_%{luaeval("dap_progress()")}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M]]
 end
 
 return M

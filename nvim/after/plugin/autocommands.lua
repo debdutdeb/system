@@ -53,6 +53,7 @@ local plenary_filetype = require("plenary.filetype")
 local lsp_servers_configured = require("debdut.lsp.servers")
 
 local function __maybe_start_lsp(args)
+	-- TODO this probably can be simplified couple folds given lsp.start exists
 	local autostart_patterns = {
 		"neovim_autostart_lsp",
 		"vim_autostart_lsp",
@@ -107,7 +108,8 @@ local function __maybe_start_lsp(args)
 		end
 
 		if #vim.fs.find(autostart_patterns, { upward = false, limit = 1, type = "file", path = root_dir }) ~= 0 then
-			config.launch(args.buf)
+			-- config.launch(args.buf)
+			vim.lsp.start(config)
 		end
 	end))
 end
