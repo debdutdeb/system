@@ -193,11 +193,6 @@ lazy.setup({
 		opts = require("debdut.comments"),
 	},
 
-	{
-		"stevearc/oil.nvim",
-		opts = require("debdut.oil"),
-	},
-
 	-- just for Kapply honestly
 	-- { "rottencandy/vimkubectl", tag = "0.12.0" },
 	"rottencandy/vimkubectl",
