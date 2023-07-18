@@ -128,8 +128,7 @@ leadernnoremap("F", function()
 	-- definitely want to see as much as possible
 	telescope_builtin.live_grep(telescope_themes.get_ivy({ border = false }))
 end)
--- leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
-leadernnoremap("e", "<cmd>Oil<cr>") -- open Oil
+leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
 
 -- Packer
 leadernnoremap("pc", "<cmd>PackerCompile<cr>")

@@ -81,7 +81,7 @@ local function __maybe_start_lsp(args)
 		return
 	end
 	-- try to find the trigger files in current and parents before lsp root
-	if #lspconfig_util.root_pattern(unpack(autostart_patterns))(args.match or args.file) ~= 0 then
+	if lspconfig_util.root_pattern(unpack(autostart_patterns))(args.match or args.file) ~= nil then
 		return config.launch(args.buf)
 	end
 	coroutine.resume(coroutine.create(function()
