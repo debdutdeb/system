@@ -20,15 +20,15 @@ local grammers = {
 local plenary_path = require("plenary.path")
 
 return {
-	parser_install_dir = plenary_path
-		:new(vim.fn.stdpath("data"))
-		:joinpath(plenary_path:new("treesitter_grammers"))
-		:absolute(),
-	-- ensure_installed = grammers, -- one of "all" or a list of languages FIXME since changing the path it's just spamming reinstall every time I reopen vim
+	-- parser_install_dir = plenary_path
+	-- 	:new(vim.fn.stdpath("data"))
+	-- 	:joinpath(plenary_path:new("treesitter_grammers"))
+	-- 	:absolute(),
+	ensure_installed = grammers, -- one of "all" or a list of languages FIXME since changing the path it's just spamming reinstall every time I reopen vim
 	-- the following is causing some issues :' )
 	ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
 	highlight = {
-		enable = true, -- false will disable the whole extension
+		enable = true,          -- false will disable the whole extension
 	},
 	autopairs = {
 		enable = false, -- nyah
@@ -41,7 +41,7 @@ return {
 	playground = {
 		enable = true,
 		disable = {},
-		updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+		updatetime = 25,   -- Debounced time for highlighting nodes in the playground from source code
 		persist_queries = false, -- Whether the query persists across vim sessions
 		keybindings = {
 			toggle_query_editor = "o",

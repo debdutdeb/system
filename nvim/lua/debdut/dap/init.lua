@@ -14,6 +14,7 @@ end
 local Remap = require("debdut.keymap")
 
 require("debdut.dap.delve")
+require("debdut.dap.zig")
 -- require("debdut.dap.typescript")
 
 dapui.setup()

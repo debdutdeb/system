@@ -10,7 +10,7 @@ for _, server in pairs(servers) do
 	local opts = {
 		on_attach = lsp_handlers.on_attach,
 		capabilities = lsp_handlers.capabilities,
-		autostart = false,
+		autostart = true,
 	}
 	local has_custom_opts, server_custom_opts = pcall(require, "debdut.lsp.settings." .. server)
 	if has_custom_opts then

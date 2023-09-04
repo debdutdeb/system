@@ -3,7 +3,6 @@ augroup _general_settings
 autocmd!
 autocmd FileType qf,help,man,lspinfo nnoremap <silent> <buffer> q :close<CR>
 autocmd TextYankPost * silent!lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 200})
-autocmd BufWinEnter * :set formatoptions-=cro
 autocmd FileType qf set nobuflisted
 augroup end
 
@@ -37,17 +36,25 @@ augroup END
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
+		if vim.api.nvim_get_option_value("filetype", {}) == "netrw" then
+			return
+		end
 		if vim.api.nvim_buf_get_name(0) == "" then
 			local ok, telescope = pcall(require, "telescope.builtin")
 			if not ok then
 				return
 			end
-			telescope.find_files()
+			local ok, themes = pcall(require, "telescope.themes")
+			if not ok then
+				telescope.find_files()
+				return
+			end
+			telescope.find_files(themes.get_cursor({ border = false }))
 		end
 	end,
 })
 
-local lspconfig_configs = require("lspconfig.configs")
+--[[ local lspconfig_configs = require("lspconfig.configs")
 local lspconfig_util = require("lspconfig.util")
 local plenary_filetype = require("plenary.filetype")
 local lsp_servers_configured = require("debdut.lsp.servers")
@@ -122,4 +129,4 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 	end,
 	-- https://github.com/neovim/nvim-lspconfig/blob/0011c435282f043a018e23393cae06ed926c3f4a/lua/lspconfig/configs.lua#L64
 	group = vim.api.nvim_create_augroup("lspconfig", { clear = false }),
-})
+}) ]]

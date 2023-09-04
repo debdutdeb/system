@@ -92,15 +92,22 @@ leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
 leadernnoremap("lq", vim.lsp.diagnostic.set_loclist)
 leadernnoremap("ll", vim.lsp.codelens.run)
 leadernnoremap("lr", vim.lsp.buf.rename)
-leadernnoremap("ls", "<cmd>Telescope lsp_document_symbols<cr>")
-leadernnoremap("lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
+
+leadernnoremap("ls", function()
+	telescope_builtin.lsp_document_symbols(telescope_themes.get_dropdown({ border = false }))
+end)
+
+leadernnoremap("lS", function()
+	-- telescope_builtin.lsp_dynamic_workspace_symbols(telescope_themes.get_ivy({ border = false }))
+	telescope_builtin.lsp_dynamic_workspace_symbols({ border = false })
+end)
 
 nnoremap("lR", function()
-	telescope_builtin.lsp_references(telescope_themes.get_dropdown({ border = false }))
+	telescope_builtin.lsp_references({ border = false })
 end)
 
 nnoremap("lI", function()
-	telescope_builtin.lsp_implementations(telescope_themes.get_dropdown({ border = false }))
+	telescope_builtin.lsp_implementations({ border = false })
 end)
 
 leadernnoremap("f", function()
@@ -129,13 +136,6 @@ leadernnoremap("F", function()
 	telescope_builtin.live_grep(telescope_themes.get_ivy({ border = false }))
 end)
 leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
-
--- Packer
-leadernnoremap("pc", "<cmd>PackerCompile<cr>")
-leadernnoremap("pi", "<cmd>PackerInstall<cr>")
-leadernnoremap("ps", "<cmd>PackerSync<cr>")
-leadernnoremap("pS", "<cmd>PackerStatus<cr>")
-leadernnoremap("pu", "<cmd>PackerUpdate<cr>")
 
 -- Telescope
 leadernnoremap("sb", function()

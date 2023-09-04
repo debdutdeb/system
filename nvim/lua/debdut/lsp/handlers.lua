@@ -1,8 +1,15 @@
 local M = {}
 
+local disable_formatting_for = {
+	tsserver = true,
+	clangd = true,
+	perlnavigator = true,
+	zls = true,
+}
+
 M.on_attach = function(client, bufnr)
 	-- TODO: refactor this into a method that checks if string in list
-	if client.name == "tsserver" or client.name == "clangd" or client.name == "perlnavigator" then
+	if disable_formatting_for[client.name] then
 		client.server_capabilities.document_formatting = false
 	end
 	if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
