@@ -112,7 +112,9 @@ end)
 
 leadernnoremap("f", function()
 	-- ivy because it helps to actually read the contents better before moving into a file
-	telescope_builtin.find_files(telescope_themes.get_ivy({ border = false }))
+	telescope_builtin.find_files(
+		telescope_themes.get_ivy({ border = false, layout_config = { prompt_position = "bottom" } })
+	)
 end)
 leadernnoremap("g", function()
 	telescope_builtin.git_files(telescope_themes.get_ivy({ border = false }))
@@ -133,7 +135,9 @@ leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
 leadernnoremap("F", function()
 	-- definitely want to see as much as possible
-	telescope_builtin.live_grep(telescope_themes.get_ivy({ border = false }))
+	telescope_builtin.live_grep(
+		telescope_themes.get_ivy({ border = false, layout_config = { prompt_position = "bottom" } })
+	)
 end)
 leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
 

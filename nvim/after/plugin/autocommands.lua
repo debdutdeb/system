@@ -49,7 +49,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 				telescope.find_files()
 				return
 			end
-			telescope.find_files(themes.get_cursor({ border = false }))
+			telescope.find_files(themes.get_cursor({ border = false, layout_config = { height = 15 } }))
 		end
 	end,
 })
