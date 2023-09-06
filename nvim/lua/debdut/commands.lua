@@ -2,7 +2,7 @@ vim.api.nvim_create_user_command("LoadLocalPlugin", function(opts)
 	if #opts.fargs == 0 then
 		return
 	end
-	local plugin = opts.fargs[0]
+	local plugin = opts.fargs[1]
 	package.loaded[plugin] = nil
 	local ok, ret = pcall(require, plugin)
 	if not ok then
@@ -46,3 +46,11 @@ end, { nargs = 0 })
 vim.api.nvim_create_user_command("Format", function(_opts)
 	vim.lsp.buf.format({ async = true })
 end, { nargs = 0 })
+
+
+
+local ok, chaos = pcall(require, 'chaos')
+if ok then 
+	-- silently ignore
+	chaos.setup_commands()
+end

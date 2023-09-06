@@ -196,6 +196,8 @@ lazy.setup({
 	-- just for Kapply honestly
 	-- { "rottencandy/vimkubectl", tag = "0.12.0" },
 	"rottencandy/vimkubectl",
+
+	"debdutdeb/chaos.nvim",
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
