@@ -198,6 +198,16 @@ lazy.setup({
 	"rottencandy/vimkubectl",
 
 	"debdutdeb/chaos.nvim",
+	{
+		"wthollingsworth/pomodoro.nvim",
+		dependencies = { "MunifTanjim/nui.nvim" },
+		opts = {
+			time_work = 30,
+			time_break_short = 5,
+			time_break_long = 20,
+			timers_to_long_break = 4,
+		},
+	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
