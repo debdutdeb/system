@@ -63,3 +63,4 @@ vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 vim.g.netrw_liststyle = 3
 
 vim.opt.statusline = require("debdut.winbar").get_statusline()
+

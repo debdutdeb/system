@@ -18,22 +18,15 @@ local xnoremap = Remap.xnoremap
 --   term_mode = "t",
 --   command_mode = "c",
 
--- Normal --
--- Better window navigation
-nnoremap("<C-h>", "<C-w>h")
-nnoremap("<C-j>", "<C-w>j")
-nnoremap("<C-k>", "<C-w>k")
-nnoremap("<C-l>", "<C-w>l")
-
 -- For wraps
 nnoremap("j", 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
 nnoremap("k", 'v:count == 0 ? "gk" : "k"', { expr = true, silent = true })
 
 -- Resize with arrows
-nnoremap("<C-S-Up>", ":resize -2<CR>")
-nnoremap("<C-S-Down>", ":resize +2<CR>")
-nnoremap("<C-S-Left>", ":vertical resize -2<CR>")
-nnoremap("<C-S-Right>", ":vertical resize +2<CR>")
+nnoremap("<C-k>", ":resize -2<CR>")
+nnoremap("<C-j>", ":resize +2<CR>")
+nnoremap("<C-h>", ":vertical resize -2<CR>")
+nnoremap("<C-l>", ":vertical resize +2<CR>")
 
 -- Navigate buffers
 nnoremap("<S-l>", ":bnext<CR>")
@@ -199,7 +192,7 @@ nnoremap("gD", vim.lsp.buf.declaration)
 nnoremap("gd", vim.lsp.buf.definition)
 nnoremap("K", vim.lsp.buf.hover)
 nnoremap("gi", vim.lsp.buf.implementation)
-nnoremap("<C-k>", vim.lsp.buf.signature_help)
+nnoremap("KK", vim.lsp.buf.signature_help)
 nnoremap("[d", vim.diagnostic.goto_prev)
 nnoremap("]d", vim.diagnostic.goto_next)
 nnoremap("gl", vim.diagnostic.open_float)
@@ -212,3 +205,5 @@ for _, key_fn in pairs({ nnoremap, inoremap, vnoremap, xnoremap }) do
 	key_fn("<Right>", nil)
 	key_fn("<Left>", nil)
 end
+
+vnoremap("<leader>gu", "<CMD>GitUrl<CR>")

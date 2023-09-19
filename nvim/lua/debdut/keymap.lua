@@ -16,7 +16,6 @@ M.nnoremap = bind("n")
 M.vnoremap = bind("v")
 M.xnoremap = bind("x")
 M.inoremap = bind("i")
-M.Vnoremap = bind("V")
 
 local function bind_send_keys(mode)
 	return function(key)
