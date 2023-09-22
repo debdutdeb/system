@@ -208,6 +208,12 @@ lazy.setup({
 			timers_to_long_break = 4,
 		},
 	},
+	{
+		"kylechui/nvim-surround",
+		version = "v2.1.1",
+		event = "VeryLazy",
+		opts = {},
+	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
