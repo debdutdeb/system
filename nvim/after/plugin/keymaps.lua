@@ -22,12 +22,6 @@ local xnoremap = Remap.xnoremap
 nnoremap("j", 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
 nnoremap("k", 'v:count == 0 ? "gk" : "k"', { expr = true, silent = true })
 
--- Resize with arrows
-nnoremap("<C-k>", ":resize -2<CR>")
-nnoremap("<C-j>", ":resize +2<CR>")
-nnoremap("<C-h>", ":vertical resize -2<CR>")
-nnoremap("<C-l>", ":vertical resize +2<CR>")
-
 -- Navigate buffers
 nnoremap("<S-l>", ":bnext<CR>")
 nnoremap("<S-h>", ":bprevious<CR>")

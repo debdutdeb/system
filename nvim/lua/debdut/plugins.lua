@@ -56,7 +56,7 @@ lazy.setup({
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-nvim-lsp-signature-help",
-			"L3MON4D3/LuaSnip", --snippet engine
+			"L3MON4D3/LuaSnip",    --snippet engine
 			"rafamadriz/friendly-snippets", -- a bunch of snippets to userdata
 		},
 		config = function()
@@ -131,7 +131,8 @@ lazy.setup({
 	},
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+		build =
+		"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
@@ -214,10 +215,70 @@ lazy.setup({
 		event = "VeryLazy",
 		opts = {},
 	},
+	{
+		"aserowy/tmux.nvim",
+		event = "VeryLazy",
+		opts = {
+			copy_sync = {
+				-- enables copy sync. by default, all registers are synchronized.
+				-- to control which registers are synced, see the `sync_*` options.
+				enable = true,
+
+				-- ignore specific tmux buffers e.g. buffer0 = true to ignore the
+				-- first buffer or named_buffer_name = true to ignore a named tmux
+				-- buffer with name named_buffer_name :)
+				ignore_buffers = { empty = false },
+
+				-- TMUX >= 3.2: all yanks (and deletes) will get redirected to system
+				-- clipboard by tmux
+				redirect_to_clipboard = false,
+
+				-- offset controls where register sync starts
+				-- e.g. offset 2 lets registers 0 and 1 untouched
+				register_offset = 0,
+
+				-- overwrites vim.g.clipboard to redirect * and + to the system
+				-- clipboard using tmux. If you sync your system clipboard without tmux,
+				-- disable this option!
+				sync_clipboard = true,
+
+				-- synchronizes registers *, +, unnamed, and 0 till 9 with tmux buffers.
+				sync_registers = true,
+
+				-- syncs deletes with tmux clipboard as well, it is adviced to
+				-- do so. Nvim does not allow syncing registers 0 and 1 without
+				-- overwriting the unnamed register. Thus, ddp would not be possible.
+				sync_deletes = true,
+
+				-- syncs the unnamed register with the first buffer entry from tmux.
+				sync_unnamed = true,
+			},
+			navigation = {
+				-- cycles to opposite pane while navigating into the border
+				cycle_navigation = true,
+
+				-- enables default keybindings (C-hjkl) for normal mode
+				enable_default_keybindings = true,
+
+				-- prevents unzoom tmux when navigating beyond vim border
+				persist_zoom = false,
+			},
+			resize = {
+				-- enables default keybindings (A-hjkl) for normal mode
+				enable_default_keybindings = true,
+
+				-- sets resize steps for x axis
+				resize_step_x = 1,
+
+				-- sets resize steps for y axis
+				resize_step_y = 1,
+			},
+		},
+	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
-		lazy = false, -- should plugins be lazy-loaded?
+		lazy = false,                      -- should plugins be lazy-loaded?
 		version = nil,
 		-- default `cond` you can use to globally disable a lot of plugins
 		-- when running inside vscode for example
@@ -335,7 +396,7 @@ lazy.setup({
 		rtp = {
 			reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
 			---@type string[]
-			paths = {}, -- add any custom paths here that you want to includes in the rtp
+			paths = {},  -- add any custom paths here that you want to includes in the rtp
 			---@type string[] list any plugins you want to disable here
 			disabled_plugins = {
 				-- "gzip",
