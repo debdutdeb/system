@@ -56,7 +56,7 @@ lazy.setup({
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-nvim-lsp-signature-help",
-			"L3MON4D3/LuaSnip",    --snippet engine
+			"L3MON4D3/LuaSnip", --snippet engine
 			"rafamadriz/friendly-snippets", -- a bunch of snippets to userdata
 		},
 		config = function()
@@ -131,8 +131,7 @@ lazy.setup({
 	},
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		build =
-		"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
@@ -284,7 +283,7 @@ lazy.setup({
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
-		lazy = false,                      -- should plugins be lazy-loaded?
+		lazy = false, -- should plugins be lazy-loaded?
 		version = nil,
 		-- default `cond` you can use to globally disable a lot of plugins
 		-- when running inside vscode for example
@@ -402,7 +401,7 @@ lazy.setup({
 		rtp = {
 			reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
 			---@type string[]
-			paths = {},  -- add any custom paths here that you want to includes in the rtp
+			paths = {}, -- add any custom paths here that you want to includes in the rtp
 			---@type string[] list any plugins you want to disable here
 			disabled_plugins = {
 				-- "gzip",
