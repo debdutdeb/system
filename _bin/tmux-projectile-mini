@@ -1,0 +1,29 @@
+#!/bin/bash
+
+_find() {
+	if command -v gfind >/dev/null; then
+		gfind "$@"
+	else find "$@"; fi
+}
+
+_do() {
+	local session session_name
+
+	if (($# == 1)); then
+		session=$1
+	else
+		session="$(_find ~/Documents/Repos ~/Documents/Random -mindepth 1 -maxdepth 1 -type d | fzf-tmux)"
+	fi
+
+	[[ -z "$session" ]] && return || :
+
+	session_name="$(basename "$session" | tr . _)"
+
+	if ! tmux has-session -t="$session_name"; then
+		tmux new-session -ds "$session_name" -c "$session"
+	fi
+
+	tmux switch-client -t "$session_name"
+}
+
+_do "$@"
