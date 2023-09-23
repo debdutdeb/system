@@ -201,7 +201,10 @@ lazy.setup({
 		"debdutdeb/chaos.nvim",
 		event = "VimEnter",
 		config = function()
-			require("chaos.lsp").setup_autocommands(require("debdut.lsp.servers"))
+			require("chaos.lsp").setup_autocommands(
+				require("debdut.lsp.servers"),
+				require("debdut.lsp.configs").get_config
+			)
 		end,
 	},
 	{
