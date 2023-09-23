@@ -198,7 +198,13 @@ lazy.setup({
 	-- { "rottencandy/vimkubectl", tag = "0.12.0" },
 	"rottencandy/vimkubectl",
 
-	"debdutdeb/chaos.nvim",
+	{
+		"debdutdeb/chaos.nvim",
+		event = "VimEnter",
+		config = function()
+			require("chaos.lsp").setup_autocommands(require("debdut.lsp.servers"))
+		end,
+	},
 	{
 		"wthollingsworth/pomodoro.nvim",
 		dependencies = { "MunifTanjim/nui.nvim" },
