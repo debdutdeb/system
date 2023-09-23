@@ -17,13 +17,14 @@
 (setq straight-use-package-by-default t)
 
 ;; don't do anything basically
-(defun deb/ring-bell-function ())
+(defun my/ring-bell-function ())
 
 (tool-bar-mode -1)
+
 ; (ido-mode)
 (setq inhibit-startup-message t
       visible-bell nil
-      ring-bell-function 'deb/ring-bell-function
+      ring-bell-function 'my/ring-bell-function
       display-line-numbers-type 'relative
       cursor-type 'box
       auto-save-default nil)
@@ -36,21 +37,6 @@
 (use-package undo-tree
   :ensure t
   :init (global-undo-tree-mode))
-
-(use-package evil
-  :config
-  (evil-mode)
-  :init
-  (setq evil-want-keybinding nil
-	evil-want-C-u-scroll t
-	evil-insert-state-cursor 'box
-	evil-normal-state-cursor 'box
-	evil-motion-state-cursor 'box
-	evil-operator-state-cursor 'box
-	evil-replace-state-cursor 'box
-	evil-visual-state-cursor 'box
-	;; maybe use undo-redo ? FIXME
-	evil-undo-system 'undo-tree))
 
 (use-package swiper
   :ensure t
@@ -86,52 +72,27 @@
 (global-set-key (kbd "C-c l f") 'clang-format-buffer)
 (global-set-key (kbd "C-c l r") 'clang-format-region)
 
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :init
-;;   (setq lsp-keymap-prefix "C-l"
-;; 	lsp-auto-configure t
-;; 	lsp-enable-file-watchers nil
-;; 	lsp-modeline-diagnostics-enable nil)
-;;   :hook
-;;   ((rust-mode . lsp-deferred)
-;;    (c-mode . lsp-deferred)
-;;    (go-ts-mode . lsp-deferred))
-;;   :commands (lsp lsp-deferred)
-;;   :config
-;;   (use-package lsp-ui
-;;     :commands lsp-ui-mode
-;;     :init (setq lsp-ui-doc-enable nil
-;; 		lsp-ui-doc-use-webkit nil
-;; 		lsp-ui-doc-position 'at-point
-;; 		lsp-ui-doc-include-signature t)
-;;     :config (setq lsp-ui-peek-enable nil
-;; 		  lsp-ui-flycheck-enable nil
-;; 		  lsp-ui-peek-always-show nil
-;; 		  lsp-ui-imenu-enable nil)))
-
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
 	       `(go-ts-mode . ("gopls")))
   (add-to-list 'eglot-server-programs
-	       `(cc-mode . ("clangd"))))
+	       `(cc-mode . ("/opt/homebrew/opt/llvm/bin/clangd")))
+  (add-to-list 'eglot-server-programs
+	       `(c++-mode . ("/opt/homebrew/opt/llvm/bin/clangd")))
+  (add-to-list 'eglot-server-programs
+	       `(zig-mode . ("zls")))
+  (add-to-list 'eglot-server-programs
+		`(c-mode . ("/opt/homebrew/opt/llvm/bin/clangd"))))
 
-(use-package company
-  :hook (after-init . global-company-mode)
-  :config
-  (setq company-idle-delay 0.1
-	company-tooltip-limit 10
-	company-minimum-prefix-length 2
-	company-tooltip-flip-when-above t
-	company-tooltip-align-annotations t
-	company-backend 'lsp))
-
-(use-package projectile
-  :bind (:map projectile-mode-map
-	      ("C-c p" . 'projectile-command-map))
-  :config (projectile-mode))
+(add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
 
 (straight-use-package '(xkcd-303-mode :type git :host github :repo "elizagamedev/xkcd-303-mode.el"))
+
+(use-package zig-mode)
+
+(use-package treesit-auto
+  :config
+  (global-treesit-auto-mode))
 
 ;; add treesit-install-language-grammar
 
