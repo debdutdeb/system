@@ -26,4 +26,5 @@ end
 
 return {
 	get_config = get_config,
+	configured_servers = servers,
 }
