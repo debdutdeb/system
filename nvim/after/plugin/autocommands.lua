@@ -44,12 +44,9 @@ vim.api.nvim_create_autocmd("VimEnter", {
 			if not ok then
 				return
 			end
-			local ok, themes = pcall(require, "telescope.themes")
-			if not ok then
-				telescope.find_files()
-				return
-			end
-			telescope.find_files(themes.get_cursor({ border = false, layout_config = { height = 15 } }))
+			telescope.find_files(
+				require("telescope.themes").get_cursor({ border = false, layout_config = { height = 15 } })
+			)
 		end
 	end,
 })
