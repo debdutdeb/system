@@ -27,23 +27,6 @@ lazy.setup({
 		end,
 	},
 
-	-- Colorschemes
-	{
-		"EdenEast/nightfox.nvim",
-		opts = require("debdut.nightfox"),
-	},
-	{
-		"folke/tokyonight.nvim",
-		opts = require("debdut.tokyonight"),
-	},
-	{
-		"rebelot/kanagawa.nvim",
-		opts = require("debdut.kanagawa"),
-	},
-	"savq/melange",
-	"drewtempelmeyer/palenight.vim",
-	"jacoborus/tender.vim",
-
 	-- can't get rid of
 	-- cmp plugins
 	{
