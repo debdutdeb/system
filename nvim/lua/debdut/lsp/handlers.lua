@@ -19,7 +19,6 @@ M.on_attach = function(client, bufnr)
 		end, 1000)
 	end
 	if client.server_capabilities.inlayHintProvider ~= nil or client.server_capabilities.inlayHintProvider == true then
-		vim.notify("yes")
 		vim.lsp.inlay_hint(bufnr)
 	end
 end

@@ -1,22 +1,13 @@
 local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
 
-local coloscheme_handlers = require("debdut.colorscheme")
-
-function actions.save_colorscheme(prompt_bufnr)
-	local color = action_state.get_selected_entry(prompt_bufnr).value
-	if coloscheme_handlers.get_colorscheme() == color then
-		return
-	end
-	coloscheme_handlers.save_colorscheme(color)
-	vim.cmd("colorscheme " .. color)
-	actions.close(prompt_bufnr)
+local ok, chaotic_color = pcall(require, "chaos.colorschemes")
+local default_with_optional_save_colorscheme = actions.select_default
+if ok then
+	default_with_optional_save_colorscheme = chaotic_color.maybe_save_colorscheme + actions.select_default
 end
 
 return {
 	defaults = {
-		--[[ prompt_prefix = " ",
-		selection_caret = " ", ]]
 		path_display = { "smart" },
 
 		file_ignore_patterns = {
@@ -36,7 +27,7 @@ return {
 				["<Down>"] = actions.move_selection_next,
 				["<Up>"] = actions.move_selection_previous,
 
-				["<CR>"] = actions.select_default,
+				["<CR>"] = default_with_optional_save_colorscheme,
 				["<C-x>"] = actions.select_horizontal,
 				["<C-v>"] = actions.select_vertical,
 				["<C-t>"] = actions.select_tab,
@@ -53,8 +44,6 @@ return {
 				["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 				["<C-l>"] = actions.complete_tag,
 				["<C-_>"] = actions.which_key, -- keys from pressing <C-/>
-
-				["<C-s>"] = actions.save_colorscheme,
 			},
 
 			n = {
@@ -106,7 +95,7 @@ return {
 		-- }
 		-- please take a look at the readme of the extension you want to configure
 		fzf = {
-			fuzzy = true, -- false will only do exact matching
+			fuzzy = true,          -- false will only do exact matching
 			override_generic_sorter = true, -- override the generic sorter
 			override_file_sorter = true, -- override the file sorter
 			case_mode = "smart_case", -- or "ignore_case" or "respect_case"
