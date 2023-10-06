@@ -7,6 +7,24 @@ local disable_formatting_for = {
 	zls = true,
 }
 
+local signs = {
+	{ name = "DiagnosticSignError", text = "._" },
+	{ name = "DiagnosticSignWarn",  text = "0." },
+	{ name = "DiagnosticSignHint",  text = "-." },
+	{ name = "DiagnosticSignInfo",  text = ":)" },
+}
+
+for _, sign in ipairs(signs) do
+	vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
+end
+
+vim.diagnostic.config({
+	virtual_text = true,
+	sign = {
+		active = signs,
+	},
+})
+
 M.on_attach = function(client, bufnr)
 	-- TODO: refactor this into a method that checks if string in list
 	if disable_formatting_for[client.name] then
