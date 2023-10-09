@@ -1,3 +1,10 @@
+-- XXX: Note to self --
+-- Lazy honestly feels bloated at this point.
+-- Might not be the worst of ideas to strip those parts out
+-- I like the idea of "lazy" loading plugins, but i don't want things like a floating terminal, or watching
+-- config files to auto reload, or auto updating plugins (definitely not this, do I want to break my install every other day?).
+-- Hm. Might not be the worst idea to go back to packer either.
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -275,7 +282,6 @@ lazy.setup({
 			},
 		},
 	},
-	{ "olivercederborg/poimandres.nvim", lazy = false },
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
@@ -386,7 +392,7 @@ lazy.setup({
 	},
 	change_detection = {
 		-- automatically check for config file changes and reload the ui
-		enabled = true,
+		enabled = false,
 		notify = true, -- get a notification when changes are found
 	},
 	performance = {
