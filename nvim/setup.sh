@@ -25,6 +25,7 @@ install_node16() {
 }
 
 install_dependencies() {
+	export DEBIAN_FRONTEND=noninteractive
 	sudo apt-get update &&
 		sudo apt-get install \
 			unzip \
