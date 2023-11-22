@@ -3,14 +3,14 @@
 set -xEeuo pipefail
 
 install_nvim() {
-	cd /tmp || return
-	curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz --fail
-	sudo mkdir /opt/nvim
-	sudo chown "$(id -u):$(id -g)" /opt/nvim
-	tar xzf /tmp/nvim-linux64.tar.gz -C /opt/nvim --strip-components=1
-	echo "PATH=/opt/nvim/bin:$PATH" >>~/.bashrc
-	rm /tmp/nvim-linux64.tar.gz
-	cd -
+	pushd /tmp 
+	git clone https://github.com/neovim/neovim.git
+	pushd neovim
+	make CMAKE_BUILD_TYPE=RelWithDebInfo
+	sudo make install
+	popd
+	rm -rf neovim
+	popd
 }
 
 install_nvm() {
