@@ -101,3 +101,35 @@ callbacks["lua"] = startlspfn({
 	single_file_support = true,
 	log_level = vim.lsp.protocol.MessageType.Warning,
 })
+
+callbacks[{ "javascript", "typescript", "javascriptreact", "typescriptreact", "javascript.jsx", "typescript.tsx" }] =
+	startlspfn({
+		cmd = { "typescript-language-server", "--stdio" },
+		root_dir = root_directory_pattern({ "package.json", "node_modules", "yarn.lock", "package-lock.json",
+			"tsconfig.json" }),
+		single_file_support = true,
+		settings = {
+			typescript = {
+				inlayHints = {
+					includeInlayParameterNameHints = "all",
+					includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+					includeInlayFunctionParameterTypeHints = true,
+					includeInlayVariableTypeHints = true,
+					includeInlayPropertyDeclarationTypeHints = true,
+					includeInlayFunctionLikeReturnTypeHints = true,
+					includeInlayEnumMemberValueHints = true,
+				},
+			},
+			javascript = {
+				inlayHints = {
+					includeInlayParameterNameHints = "all",
+					includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+					includeInlayFunctionParameterTypeHints = true,
+					includeInlayVariableTypeHints = true,
+					includeInlayPropertyDeclarationTypeHints = true,
+					includeInlayFunctionLikeReturnTypeHints = true,
+					includeInlayEnumMemberValueHints = true,
+				},
+			},
+		},
+	})
