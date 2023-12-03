@@ -5,18 +5,18 @@
 -- config files to auto reload, or auto updating plugins (definitely not this, do I want to break my install every other day?).
 -- Hm. Might not be the worst idea to go back to packer either.
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+local uselesspath = vim.fn.stdpath("data") .. "/useless/useless.nvim"
+if not vim.loop.fs_stat(uselesspath) then
 	vim.fn.system({
 		"git",
 		"clone",
 		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
+		"https://github.com/debdutdeb/useless.nvim.git",
+		"--branch=main", -- latest stable release
+		uselesspath,
 	})
 end
-vim.opt.rtp:prepend(lazypath)
+vim.opt.rtp:prepend(uselesspath)
 
 local ok, lazy = pcall(require, "lazy")
 if not ok then
@@ -46,7 +46,7 @@ lazy.setup({
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-nvim-lsp-signature-help",
-			"L3MON4D3/LuaSnip",    --snippet engine
+			"L3MON4D3/LuaSnip", --snippet engine
 			"rafamadriz/friendly-snippets", -- a bunch of snippets to userdata
 		},
 		config = function()
@@ -64,8 +64,8 @@ lazy.setup({
 
 	-- can't get rid of
 	-- LSP
-	"neovim/nvim-lspconfig", -- enable LSP
-	{
+	-- "neovim/nvim-lspconfig", -- enable LSP
+	--[[ {
 		"williamboman/mason.nvim",
 		lazy = false,
 		dependencies = {
@@ -84,12 +84,10 @@ lazy.setup({
 			--  TODO maybe move this somewhere
 			require("mason-nvim-dap").setup()
 		end,
-	},
+	}, ]]
 	{
-		"neovim/nvim-lspconfig",
-		dependencies = {
-			"hrsh7th/nvim-cmp",
-		},
+		"hrsh7th/nvim-cmp",
+		lazy = false,
 		config = function()
 			require("debdut.lsp")
 		end,
@@ -122,8 +120,7 @@ lazy.setup({
 	},
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		build =
-		"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
@@ -143,6 +140,7 @@ lazy.setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
+		lazy = false,
 		opts = require("debdut.treesitter_context"),
 	},
 
@@ -199,12 +197,17 @@ lazy.setup({
 			-- of lazy my guess is.
 			-- for now ignoring the error is ok. and that
 			-- is what i will be doing
-			local config = require("debdut.lsp.configs")
-			require("chaos.lsp").setup_autocommands(config.configured_servers, config.get_config)
+			-- local config = require("debdut.lsp.configs")
+			-- require("chaos.lsp").setup_autocommands(config.configured_servers, config.get_config)
 			local telescope = require("telescope")
 			telescope.setup(require("debdut.telescope"))
 			telescope.load_extension("fzf")
 		end,
+	},
+	{
+		"Mofiqul/vscode.nvim",
+		name = "vscode",
+		lazy = false,
 	},
 	{
 		"wthollingsworth/pomodoro.nvim",
@@ -282,10 +285,24 @@ lazy.setup({
 			},
 		},
 	},
+
+	{
+		"https://codeberg.org/esensar/nvim-dev-container",
+		dependencies = "nvim-treesitter/nvim-treesitter",
+		cmd = { "DevcontainerStart" }, -- TODO maybe more ?
+		opts = { container_runtime = "docker" },
+	},
+	{
+		"stevearc/oil.nvim",
+		opts = {
+			default_file_explorer = true,
+		},
+		cmd = "Oil",
+	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
-		lazy = true,                       -- should plugins be lazy-loaded?
+		lazy = true, -- should plugins be lazy-loaded?
 		version = nil,
 		-- default `cond` you can use to globally disable a lot of plugins
 		-- when running inside vscode for example
@@ -403,7 +420,7 @@ lazy.setup({
 		rtp = {
 			reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
 			---@type string[]
-			paths = {},  -- add any custom paths here that you want to includes in the rtp
+			paths = {}, -- add any custom paths here that you want to includes in the rtp
 			---@type string[] list any plugins you want to disable here
 			disabled_plugins = {
 				-- "gzip",
