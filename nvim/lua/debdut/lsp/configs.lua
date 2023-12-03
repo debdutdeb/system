@@ -35,9 +35,7 @@ end
 default_opts.capabilities = vim.lsp.protocol.make_client_capabilities()
 --completion capabilities
 local ok, cmp = pcall(require, "cmp_nvim_lsp")
-if ok then
-	default_opts.capabilities = cmp.default_capabilities(default_opts.capabilities)
-end
+if ok then default_opts.capabilities = cmp.default_capabilities(default_opts.capabilities) end
 
 local function root_directory_pattern(pattern)
 	vim.validate({ _ = { pattern, "table" } })
@@ -46,17 +44,13 @@ local function root_directory_pattern(pattern)
 end
 
 local function startlspfn(opts)
-	return function()
-		vim.lsp.start(vim.tbl_deep_extend("force", opts, default_opts))
-	end
+	return function() vim.lsp.start(vim.tbl_deep_extend("force", opts, default_opts)) end
 end
 
 local callbacks = {}
 
 callbacks = setmetatable(callbacks, {
-	__index = function(self, _ft)
-		return function() end
-	end,
+	__index = function(self, _ft) return function() end end,
 
 	__newindex = function(self, ft, fn)
 		vim.validate({
@@ -64,13 +58,9 @@ callbacks = setmetatable(callbacks, {
 			fn = { fn, "function" },
 		})
 
-		if type(ft) ~= "table" then
-			ft = { ft }
-		end
+		if type(ft) ~= "table" then ft = { ft } end
 
-		for _, _ft in ipairs(ft) do
-			rawset(self, _ft, fn)
-		end
+		for _, _ft in ipairs(ft) do rawset(self, _ft, fn) end
 	end,
 })
 
@@ -79,9 +69,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	group = vim.api.nvim_create_augroup("my_lsp_auto_starts", { clear = true }),
 	callback = function(_arguments)
 		local ok, err = pcall(callbacks[vim.bo.filetype])
-		if not ok then
-			vim.notify("failed to start lsp server for ft: " .. err)
-		end
+		if not ok then vim.notify("failed to start lsp server for ft: " .. err) end
 	end,
 })
 
