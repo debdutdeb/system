@@ -34,59 +34,9 @@ lazy.setup({
 		end,
 	},
 
-	-- can't get rid of
-	-- cmp plugins
 	{
-		"hrsh7th/nvim-cmp", -- The completion plugin
-		event = "InsertEnter",
-		dependencies = {
-			"hrsh7th/cmp-buffer", -- buffer completions
-			"hrsh7th/cmp-path", -- path completions
-			"saadparwaiz1/cmp_luasnip", -- snippet completions
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-nvim-lua",
-			"hrsh7th/cmp-nvim-lsp-signature-help",
-			"L3MON4D3/LuaSnip", --snippet engine
-			"rafamadriz/friendly-snippets", -- a bunch of snippets to userdata
-		},
-		config = function()
-			require("debdut.cmp")
-		end,
-	},
-
-	{
-		"L3MON4D3/LuaSnip", --snippet engine
-		build = "make install_jsregexp",
-		init = function()
-			require("luasnip.loaders.from_snipmate").lazy_load({ paths = "./snippets" })
-		end,
-	},
-
-	-- can't get rid of
-	-- LSP
-	-- "neovim/nvim-lspconfig", -- enable LSP
-	--[[ {
-		"williamboman/mason.nvim",
-		lazy = false,
-		dependencies = {
-			"williamboman/mason-lspconfig.nvim",
-			--
-			"neovim/nvim-lspconfig",
-			--
-			"nvim-lua/plenary.nvim",
-		},
-		config = function()
-			require("mason").setup(require("debdut.lsp.mason"))
-			require("mason-lspconfig").setup({
-				ensure_installed = require("debdut.lsp.servers"),
-				automatic_installation = true,
-			})
-			--  TODO maybe move this somewhere
-			require("mason-nvim-dap").setup()
-		end,
-	}, ]]
-	{
-		"hrsh7th/nvim-cmp",
+		"ms-jpq/coq_nvim",
+		branch = "coq",
 		lazy = false,
 		config = function()
 			require("debdut.lsp")
@@ -120,7 +70,8 @@ lazy.setup({
 	},
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+		build =
+		"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
@@ -302,7 +253,7 @@ lazy.setup({
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
-		lazy = true, -- should plugins be lazy-loaded?
+		lazy = true,                       -- should plugins be lazy-loaded?
 		version = nil,
 		-- default `cond` you can use to globally disable a lot of plugins
 		-- when running inside vscode for example
@@ -420,7 +371,7 @@ lazy.setup({
 		rtp = {
 			reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
 			---@type string[]
-			paths = {}, -- add any custom paths here that you want to includes in the rtp
+			paths = {},  -- add any custom paths here that you want to includes in the rtp
 			---@type string[] list any plugins you want to disable here
 			disabled_plugins = {
 				-- "gzip",
