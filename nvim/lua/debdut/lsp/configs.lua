@@ -22,6 +22,10 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 	width = 60,
 })
 
+vim.g.coq_settings = {
+	auto_start = 'shut-up',
+}
+
 local default_opts = {
 	autostart = true,
 }
@@ -34,8 +38,8 @@ end
 
 default_opts.capabilities = vim.lsp.protocol.make_client_capabilities()
 --completion capabilities
-local ok, cmp = pcall(require, "cmp_nvim_lsp")
-if ok then default_opts.capabilities = cmp.default_capabilities(default_opts.capabilities) end
+local ok, coq = pcall(require, "coq")
+if ok then default_opts.capabilities = coq.lsp_ensure_capabilities(default_opts.capabilities) end
 
 local function root_directory_pattern(pattern)
 	vim.validate({ _ = { pattern, "table" } })
@@ -132,4 +136,8 @@ callbacks[{ "javascript", "typescript", "javascriptreact", "typescriptreact", "j
 				},
 			},
 		},
+		on_attach = function(client, bufnr)
+			client.server_capabilities.document_formatting = false
+			default_opts.on_attach(client, bufnr)
+		end,
 	})
