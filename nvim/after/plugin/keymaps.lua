@@ -1,22 +1,12 @@
 local Remap = require("debdut.keymap")
--- don't fail at startup
--- but it's ok to fail verbosely if later any function call fails
-local _, telescope = pcall(require, "telescope")
-local _, telescope_builtin = pcall(require, "telescope.builtin")
-local _, telescope_themes = pcall(require, "telescope.themes")
 
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
 local vnoremap = Remap.vnoremap
 local xnoremap = Remap.xnoremap
 
--- Modes
---   normal_mode = "n",
---   insert_mode = "i",
---   visual_mode = "v",
---   visual_block_mode = "x",
---   term_mode = "t",
---   command_mode = "c",
+local tsend_keys = Remap.tsend_keys
+local nsend_keys = Remap.nsend_keys
 
 -- For wraps
 nnoremap("j", 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
@@ -29,9 +19,6 @@ nnoremap("<S-h>", ":bprevious<CR>")
 -- Move text up and down
 nnoremap("<A-j>", "<Esc>:m .+1<CR>==gi")
 nnoremap("<A-k>", "<Esc>:m .-2<CR>==gi")
-
---
--- nnoremap(":", telescope_builtin.commands(telescope_themes.get_ivy({ border = false })))
 
 -- Insert --
 -- Press jk fast to exit insert mode
@@ -54,107 +41,48 @@ xnoremap("K", ":move '<-2<CR>gv-gv")
 xnoremap("<A-j>", ":move '>+1<CR>gv-gv")
 xnoremap("<A-k>", ":move '<-2<CR>gv-gv")
 
--- Terminal --
--- Better terminal navigation
--- keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
--- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
--- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
--- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
-
-local function leadernnoremap(key, cmd)
-	nnoremap("<leader>" .. key, cmd)
+local function leadernnoremap(key, cmd, opts)
+	nnoremap("<leader>" .. key, cmd, opts)
 end
 
 -- LSP
-leadernnoremap("li", "<cmd>LspInfo<cr>")
 leadernnoremap("la", vim.lsp.buf.code_action)
-leadernnoremap("ld", "<cmd>Telescope lsp_document_diagnostics<cr>")
-leadernnoremap("lw", "<cmd>Telescope lsp_workspace_diagnostics<cr>")
+leadernnoremap("ld", vim.diagnostic.show)
+leadernnoremap("lw", function() vim.cmd("echo noop") end)
 leadernnoremap("lf", function()
 	vim.lsp.buf.format({ async = true })
 end)
--- leadernnoremap("lR", "<cmd>LspRestart<cr>")
 leadernnoremap("lj", vim.lsp.diagnostic.goto_prev)
 leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
-leadernnoremap("lq", vim.lsp.diagnostic.set_loclist)
+leadernnoremap("lq", vim.lsp.set_loclist)
 leadernnoremap("ll", vim.lsp.codelens.run)
 leadernnoremap("lr", vim.lsp.buf.rename)
+leadernnoremap("lS", vim.lsp.buf.workspace_symbol)
+nnoremap("lR", vim.lsp.buf.references)
+nnoremap("lI", vim.lsp.buf.implementation)
 
-leadernnoremap("ls", function()
-	telescope_builtin.lsp_document_symbols(telescope_themes.get_dropdown({ border = false }))
-end)
-
-leadernnoremap("lS", function()
-	-- telescope_builtin.lsp_dynamic_workspace_symbols(telescope_themes.get_ivy({ border = false }))
-	telescope_builtin.lsp_dynamic_workspace_symbols({ border = false })
-end)
-
-nnoremap("lR", function()
-	telescope_builtin.lsp_references({ border = false })
-end)
-
-nnoremap("lI", function()
-	telescope_builtin.lsp_implementations({ border = false })
-end)
-
-leadernnoremap("f", function()
-	-- ivy because it helps to actually read the contents better before moving into a file
-	telescope_builtin.find_files(
-		telescope_themes.get_ivy({ border = false, layout_config = { prompt_position = "bottom" } })
-	)
-end)
 leadernnoremap("g", function()
-	telescope_builtin.git_files(telescope_themes.get_ivy({ border = false }))
+	local files = {}
+	for filename in string.gmatch(vim.system({ "git", "ls-files" }):wait().stdout, "([^\n]+)") do
+		table.insert(files, { filename = filename, lnum = 1 })
+	end
+	vim.fn.setqflist(files)
+	vim.cmd ":copen"
 end)
+
 leadernnoremap("b", function()
-	-- I mean I'm not viewing a preview, why waste so much space?
-	telescope_builtin.buffers(telescope_themes.get_cursor({ previewer = false, border = false }))
-end)
-leadernnoremap("sl", function()
-	-- I didn't want a previewer for this, just the preview in the background text
-	telescope_builtin.colorscheme(
-		vim.tbl_deep_extend("force", { enable_preview = true }, telescope_themes.get_dropdown({ border = false }))
-	)
-end)
-leadernnoremap("?", function()
-	telescope_builtin.oldfiles({ border = false })
-end)
+	tsend_keys(":b ")
+end, { silent = false })
+
 leadernnoremap("w", "<cmd>w!<cr>")
 leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
+leadernnoremap("f", "<cmd>FZF<cr>")
 leadernnoremap("F", function()
-	-- definitely want to see as much as possible
-	telescope_builtin.live_grep(
-		telescope_themes.get_ivy({ border = false, layout_config = { prompt_position = "bottom" } })
-	)
-end)
+	tsend_keys(":silent grep! ")
+end, { silent = false })
 leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
 
--- Telescope
-leadernnoremap("sb", function()
-	telescope_builtin.git_branches(telescope_themes.get_dropdown({ border = false }))
-end)
--- leadernnoremap("sc", "<cmd>Telescope colorscheme<cr>")
-
--- following two, rather open a buffer to read than in through the previewer
-leadernnoremap("sh", function()
-	telescope_builtin.help_tags(telescope_themes.get_cursor({ previewer = false, border = false }))
-end)
-leadernnoremap("sM", function()
-	telescope_builtin.man_pages(telescope_themes.get_cursor({ previewer = false, border = false }))
-end)
-leadernnoremap("sr", function()
-	telescope_builtin.oldfiles(telescope_themes.get_ivy({ border = false }))
-end)
-leadernnoremap("sR", function()
-	telescope_builtin.registers({ border = false })
-end)
-leadernnoremap("sk", function()
-	telescope_builtin.keymaps(telescope_themes.get_cursor({ border = false }))
-end)
-leadernnoremap("sc", function()
-	telescope_builtin.commands(telescope_themes.get_cursor({ border = false, previewer = false }))
-end)
 
 leadernnoremap("/", "<cmd>nohl<cr>")
 
@@ -162,24 +90,6 @@ leadernnoremap("/", "<cmd>nohl<cr>")
 -- leadernnoremap("dd", "da{dd")
 
 leadernnoremap("ka", "<cmd>Kapply<cr>")
-
-local function is_lsp_running()
-	for _, client in pairs(vim.lsp.get_active_clients()) do
-		if client.name ~= "null-ls" then
-			return true
-		end
-	end
-	return false
-end
-
--- lsp toggle
-leadernnoremap("lt", function()
-	if is_lsp_running() then
-		vim.cmd("LspStop")
-	else
-		vim.cmd("LspStart")
-	end
-end)
 
 -- lsp keymaps
 nnoremap("gD", vim.lsp.buf.declaration)

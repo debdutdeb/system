@@ -58,25 +58,6 @@ lazy.setup({
 
 	-- "lspcontainers/lspcontainers.nvim",
 
-	-- Telescope
-	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { "debdutdeb/chaos.nvim" },
-		--[[ config = function()
-			local telescope = require("telescope")
-			telescope.setup(require("debdut.telescope"))
-			telescope.load_extension("fzf")
-		end, ]]
-	},
-	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		build =
-		"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-		dependencies = {
-			"nvim-telescope/telescope.nvim",
-		},
-	},
-
 	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -110,7 +91,6 @@ lazy.setup({
 			"leoluz/nvim-dap-go",
 			"rcarriga/nvim-dap-ui", -- requires nim-dap
 			"theHamsta/nvim-dap-virtual-text",
-			"nvim-telescope/telescope-dap.nvim",
 		},
 		config = function()
 			require("debdut.dap")
@@ -139,22 +119,6 @@ lazy.setup({
 	-- just for Kapply honestly
 	-- { "rottencandy/vimkubectl", tag = "0.12.0" },
 	"rottencandy/vimkubectl",
-
-	{
-		"debdutdeb/chaos.nvim",
-		lazy = false,
-		config = function()
-			-- something is going on here, with telescope's action merge. idk what. some type of race condition because
-			-- of lazy my guess is.
-			-- for now ignoring the error is ok. and that
-			-- is what i will be doing
-			-- local config = require("debdut.lsp.configs")
-			-- require("chaos.lsp").setup_autocommands(config.configured_servers, config.get_config)
-			local telescope = require("telescope")
-			telescope.setup(require("debdut.telescope"))
-			telescope.load_extension("fzf")
-		end,
-	},
 	{
 		"Mofiqul/vscode.nvim",
 		name = "vscode",
@@ -242,13 +206,6 @@ lazy.setup({
 		dependencies = "nvim-treesitter/nvim-treesitter",
 		cmd = { "DevcontainerStart" }, -- TODO maybe more ?
 		opts = { container_runtime = "docker" },
-	},
-	{
-		"stevearc/oil.nvim",
-		opts = {
-			default_file_explorer = true,
-		},
-		cmd = "Oil",
 	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed

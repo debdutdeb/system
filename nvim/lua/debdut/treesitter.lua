@@ -24,6 +24,9 @@ local parser_install_dir =
 
 vim.opt.runtimepath:append(parser_install_dir)
 
+-- vim.treesitter.language.register("terraform", "hcl")
+-- vim.treesitter.language.register("tf", "hcl")
+
 return {
 	parser_install_dir = parser_install_dir,
 	ensure_installed = grammers, -- one of "all" or a list of languages
@@ -81,4 +84,3 @@ return {
 		},
 	},
 }
-

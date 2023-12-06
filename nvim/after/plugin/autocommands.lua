@@ -34,20 +34,3 @@ au BufWinEnter ?* silent! loadview 1
 augroup END
 ]])
 
-vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function(args)
-		if vim.api.nvim_get_option_value("filetype", {}) == "netrw" then
-			return
-		end
-		if vim.api.nvim_buf_get_name(args.buf) == "" then
-			local ok, telescope = pcall(require, "telescope.builtin")
-			if not ok then
-				return
-			end
-			telescope.find_files(
-				require("telescope.themes").get_cursor({ border = false, layout_config = { height = 15 } })
-			)
-		end
-	end,
-})
-

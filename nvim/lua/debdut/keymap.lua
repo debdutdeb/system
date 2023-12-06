@@ -27,5 +27,6 @@ M.nsend_keys = bind_send_keys("n")
 M.vsend_keys = bind_send_keys("v")
 M.xsend_keys = bind_send_keys("x")
 M.isend_keys = bind_send_keys("i")
+M.tsend_keys = bind_send_keys("t")
 
 return M
