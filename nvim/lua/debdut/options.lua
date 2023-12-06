@@ -57,3 +57,5 @@ vim.g.netrw_liststyle = 3
 
 
 vim.opt.grepprg = "rg --no-heading --column \"$*\""
+
+vim.cmd "colorscheme habamax"
