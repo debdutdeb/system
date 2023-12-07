@@ -71,7 +71,7 @@ leadernnoremap("g", function()
 end)
 
 leadernnoremap("b", function()
-	tsend_keys(":b ")
+	tsend_keys(":ls<cr>:b ")
 end, { silent = false })
 
 leadernnoremap("w", "<cmd>w!<cr>")
