@@ -34,3 +34,20 @@ au BufWinEnter ?* silent! loadview 1
 augroup END
 ]])
 
+vim.api.nvim_create_autocmd("VimLeave", {
+	callback = function(_)
+		if not vim.uv.fs_stat(".vim") then
+			vim.fn.mkdir(".vim")
+		end
+		vim.cmd(":mksession! " .. vim.fn.getcwd() .. "/.vim/session")
+	end,
+})
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function(_)
+		if vim.uv.fs_stat(".vim/session") then
+			vim.cmd ":source .vim/session"
+		end
+	end,
+	nested = true,
+})

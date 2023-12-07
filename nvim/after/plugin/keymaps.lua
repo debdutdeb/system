@@ -81,7 +81,7 @@ leadernnoremap("f", "<cmd>FZF<cr>")
 leadernnoremap("F", function()
 	tsend_keys(":silent grep! ")
 end, { silent = false })
-leadernnoremap("e", "<cmd>Ex<cr>") -- open netrw
+leadernnoremap("e", "<cmd>Sex<cr>") -- open netrw
 
 
 leadernnoremap("/", "<cmd>nohl<cr>")
