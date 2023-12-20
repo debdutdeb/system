@@ -50,7 +50,14 @@ end, { nargs = 1 })
 --
 --
 -- local ok, chaos = pcall(require, 'chaos')
--- if ok then 
+-- if ok then
 -- 	-- silently ignore
 -- 	chaos.setup_commands()
 -- end
+
+
+vim.api.nvim_create_user_command("LspStart", function()
+	local cb = require("debdut.lsp.configs")[vim.bo.filetype]
+	local ok, err = pcall(cb)
+	if not ok then vim.notify("failed to start lsp server for ft: " .. err) end
+end, { nargs = 0 })

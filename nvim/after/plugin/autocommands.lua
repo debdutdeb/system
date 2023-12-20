@@ -45,9 +45,34 @@ vim.api.nvim_create_autocmd("VimLeave", {
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function(_)
+		local args = vim.api.nvim_command_output ":args"
+		if args then
+			if string.match(args, "%[.+%]") then
+				return
+			end
+		end
 		if vim.uv.fs_stat(".vim/session") then
 			vim.cmd ":source .vim/session"
 		end
 	end,
 	nested = true,
+})
+
+--[[ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+	pattern = "*.tf",
+	callback = function()
+		vim.cmd "set ft=hcl"
+	end
+}) ]]
+
+local qflist_group = vim.api.nvim_create_augroup("qflist_autoopen", { clear = true })
+
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+	pattern = "l*", -- locationlist
+	callback = function(_) vim.cmd ":lopen" end,
+})
+
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+	pattern = "[^l]*", -- quickfixlist
+	callback = function(_) vim.cmd ":copen" end,
 })

@@ -46,6 +46,7 @@ local function leadernnoremap(key, cmd, opts)
 end
 
 -- LSP
+leadernnoremap("ll", "<cmd>LspStart<cr>")
 leadernnoremap("la", vim.lsp.buf.code_action)
 leadernnoremap("ld", vim.diagnostic.show)
 leadernnoremap("lw", function() vim.cmd("echo noop") end)
@@ -55,8 +56,9 @@ end)
 leadernnoremap("lj", vim.lsp.diagnostic.goto_prev)
 leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
 leadernnoremap("lq", vim.lsp.set_loclist)
-leadernnoremap("ll", vim.lsp.codelens.run)
+leadernnoremap("lc", vim.lsp.codelens.run)
 leadernnoremap("lr", vim.lsp.buf.rename)
+leadernnoremap("ls", vim.lsp.buf.document_symbol)
 leadernnoremap("lS", vim.lsp.buf.workspace_symbol)
 nnoremap("lR", vim.lsp.buf.references)
 nnoremap("lI", vim.lsp.buf.implementation)
@@ -66,8 +68,7 @@ leadernnoremap("g", function()
 	for filename in string.gmatch(vim.system({ "git", "ls-files" }):wait().stdout, "([^\n]+)") do
 		table.insert(files, { filename = filename, lnum = 1 })
 	end
-	vim.fn.setqflist(files)
-	vim.cmd ":copen"
+	vim.fn.setloclist(0, files)
 end)
 
 leadernnoremap("b", function()
@@ -77,11 +78,34 @@ end, { silent = false })
 leadernnoremap("w", "<cmd>w!<cr>")
 leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
-leadernnoremap("f", "<cmd>FZF<cr>")
+leadernnoremap("f", function()
+	local co = coroutine.create(function()
+		local choices = require("fzf").fzf("fd", "--multi", {
+			relative = "cursor",
+			border   = false
+		})
+
+		if choices == nil then return end
+
+		if #choices == 1 then
+			vim.cmd(":e " .. choices[1])
+			return
+		end
+
+		local fnames = {}
+		for _, name in pairs(choices) do
+			table.insert(fnames, { filename = name, lnum = 1 })
+		end
+
+		vim.fn.setloclist(0, fnames)
+	end)
+
+	coroutine.resume(co)
+end)
 leadernnoremap("F", function()
-	tsend_keys(":silent grep! ")
+	tsend_keys(":silent lgrep! ")
 end, { silent = false })
-leadernnoremap("e", "<cmd>Sex<cr>") -- open netrw
+leadernnoremap("e", "<cmd>Explore<cr>") -- open netrw
 
 
 leadernnoremap("/", "<cmd>nohl<cr>")

@@ -22,10 +22,6 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 	width = 60,
 })
 
-vim.g.coq_settings = {
-	auto_start = 'shut-up',
-}
-
 local default_opts = {
 	autostart = true,
 }
@@ -68,14 +64,6 @@ callbacks = setmetatable(callbacks, {
 	end,
 })
 
--- TODO: maybe not BufEnter
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-	group = vim.api.nvim_create_augroup("my_lsp_auto_starts", { clear = true }),
-	callback = function(_arguments)
-		local ok, err = pcall(callbacks[vim.bo.filetype])
-		if not ok then vim.notify("failed to start lsp server for ft: " .. err) end
-	end,
-})
 
 callbacks[{ "c", "cpp" }] = startlspfn({
 	cmd = { "clangd" },
@@ -141,3 +129,11 @@ callbacks[{ "javascript", "typescript", "javascriptreact", "typescriptreact", "j
 			default_opts.on_attach(client, bufnr)
 		end,
 	})
+
+callbacks[{ "terraform" }] = startlspfn({
+	cmd = { "terraform-ls", "serve" },
+	root_dir = vim.uv.cwd(),
+	single_file_support = true,
+})
+
+return callbacks

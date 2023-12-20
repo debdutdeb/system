@@ -25,22 +25,11 @@ end
 
 lazy.setup({
 	"nvim-lua/plenary.nvim", -- Useful lua functions used by lots of plugins
-	{
-		"lewis6991/impatient.nvim",
-		priority = 1000,
-		lazy = false,
-		init = function()
-			require("impatient").enable_profile()
-		end,
-	},
 
 	{
 		"ms-jpq/coq_nvim",
 		branch = "coq",
-		lazy = false,
-		config = function()
-			require("debdut.lsp")
-		end,
+		cmd = { "LspStart" },
 	},
 	{
 		-- TODO: add ensure_installed
@@ -61,10 +50,12 @@ lazy.setup({
 	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
+		ft = { "c", "cpp", "lua", "go", "typescript", "typescriptreact", "javascript", "javascriptreact", "rust" },
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/playground",
 			"nvim-treesitter/nvim-treesitter-refactor",
+			"treesitter_context",
 		},
 		config = function()
 			require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
@@ -72,12 +63,15 @@ lazy.setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
-		lazy = false,
+		name = "treesitter_context",
 		opts = require("debdut.treesitter_context"),
 	},
 
 	-- thanks primeagen (what is your real name??,
-	"ThePrimeagen/harpoon",
+	{
+		"ThePrimeagen/harpoon",
+		keys = { "<leader>a", "<leader>h" },
+	},
 
 	-- remote containers?
 	-- { "chipsenkbeil/distant.nvim", branch = "v0.2" },
@@ -96,18 +90,8 @@ lazy.setup({
 			require("debdut.dap")
 		end,
 	},
-	{
-		"jay-babu/mason-nvim-dap.nvim",
-		dependencies = {
-			"williamboman/mason.nvim",
-			"mfussenegger/nvim-dap",
-		},
-	},
 
-	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		lazy = false,
-	},
+	"JoosepAlviste/nvim-ts-context-commentstring",
 
 	{
 		"numToStr/Comment.nvim",
@@ -116,16 +100,9 @@ lazy.setup({
 		keys = { "gcc", "gcb" }, -- default keymaps
 	},
 
-	-- just for Kapply honestly
-	-- { "rottencandy/vimkubectl", tag = "0.12.0" },
-	"rottencandy/vimkubectl",
-	{
-		"Mofiqul/vscode.nvim",
-		name = "vscode",
-		lazy = false,
-	},
 	{
 		"wthollingsworth/pomodoro.nvim",
+		cmd = { "PomodoroStart", "PomodoroStatus" },
 		dependencies = { "MunifTanjim/nui.nvim" },
 		opts = {
 			time_work = 30,
@@ -202,10 +179,8 @@ lazy.setup({
 	},
 
 	{
-		"https://codeberg.org/esensar/nvim-dev-container",
-		dependencies = "nvim-treesitter/nvim-treesitter",
-		cmd = { "DevcontainerStart" }, -- TODO maybe more ?
-		opts = { container_runtime = "docker" },
+		"debdutdeb/nvim-fzf",
+		lazy = false,
 	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
