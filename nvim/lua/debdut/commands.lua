@@ -57,7 +57,19 @@ end, { nargs = 1 })
 
 
 vim.api.nvim_create_user_command("LspStart", function()
-	local cb = require("debdut.lsp.configs")[vim.bo.filetype]
-	local ok, err = pcall(cb)
-	if not ok then vim.notify("failed to start lsp server for ft: " .. err) end
+	vim.lsp.start(lsp.b.config)
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
+	vim.lsp.stop_client(vim.lsp.get_clients())
+	local coq = require('coq')
+	lsp.b.config = lsp.b.config + {
+		capabilities = coq.lsp_ensure_capabilities(lsp.b.config.capabilities)
+	}
+	vim.lsp.start(lsp.b.config)
+	coq.Now("--shut-up")
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("LspStop", function()
+	vim.lsp.stop_client(vim.lsp.get_clients())
 end, { nargs = 0 })

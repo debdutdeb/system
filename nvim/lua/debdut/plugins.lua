@@ -29,7 +29,7 @@ lazy.setup({
 	{
 		"ms-jpq/coq_nvim",
 		branch = "coq",
-		cmd = { "LspStart" },
+		cmd = { "LspStartWithAutocomplete" },
 	},
 	{
 		-- TODO: add ensure_installed

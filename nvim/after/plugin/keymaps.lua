@@ -47,6 +47,7 @@ end
 
 -- LSP
 leadernnoremap("ll", "<cmd>LspStart<cr>")
+leadernnoremap("lL", "<cmd>LspStartWithAutocomplete<cr>")
 leadernnoremap("la", vim.lsp.buf.code_action)
 leadernnoremap("ld", vim.diagnostic.show)
 leadernnoremap("lw", function() vim.cmd("echo noop") end)

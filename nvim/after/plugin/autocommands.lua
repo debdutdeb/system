@@ -45,6 +45,7 @@ vim.api.nvim_create_autocmd("VimLeave", {
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function(_)
+		if true then return end
 		local args = vim.api.nvim_command_output ":args"
 		if args then
 			if string.match(args, "%[.+%]") then
