@@ -1,1 +1,1 @@
-lsp.b.config = lsp.b.config + require('after.ftplugin.go')
+lsp.b.config = require('after.ftplugin.go')

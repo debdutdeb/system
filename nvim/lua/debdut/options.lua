@@ -64,6 +64,6 @@ vim.opt.grepprg = "rg --no-heading --column \"$*\""
 
 vim.opt.winbar = "%{luaeval('vim.api.nvim_get_mode().mode')}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 
-vim.opt.statusline = "fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}"
+vim.opt.statusline = "fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.tbl_isempty(lsp.b.config) or lsp.b.config.cmd[1]')}::%{luaeval('#vim.lsp.get_clients()')}"
 
 vim.cmd "colorscheme habamax"

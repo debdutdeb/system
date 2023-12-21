@@ -1,1 +1,1 @@
-lsp.b.config = lsp.b.config + require('debdut.lsp.configs.go')
+lsp.b.config = require('debdut.lsp.configs.go')
