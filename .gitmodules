@@ -1,0 +1,6 @@
+[submodule "emacs/custom/eaf"]
+	path = emacs/custom/eaf
+	url = https://github.com/emacs-eaf/emacs-application-framework
+[submodule "emacs/custom/ead-pyqterminal"]
+	path = emacs/custom/ead-pyqterminal
+	url = https://github.com/mumu-lhl/eaf-pyqterminal.git

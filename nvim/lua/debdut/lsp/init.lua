@@ -14,20 +14,34 @@ vim.diagnostic.config({
 
 -- https://github.com/neovim/neovim/issues/12544#issuecomment-1116794687
 
-_G.lsp = { b = setmetatable({}, {
-	__index = function(self, k)
-		vim.validate({_ = {k, {'s', 'n'}}})
-		if type(k) == 'number' then
-			return rawget(self, k)
-		end
+_G.lsp = {}
 
+lsp.b = {
+	[0] = {
+		config = setmetatable({}, {
+			__add = function(tbl, v)
+				vim.validate({ cfg = { v, 't' } })
+				-- add my lsp config
+				-- overwrite with existing ones
+				-- overwrite with passed ones
+				return setmetatable(vim.tbl_deep_extend('force', require('debdut.lsp.base_config'), tbl, v),
+					getmetatable(tbl))
+			end,
+		}),
+	}
+}
+
+lsp.b = setmetatable(lsp.b, {
+	__index = function(self, k)
+		vim.validate({ _ = { k, 's' } })
 		local bufnr = vim.api.nvim_get_current_buf()
-		return rawget(rawget(self, bufnr), k)
+		local tbl_for_bufnr = rawget(self, bufnr)
+		return tbl_for_bufnr and tbl_for_bufnr[k] or setmetatable({}, getmetatable(self[0][k]))
 	end,
 
 	__newindex = function(self, k, v)
-		vim.validate({_ = {k, 's'}})
-		local bufnr =vim.api.nvim_get_current_buf() 
+		vim.validate({ _ = { k, 's' } })
+		local bufnr = vim.api.nvim_get_current_buf()
 		local item = rawget(self, bufnr)
 		if item then
 			item[k] = v
@@ -36,12 +50,4 @@ _G.lsp = { b = setmetatable({}, {
 		end
 		rawset(self, bufnr, item)
 	end
-}), }
-
-local function lspconfigadd(self, config)
-	vim.validate({_ = {config, 't'}})
-	return setmetatable(vim.tbl_deep_extend('force', require('debdut.lsp.callbacks'), self, config), {__add = lspconfigadd})
-end
-
-lsp.b.config = setmetatable({}, { __add = lspconfigadd })
-
+})
