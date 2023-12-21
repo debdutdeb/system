@@ -29,6 +29,6 @@ return {
 	},
 	on_attach = function(client, bufnr)
 		client.server_capabilities.document_formatting = false
-		default_opts.on_attach(client, bufnr)
+		require('debdut.lsp.base_config').on_attach(client, bufnr)
 	end,
 }

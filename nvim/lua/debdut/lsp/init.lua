@@ -18,13 +18,10 @@ _G.lsp = {}
 
 lsp.b = {
 	[0] = {
-		config = setmetatable({}, {
+		config = setmetatable(require('debdut.lsp.base_config'), {
 			__add = function(tbl, v)
 				vim.validate({ cfg = { v, 't' } })
-				-- add my lsp config
-				-- overwrite with existing ones
-				-- overwrite with passed ones
-				return setmetatable(vim.tbl_deep_extend('force', require('debdut.lsp.base_config'), tbl, v),
+				return setmetatable(vim.tbl_deep_extend('force', tbl, v),
 					getmetatable(tbl))
 			end,
 		}),
@@ -36,7 +33,7 @@ lsp.b = setmetatable(lsp.b, {
 		vim.validate({ _ = { k, 's' } })
 		local bufnr = vim.api.nvim_get_current_buf()
 		local tbl_for_bufnr = rawget(self, bufnr)
-		return tbl_for_bufnr and tbl_for_bufnr[k] or setmetatable({}, getmetatable(self[0][k]))
+		return tbl_for_bufnr and tbl_for_bufnr[k] or self[0][k]
 	end,
 
 	__newindex = function(self, k, v)
