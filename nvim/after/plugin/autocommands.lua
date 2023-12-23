@@ -26,6 +26,9 @@ vim.api.nvim_create_autocmd("VimLeave", {
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function(_)
+		-- create a scratch buffer
+		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
+			true)
 		local args = vim.api.nvim_command_output ":args"
 		if args and args:match("%[.+%]") then
 			return
@@ -35,8 +38,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		else
 			-- open a scratch buffer
 			local no_buf = vim.api.nvim_get_current_buf()
-			local bufnr = vim.api.nvim_create_buf(true, true)
-			vim.cmd([[:buffer ]] .. bufnr)
+			vim.cmd([[:buffer ]] .. scratch_bufnr)
 			vim.cmd([[:bdelete ]] .. no_buf)
 		end
 	end,
