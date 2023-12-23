@@ -1,23 +1,4 @@
 vim.cmd([[
-augroup _general_settings
-autocmd!
-autocmd FileType qf,help,man,lspinfo nnoremap <silent> <buffer> q :close<CR>
-autocmd TextYankPost * silent!lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 200})
-autocmd FileType qf set nobuflisted
-augroup end
-
-augroup _git
-autocmd!
-autocmd FileType gitcommit setlocal wrap
-autocmd FileType gitcommit setlocal spell
-augroup end
-
-augroup _markdown
-autocmd!
-autocmd FileType markdown setlocal wrap
-autocmd FileType markdown setlocal spell
-augroup end
-
 augroup _auto_resize
 autocmd!
 autocmd VimResized * tabdo wincmd =
@@ -45,15 +26,18 @@ vim.api.nvim_create_autocmd("VimLeave", {
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function(_)
-		if true then return end
 		local args = vim.api.nvim_command_output ":args"
-		if args then
-			if string.match(args, "%[.+%]") then
-				return
-			end
+		if args and args:match("%[.+%]") then
+			return
 		end
 		if vim.uv.fs_stat(".vim/session") then
 			vim.cmd ":source .vim/session"
+		else
+			-- open a scratch buffer
+			local no_buf = vim.api.nvim_get_current_buf()
+			local bufnr = vim.api.nvim_create_buf(true, true)
+			vim.cmd([[:buffer ]] .. bufnr)
+			vim.cmd([[:bdelete ]] .. no_buf)
 		end
 	end,
 	nested = true,
@@ -76,4 +60,11 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 	pattern = "[^l]*", -- quickfixlist
 	callback = function(_) vim.cmd ":copen" end,
+})
+
+
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+	callback = function()
+		require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
+	end,
 })
