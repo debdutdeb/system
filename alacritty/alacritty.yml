@@ -113,12 +113,12 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    # family: Source Code Pro
+    family: Source Code Pro
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
     # family: JetBrains Mono
-    family: UbuntuMono Nerd Font
+    #family: UbuntuMono Nerd Font
     # family: Monofur Nerd Font
     # family: TerminessTTF Nerd Font
     # family: Mononoki Nerd Font
@@ -188,7 +188,7 @@ font:
     style: Bold Italic
 
   # Point size
-  size: 16.0
+  size: 18.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -580,7 +580,7 @@ schemes:
 # *SolarizedDark
 # *TomorrowNight
 
-colors: *MonokaiPro
+colors: *TomorrowNight
 
 #######################################
 ##       END OF COLOR SCHEMES        ##
@@ -654,7 +654,7 @@ colors: *MonokaiPro
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
- program: /opt/homebrew/bin/tmux
+ program: /opt/homebrew/bin/zsh
  # args:
  #   - new-session
  #   - -A
