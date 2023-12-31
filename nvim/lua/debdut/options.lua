@@ -10,10 +10,9 @@ vim.opt.conceallevel = 0                        -- so that `` is visible in mark
 vim.opt.fileencoding = "utf-8"                  -- the encoding written to a file
 vim.opt.hlsearch = true                         -- highlight all matches on previous search pattern
 vim.opt.ignorecase = true                       -- ignore case in search patterns
-vim.opt.mouse =
-"a"                                             --  "disable the mouse (I hate it)" was my old opinion, now i don't care, rather it's proven helpful
+vim.opt.mouse = "a"                             --  "disable the mouse (I hate it)" was my old opinion, now i don't care, rather it's proven helpful
 vim.opt.pumheight = 10                          -- pop up menu height
-vim.opt.showmode = false                        -- we don't need to see things like -- INSERT -- anymore (the font and colors are too much on my face)
+vim.opt.showmode = true
 vim.opt.showtabline = 1                         -- always show tabs
 vim.opt.smartcase = true                        -- smart case
 vim.opt.smartindent = true                      -- make indenting smarter again
@@ -23,7 +22,7 @@ vim.opt.swapfile = true                         -- creates a swapfile
 vim.opt.termguicolors = true                    -- set term gui colors (most terminals support this)
 vim.opt.timeoutlen = 500                        -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.undofile = true                         -- enable persistent undo
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undodir = vim.env.HOME .. "/.vim/undodir"
 vim.opt.updatetime = 50                         -- faster completion (4000ms default)
 vim.opt.writebackup = false                     -- if a file is being edited by another program (or was written to file while editing with another program) it is not allowed to be edited
 vim.opt.expandtab = false                       -- don't convert tabs to spaces
@@ -62,7 +61,7 @@ vim.g.netrw_localcopydircmd = "cp -r"
 vim.opt.grepprg = "rg --no-heading --column \"$*\""
 
 
-vim.opt.winbar = "%{luaeval('vim.api.nvim_get_mode().mode')}%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
+vim.opt.winbar = "%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 
 vim.opt.statusline = "fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.tbl_isempty(lsp.b.config) or lsp.b.config.cmd[1]')}::%{luaeval('#vim.lsp.get_clients()')}"
 

@@ -15,16 +15,22 @@ au BufWinEnter ?* silent! loadview 1
 augroup END
 ]])
 
-vim.api.nvim_create_autocmd("VimLeave", {
+local ag = vim.api.nvim_create_augroup
+local ac = vim.api.nvim_create_autocmd
+
+local gr_session = ag("sessions_management", { clear = true })
+
+ac("VimLeave", {
 	callback = function(_)
 		if not vim.uv.fs_stat(".vim") then
 			vim.fn.mkdir(".vim")
 		end
 		vim.cmd(":mksession! " .. vim.fn.getcwd() .. "/.vim/session")
 	end,
+	group = gr_session,
 })
 
-vim.api.nvim_create_autocmd("VimEnter", {
+ac("VimEnter", {
 	callback = function(_)
 		-- create a scratch buffer
 		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
@@ -43,6 +49,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		end
 	end,
 	nested = true,
+	group = gr_session,
 })
 
 --[[ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
@@ -52,21 +59,32 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end
 }) ]]
 
-local qflist_group = vim.api.nvim_create_augroup("qflist_autoopen", { clear = true })
+local qflist_group = ag("qflist_autoopen", { clear = true })
 
-vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+ac("QuickFixCmdPost", {
 	pattern = "l*", -- locationlist
-	callback = function(_) vim.cmd ":lopen" end,
+	command = "lopen",
+	group = qflist_group,
 })
 
-vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+ac("QuickFixCmdPost", {
 	pattern = "[^l]*", -- quickfixlist
-	callback = function(_) vim.cmd ":copen" end,
+	command = "copen",
+	group = qflist_group,
 })
 
 
-vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+ac({ "TextYankPost" }, {
 	callback = function()
 		require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
+	group = ag("yank_post_highlight", { clear = true }),
+})
+
+ac("FileType", {
+	group = ag("q_to_close", { clear = true }),
+	callback = function(_)
+		vim.api.nvim_buf_set_keymap(0, "n", "q", ":q<cr>", { silent = true })
+	end,
+	pattern = { "qf", "help" },
 })
