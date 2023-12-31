@@ -55,9 +55,22 @@ end, { nargs = 1 })
 -- 	chaos.setup_commands()
 -- end
 
+-- Apparently I need to call lsp.start for every single buffers
+-- Don't ask me why, because I don't know.
+-- I just, *had to* ..so added it here
+local function lsp_start_and_autostart()
+	vim.lsp.start(lsp.b.config)
+	vim.api.nvim_create_autocmd("FileType", {
+		callback = function(_opts)
+			vim.lsp.start(lsp.b.config)
+		end,
+		pattern = vim.bo.filetype,
+	})
+end
+
 
 vim.api.nvim_create_user_command("LspStart", function()
-	vim.lsp.start(lsp.b.config)
+	lsp_start_and_autostart()
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
@@ -66,7 +79,7 @@ vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
 	lsp.b.config = lsp.b.config + {
 		capabilities = coq.lsp_ensure_capabilities(lsp.b.config.capabilities)
 	}
-	vim.lsp.start(lsp.b.config)
+	lsp_start_and_autostart()
 	coq.Now("--shut-up")
 end, { nargs = 0 })
 
