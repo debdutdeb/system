@@ -1,5 +1,3 @@
-alt_send_esc = true
-
 [colors]
 draw_bold_text_with_bright_colors = true
 
@@ -370,7 +368,7 @@ program = "/opt/homebrew/bin/zsh"
 dynamic_padding = false
 opacity = 0.9
 title = "Alacritty"
-option_as_alt = true
+option_as_alt = "Both"
 
 [window.class]
 general = "Alacritty"
