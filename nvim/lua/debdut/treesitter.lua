@@ -1,4 +1,5 @@
 local grammers = {
+	"c",
 	"tsx",
 	"javascript",
 	"bash",
@@ -7,7 +8,6 @@ local grammers = {
 	"typescript",
 	"cpp",
 	"jsonc", -- for devcontainers
-	"query",
 	"vim",
 	-- "help",
 	"hcl",
@@ -15,6 +15,7 @@ local grammers = {
 	"markdown",
 	"markdown_inline",
 	"zig",
+	"lua",
 }
 
 local plenary_path = require("plenary.path")
@@ -22,7 +23,11 @@ local plenary_path = require("plenary.path")
 local parser_install_dir =
 	plenary_path:new(vim.fn.stdpath("data")):joinpath(plenary_path:new("treesitter_parsers")):absolute()
 
-vim.opt.runtimepath:append(parser_install_dir)
+-- wow: ~append~ -> prepend 
+-- reference: https://github.com/nvim-treesitter/nvim-treesitter/issues/3092
+-- Specifically (quoting https://github.com/clason):
+-- UPDATE Since 0.8.0, Neovim bundles parsers and queries for c, lua, vim, and help. If you use nvim-treesitter, you must make sure these parsers are installed via nvim-treesitter so that both parser and queries (which are always installed) are taken from nvim-treesitter. (It's important for this that your nvim-treesitter plugin directory comes before both /usr/local/share/nvim/* and /usr/lib/nvim in your runtimepath.)
+vim.opt.runtimepath:prepend(parser_install_dir)
 
 -- vim.treesitter.language.register("terraform", "hcl")
 -- vim.treesitter.language.register("tf", "hcl")
