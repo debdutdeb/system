@@ -50,7 +50,7 @@ lazy.setup({
 	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
-		ft = { "c", "cpp", "lua", "go", "typescript", "typescriptreact", "javascript", "javascriptreact", "rust", "markdown" },
+		ft = { "c", "cpp", "lua", "go", "typescript", "typescriptreact", "javascript", "javascriptreact", "rust", "markdown", "hcl", "terraform" },
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/playground",
