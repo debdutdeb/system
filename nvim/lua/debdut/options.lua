@@ -8,9 +8,10 @@ vim.opt.cmdheight = 2                           -- more space in the neovim comm
 vim.opt.completeopt = { "menuone", "noselect" } -- mostly just for cmp
 vim.opt.conceallevel = 0                        -- so that `` is visible in markdown files
 vim.opt.fileencoding = "utf-8"                  -- the encoding written to a file
-vim.opt.hlsearch = true                         -- highlight all matches on previous search pattern
+vim.opt.hlsearch = false                        -- don't highlight all matches on previous search pattern
 vim.opt.ignorecase = true                       -- ignore case in search patterns
-vim.opt.mouse = "a"                             --  "disable the mouse (I hate it)" was my old opinion, now i don't care, rather it's proven helpful
+vim.opt.mouse =
+"a"                                             --  "disable the mouse (I hate it)" was my old opinion, now i don't care, rather it's proven helpful
 vim.opt.pumheight = 10                          -- pop up menu height
 vim.opt.showmode = true
 vim.opt.showtabline = 1                         -- always show tabs
@@ -34,12 +35,13 @@ vim.opt.relativenumber = true                   -- set relative numbered lines
 vim.opt.numberwidth = 2                         -- set number column width to 2 {default 4}
 vim.opt.signcolumn =
 "yes"                                           -- always show the sign column, otherwise it would shift the text each time
-vim.opt.wrap = true                             -- display lines as one long line
+vim.opt.wrap = false                            -- display lines as one long line
 vim.opt.scrolloff = 8                           -- is one of my fav
 vim.opt.sidescrolloff = 8
 vim.opt.guifont = "UbuntuMono Nerd Font:h20"    -- the font used in graphical neovim applications -- namely neovide
 vim.opt.colorcolumn = "100"
 vim.opt.guicursor = ""
+vim.opt.wildmenu = true
 
 vim.opt.shortmess:append("c")
 
@@ -55,14 +57,23 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 -- vim.g.netrw_liststyle = 3
-vim.g.netrw_localcopydircmd = "cp -r"
+vim.g.netrw_localcopydircmd = "cp"
+
+vim.g.netrw_keepdir = 0
+
 
 
 vim.opt.grepprg = "rg --no-heading --column \"$*\""
 
-
 vim.opt.winbar = "%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 
-vim.opt.statusline = "fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.tbl_isempty(lsp.b.config) or lsp.b.config.cmd[1]')}::%{luaeval('#vim.lsp.get_clients()')}"
+vim.opt.statusline =
+"fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.tbl_isempty(lsp.b.config) or lsp.b.config.cmd[1]')}::%{luaeval('#vim.lsp.get_clients()')}"
 
 vim.cmd "colorscheme sorbet"
+
+vim.opt.foldmethod = "syntax"
+-- can't get this following to work
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldlevel = 10
+-- vim.opt.foldexpr = vim.treesitter.foldexpr()

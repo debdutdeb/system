@@ -86,3 +86,7 @@ end, { nargs = 0 })
 vim.api.nvim_create_user_command("LspStop", function()
 	vim.lsp.stop_client(vim.lsp.get_clients())
 end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("LspLog", function()
+	vim.cmd.edit(vim.fn.stdpath("state") .. "/lsp.log")
+end, {nargs = 0})

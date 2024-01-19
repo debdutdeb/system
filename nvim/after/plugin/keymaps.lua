@@ -6,7 +6,6 @@ local vnoremap = Remap.vnoremap
 local xnoremap = Remap.xnoremap
 
 local tsend_keys = Remap.tsend_keys
-local nsend_keys = Remap.nsend_keys
 
 -- For wraps
 nnoremap("j", 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
@@ -23,6 +22,8 @@ nnoremap("<A-k>", "<Esc>:m .-2<CR>==gi")
 -- Insert --
 -- Press jk fast to exit insert mode
 inoremap("jk", "<ESC>")
+-- Press kj fast to exit insert mode
+inoremap("kj", "<ESC>")
 
 -- Visual --
 -- Stay in indent mode
@@ -33,6 +34,10 @@ vnoremap(">", ">gv")
 vnoremap("<A-j>", ":m .+1<CR>==")
 vnoremap("<A-k>", ":m .-2<CR>==")
 vnoremap("p", '"_dP')
+
+-- find and replace
+vnoremap("<leader>r", "\"hy:%s/<C-r>h//g<left><left>", { silent = false })
+xnoremap("<leader>r", "\"hy:%s/<C-r>h//g<left><left>", { silent = false })
 
 -- Visual Block --
 -- Move text up and down

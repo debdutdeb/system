@@ -7,18 +7,12 @@ augroup end
 autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 au BufRead,BufNewFile *.bash setfiletype bash
-
-augroup remember_folds
-autocmd!
-au BufWinLeave ?* mkview 1
-au BufWinEnter ?* silent! loadview 1
-augroup END
 ]])
 
 local ag = vim.api.nvim_create_augroup
 local ac = vim.api.nvim_create_autocmd
 
-local gr_session = ag("sessions_management", { clear = true })
+local sessions = ag("sessions_management", { clear = true })
 
 ac("VimLeave", {
 	callback = function(_)
@@ -27,7 +21,7 @@ ac("VimLeave", {
 		end
 		vim.cmd(":mksession! " .. vim.fn.getcwd() .. "/.vim/session")
 	end,
-	group = gr_session,
+	group = sessions,
 })
 
 ac("VimEnter", {
@@ -49,7 +43,30 @@ ac("VimEnter", {
 		end
 	end,
 	nested = true,
-	group = gr_session,
+	group = sessions,
+})
+
+local folds = ag("folds", { clear = true })
+
+ac({ "BufReadPost", "FileReadPost" }, {
+	callback = function(_)
+		vim.api.nvim_command("norm! zR")
+	end,
+	group = folds,
+})
+
+vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+	pattern = { "*.*" },
+	desc = "save view (folds), when closing file",
+	command = "mkview",
+	group = folds,
+})
+
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+	pattern = { "*.*" },
+	desc = "load view (folds), when opening file",
+	command = "silent! loadview",
+	group = folds,
 })
 
 --[[ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
