@@ -71,7 +71,7 @@ vim.opt.winbar = "%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 vim.opt.statusline =
 "fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.tbl_isempty(lsp.b.config) or lsp.b.config.cmd[1]')}::%{luaeval('#vim.lsp.get_clients()')}"
 
-vim.cmd "colorscheme sorbet"
+vim.cmd "colorscheme habamax"
 
 vim.opt.foldmethod = "syntax"
 vim.opt.foldenable = true

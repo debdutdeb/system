@@ -79,6 +79,8 @@ leadernnoremap("b", function()
 	tsend_keys(":ls<cr>:b ")
 end, { silent = false })
 
+local start_dir = vim.uv.cwd() -- load once
+
 leadernnoremap("w", "<cmd>w!<cr>")
 leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
@@ -86,7 +88,8 @@ leadernnoremap("f", function()
 	local co = coroutine.create(function()
 		local choices = require("fzf").fzf("fd", "--multi", {
 			relative = "cursor",
-			border   = false
+			border   = false,
+			fzf_cwd  = start_dir,
 		})
 
 		if choices == nil then return end
