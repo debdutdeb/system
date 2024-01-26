@@ -42,6 +42,7 @@ vim.opt.guifont = "UbuntuMono Nerd Font:h20"    -- the font used in graphical ne
 vim.opt.colorcolumn = "100"
 vim.opt.guicursor = ""
 vim.opt.wildmenu = true
+vim.opt.showcmd = false
 
 vim.opt.shortmess:append("c")
 
@@ -73,6 +74,8 @@ vim.opt.statusline =
 vim.cmd "colorscheme sorbet"
 
 vim.opt.foldmethod = "syntax"
+vim.opt.foldenable = true
+vim.opt.foldlevelstart = 99
 -- can't get this following to work
 -- vim.opt.foldmethod = "expr"
 -- vim.opt.foldlevel = 10

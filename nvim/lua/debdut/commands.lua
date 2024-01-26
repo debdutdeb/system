@@ -87,6 +87,11 @@ vim.api.nvim_create_user_command("LspStop", function()
 	vim.lsp.stop_client(vim.lsp.get_clients())
 end, { nargs = 0 })
 
+vim.api.nvim_create_user_command("LspRestart", function()
+	pcall(function() vim.lsp.stop_client(vim.lsp.get_clients()) end) -- ignoring error for now
+	lsp_start_and_autostart()
+end, { nargs = 0 })
+
 vim.api.nvim_create_user_command("LspLog", function()
 	vim.cmd.edit(vim.fn.stdpath("state") .. "/lsp.log")
-end, {nargs = 0})
+end, { nargs = 0 })

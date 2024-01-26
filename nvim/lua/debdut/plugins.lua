@@ -56,6 +56,7 @@ lazy.setup({
 			"nvim-treesitter/playground",
 			"nvim-treesitter/nvim-treesitter-refactor",
 			"treesitter_context",
+			"windwp/nvim-ts-autotag",
 		},
 		config = function()
 			require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
@@ -182,6 +183,10 @@ lazy.setup({
 		"debdutdeb/nvim-fzf",
 		lazy = false,
 	},
+	{
+		"windwp/nvim-ts-autotag",
+		ft = { "typescriptreact", "javascriptreact", "html" },
+	}
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {

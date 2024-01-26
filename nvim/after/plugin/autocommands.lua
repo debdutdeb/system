@@ -48,13 +48,6 @@ ac("VimEnter", {
 
 local folds = ag("folds", { clear = true })
 
-ac({ "BufReadPost", "FileReadPost" }, {
-	callback = function(_)
-		vim.api.nvim_command("norm! zR")
-	end,
-	group = folds,
-})
-
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
 	pattern = { "*.*" },
 	desc = "save view (folds), when closing file",

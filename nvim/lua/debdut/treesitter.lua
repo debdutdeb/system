@@ -16,6 +16,7 @@ local grammers = {
 	"markdown_inline",
 	"zig",
 	"lua",
+	"html",
 }
 
 local plenary_path = require("plenary.path")
@@ -23,7 +24,7 @@ local plenary_path = require("plenary.path")
 local parser_install_dir =
 	plenary_path:new(vim.fn.stdpath("data")):joinpath(plenary_path:new("treesitter_parsers")):absolute()
 
--- wow: ~append~ -> prepend 
+-- wow: ~append~ -> prepend
 -- reference: https://github.com/nvim-treesitter/nvim-treesitter/issues/3092
 -- Specifically (quoting https://github.com/clason):
 -- UPDATE Since 0.8.0, Neovim bundles parsers and queries for c, lua, vim, and help. If you use nvim-treesitter, you must make sure these parsers are installed via nvim-treesitter so that both parser and queries (which are always installed) are taken from nvim-treesitter. (It's important for this that your nvim-treesitter plugin directory comes before both /usr/local/share/nvim/* and /usr/lib/nvim in your runtimepath.)
@@ -40,6 +41,14 @@ return {
 	},
 	autopairs = {
 		enable = false, -- nyah
+	},
+	autotag = {
+		enable = true, -- https://github.com/windwp/nvim-ts-autotag
+		enable_rename = true,
+		enable_close = true,
+		enable_close_on_slash = true,
+		filetypes = {
+			"typescriptreact", "javascriptreact", "html", "xml" },
 	},
 	indent = {
 		enable = true,
@@ -86,4 +95,3 @@ return {
 		},
 	},
 }
-
