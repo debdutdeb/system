@@ -86,7 +86,7 @@ leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
 leadernnoremap("f", function()
 	local co = coroutine.create(function()
-		local choices = require("fzf").fzf("fd", "--multi", {
+		local choices = require("fzf").fzf("find", "--multi", {
 			relative = "cursor",
 			border   = false,
 			fzf_cwd  = start_dir,
@@ -95,7 +95,7 @@ leadernnoremap("f", function()
 		if choices == nil then return end
 
 		if #choices == 1 then
-			vim.cmd(":e " .. choices[1])
+			vim.cmd(":e " .. start_dir .. '/' .. choices[1])
 			return
 		end
 
