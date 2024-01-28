@@ -98,7 +98,11 @@ lazy.setup({
 		"numToStr/Comment.nvim",
 		dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
 		opts = require("debdut.comments"),
-		keys = { "gcc", "gcb" }, -- default keymaps
+		keys = {
+			{ "gcc", mode = "n" },
+			{ "gc",  mode = "v" },
+			{ "gb",  mode = "v" },
+		}, -- default keymaps
 	},
 
 	{
