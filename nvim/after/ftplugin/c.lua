@@ -4,6 +4,6 @@ lsp.b.config = {
 	single_file_support = true,
 	on_attach = function(client, bufnr)
 		client.server_capabilities.document_formatting = false
-		require('debdut.lsp.base_config').on_attach(client, bufnr)
+		Require('debdut.lsp.base_config').on_attach(client, bufnr)
 	end,
 }

@@ -10,7 +10,7 @@ local root_files = {
 
 lsp.b.config = {
 	cmd = { "pyright-langserver", "--stdio" },
-	root_dir = require('debdut.lsp.utils').root_directory_pattern(root_files),
+	root_dir = Require('debdut.lsp.utils').root_directory_pattern(root_files),
 	single_file_support = true,
 	settings = {
 		python = {

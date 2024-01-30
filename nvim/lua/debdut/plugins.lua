@@ -59,7 +59,7 @@ lazy.setup({
 			"windwp/nvim-ts-autotag",
 		},
 		config = function()
-			require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
+			Require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
 		end,
 	},
 	{
@@ -270,14 +270,14 @@ lazy.setup({
 
 			-- open lazygit log
 			["<localleader>l"] = function(plugin)
-				require("lazy.util").float_term({ "lazygit", "log" }, {
+				Require("lazy.util").float_term({ "lazygit", "log" }, {
 					cwd = plugin.dir,
 				})
 			end,
 
 			-- open a terminal for the plugin dir
 			["<localleader>t"] = function(plugin)
-				require("lazy.util").float_term(nil, {
+				Require("lazy.util").float_term(nil, {
 					cwd = plugin.dir,
 				})
 			end,

@@ -1,6 +1,6 @@
 return {
 	cmd = { "gopls" },
-	root_dir = require('debdut.lsp.utils').root_directory_pattern({ "go.mod", ".git" }),
+	root_dir = Require('debdut.lsp.utils').root_directory_pattern({ "go.mod", ".git" }),
 	settings = {
 		gopls = {
 			hints = {

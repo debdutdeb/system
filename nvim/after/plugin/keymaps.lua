@@ -1,4 +1,4 @@
-local Remap = require("debdut.keymap")
+local Remap = Require("debdut.keymap")
 
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap

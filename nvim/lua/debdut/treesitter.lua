@@ -19,7 +19,7 @@ local grammers = {
 	"html",
 }
 
-local plenary_path = require("plenary.path")
+local plenary_path = Require("plenary.path")
 
 local parser_install_dir =
 	plenary_path:new(vim.fn.stdpath("data")):joinpath(plenary_path:new("treesitter_parsers")):absolute()

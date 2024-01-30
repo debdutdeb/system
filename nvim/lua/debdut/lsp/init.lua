@@ -20,7 +20,7 @@ local Mutate = {}
 
 function Mutate.config(v)
 	vim.validate({ cfg = { v, { 't', 'nil' } } })
-	return setmetatable(v and vim.tbl_deep_extend('force', v, require('debdut.lsp.base_config')) or {}, {
+	return setmetatable(v and vim.tbl_deep_extend('force', v, Require('debdut.lsp.base_config')) or {}, {
 		__add = function(tbl, v)
 			vim.validate({ cfg = { v, 't' } })
 			return setmetatable(vim.tbl_deep_extend('force', tbl, v),

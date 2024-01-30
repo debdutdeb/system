@@ -1,1 +1,1 @@
-require("dap").configurations.zig = {}
+Require("dap").configurations.zig = {}

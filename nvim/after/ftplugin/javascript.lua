@@ -1,1 +1,1 @@
-lsp.b.config = require('debdut.lsp.configs.tsserver')
+lsp.b.config = Require('debdut.lsp.configs.tsserver')

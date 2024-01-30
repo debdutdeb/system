@@ -1,4 +1,4 @@
-local comment_context_ok, comment_context = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+local comment_context_ok, comment_context = Require("ts_context_commentstring.integrations.comment_nvim")
 
 return {
 	---Add a space b/w comment and the line

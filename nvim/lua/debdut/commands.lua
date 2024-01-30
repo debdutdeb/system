@@ -75,7 +75,7 @@ end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
 	vim.lsp.stop_client(vim.lsp.get_clients())
-	local coq = require('coq')
+	local coq = Require('coq')
 	lsp.b.config = lsp.b.config + {
 		capabilities = coq.lsp_ensure_capabilities(lsp.b.config.capabilities)
 	}

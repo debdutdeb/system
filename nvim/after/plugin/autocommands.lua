@@ -86,7 +86,7 @@ ac("QuickFixCmdPost", {
 
 ac({ "TextYankPost" }, {
 	callback = function()
-		require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
+		Require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
 	group = ag("yank_post_highlight", { clear = true }),
 })

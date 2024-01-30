@@ -2,7 +2,7 @@ if vim.g.vscode == nil then
 	return
 end
 
-local nnoremap = require("neoconfig.keymap").nnoremap
+local nnoremap = Require("neoconfig.keymap").nnoremap
 
 local vscode_command = vim.fn.VSCodeNotify
 
