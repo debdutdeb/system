@@ -1,4 +1,4 @@
-local comment_context_ok, comment_context = Require("ts_context_commentstring.integrations.comment_nvim")
+local comment_context = Require("ts_context_commentstring.integrations.comment_nvim")
 
 return {
 	---Add a space b/w comment and the line
@@ -40,10 +40,7 @@ return {
 	},
 	---Function to call before (un)comment
 	pre_hook = (function()
-		if comment_context_ok then
-			return comment_context.create_pre_hook()
-		end
-		return nil
+		return comment_context.create_pre_hook()
 	end)(),
 	---Function to call after (un)comment
 	post_hook = nil,
