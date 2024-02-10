@@ -142,3 +142,8 @@ for _, key_fn in pairs({ nnoremap, inoremap, vnoremap, xnoremap }) do
 end
 
 vnoremap("<leader>gu", "<CMD>GitUrl<CR>")
+
+-- <cmd> is snappier than using ':', whY?; day 2: <cmd> doesn't wait for another key?
+nnoremap("<Bs>", "<cmd>norm! $<cr>")
+nnoremap("<Del>", "<cmd>norm! $<cr>")
+

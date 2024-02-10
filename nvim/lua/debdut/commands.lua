@@ -75,12 +75,27 @@ end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
 	vim.lsp.stop_client(vim.lsp.get_clients())
-	local coq = Require('coq')
-	lsp.b.config = lsp.b.config + {
-		capabilities = coq.lsp_ensure_capabilities(lsp.b.config.capabilities)
-	}
+	-- local coq = Require('coq')
+	-- lsp.b.config = lsp.b.config + {
+	-- 	capabilities = coq.lsp_ensure_capabilities(lsp.b.config.capabilities)
+	-- }
+	local group = vim.api.nvim_create_augroup("LspStartWithAutocomplete", { clear = true })
+	vim.api.nvim_create_autocmd("LspAttach", {
+		group = group,
+		callback = function()
+			-- this may not be the best event to listen to for this task
+			-- but in practice this works fine
+			vim.api.nvim_create_autocmd("InsertCharPre", {
+				pattern = "*",
+				group = group,
+				callback = function()
+					vim.schedule(function() vim.lsp.omnifunc(1, 1) end)
+				end,
+			})
+		end,
+	})
 	lsp_start_and_autostart()
-	coq.Now("--shut-up")
+	--coq.Now("--shut-up")
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspStop", function()
