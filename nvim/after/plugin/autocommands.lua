@@ -16,10 +16,10 @@ local sessions = ag("sessions_management", { clear = true })
 
 ac("VimLeave", {
 	callback = function(_)
-		if not vim.uv.fs_stat(".vim") then
-			vim.fn.mkdir(".vim")
-		end
-		vim.cmd(":mksession! " .. vim.fn.getcwd() .. "/.vim/session")
+		--if not vim.uv.fs_stat(".vim") then
+		--	vim.fn.mkdir(".vim")
+		--end
+		--vim.cmd(":mksession! " .. vim.fn.getcwd() .. "/.vim/session")
 	end,
 	group = sessions,
 })
@@ -29,18 +29,20 @@ ac("VimEnter", {
 		-- create a scratch buffer
 		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
 			true)
+		vim.api.nvim_buf_set_name(scratch_bufnr, "Scratch buffer")
+		vim.bo[scratch_bufnr].filetype = "lua"
 		local args = vim.api.nvim_command_output ":args"
 		if args and args:match("%[.+%]") then
 			return
 		end
-		if vim.uv.fs_stat(".vim/session") then
-			vim.cmd ":source .vim/session"
-		else
-			-- open a scratch buffer
-			local no_buf = vim.api.nvim_get_current_buf()
-			vim.cmd([[:buffer ]] .. scratch_bufnr)
-			vim.cmd([[:bdelete ]] .. no_buf)
-		end
+		--if vim.uv.fs_stat(".vim/session") then
+		--	vim.cmd ":source .vim/session"
+		--else
+		-- open a scratch buffer
+		local no_buf = vim.api.nvim_get_current_buf()
+		vim.cmd([[:buffer ]] .. scratch_bufnr)
+		vim.cmd([[:bdelete ]] .. no_buf)
+		--end
 	end,
 	nested = true,
 	group = sessions,

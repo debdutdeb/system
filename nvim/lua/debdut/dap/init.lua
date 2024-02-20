@@ -11,7 +11,7 @@ if ok then
 	dap_virtual_text.setup()
 end
 
-local Remap = require("debdut.keymap")
+local Remap = require("chaos.keymaps")
 
 require("debdut.dap.delve")
 require("debdut.dap.zig")

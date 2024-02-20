@@ -190,7 +190,37 @@ lazy.setup({
 	{
 		"windwp/nvim-ts-autotag",
 		ft = { "typescriptreact", "javascriptreact", "html" },
-	}
+	},
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = { "debdutdeb/chaos.nvim", "nvim-telescope/telescope-fzf-native.nvim" },
+		--[[ config = function()
+			local telescope = require("telescope")
+			telescope.setup(require("debdut.telescope"))
+			telescope.load_extension("fzf")
+		end, ]]
+	},
+	{
+		"nvim-telescope/telescope-fzf-native.nvim",
+		build =
+		"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+	},
+	{
+		"debdutdeb/chaos.nvim",
+		lazy = false,
+		dir = "/Users/debdut/Documents/Repos/chaos.nvim",
+		config = function()
+			-- something is going on here, with telescope's action merge. idk what. some type of race condition because
+			-- of lazy my guess is.
+			-- for now ignoring the error is ok. and that
+			-- is what i will be doing
+			-- local config = require("debdut.lsp.configs")
+			-- require("chaos.lsp").setup_autocommands(config.configured_servers, config.get_config)
+			local telescope = Require("telescope")
+			telescope.setup(Require("debdut.telescope"))
+			telescope.load_extension("fzf")
+		end,
+	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
@@ -344,3 +374,5 @@ lazy.setup({
 		warn_on_override = true,
 	},
 })
+
+vim.opt.rtp:prepend("/Users/debdut/Documents/Repos/chaos.nvim")

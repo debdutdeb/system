@@ -1,5 +1,7 @@
--- never error out on [almost] any kind of operation over it
-_G.Infinity = setmetatable({}, {
+vim.loader.enable()
+
+-- TODO: move to chaos
+_G.NIL = setmetatable({}, {
 	__call = function(self, ...) return self end,
 	__index = function(self, _) return self end,
 	__newindex = function(...) end,
@@ -17,7 +19,7 @@ _G.Infinity = setmetatable({}, {
 	__lt = function(self, t) return false end,
 	--XXX
 	__le = function(self, t) if tostring(t) == tostring(self) then return self == t else return false end end,
-	__name = "[[Infinity]]",
+	__name = "[[NIL]]",
 	__len = function(self) return self end,
 	-- TODO: __pairs?
 })
@@ -27,13 +29,13 @@ function _G.Require(mod)
 	local ok, p = pcall(require, mod)
 	if not ok then
 		vim.notify("module not found " .. mod)
-		return Infinity
+		return NIL
 	end
 
 	return p
 end
 
-vim.loader.enable()
+--require("chaos")
 
 require("debdut.options")
 require("debdut.plugins")

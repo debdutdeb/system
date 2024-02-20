@@ -1,4 +1,8 @@
-local Remap = Require("debdut.keymap")
+local Remap = Require("chaos.keymaps")
+
+local telescope = Require("telescope")
+local telescope_builtin = Require("telescope.builtin")
+local telescope_themes = Require("telescope.themes")
 
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
@@ -12,8 +16,8 @@ nnoremap("j", 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
 nnoremap("k", 'v:count == 0 ? "gk" : "k"', { expr = true, silent = true })
 
 -- Navigate buffers
-nnoremap("<S-l>", ":bnext<CR>")
-nnoremap("<S-h>", ":bprevious<CR>")
+nnoremap("<S-l>", "<cmd>bnext<CR>")
+nnoremap("<S-h>", "<cmd>bprevious<CR>")
 
 -- Move text up and down
 nnoremap("<A-j>", "<Esc>:m .+1<CR>==gi")
@@ -53,30 +57,9 @@ end
 -- LSP
 leadernnoremap("ll", "<cmd>LspStart<cr>")
 leadernnoremap("lL", "<cmd>LspStartWithAutocomplete<cr>")
-leadernnoremap("la", vim.lsp.buf.code_action)
-leadernnoremap("ld", vim.diagnostic.setqflist)
-leadernnoremap("lf", function()
-	vim.lsp.buf.format({ async = true })
-end)
-leadernnoremap("lj", vim.lsp.diagnostic.goto_prev)
-leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
-leadernnoremap("lc", vim.lsp.codelens.run)
-leadernnoremap("lr", vim.lsp.buf.rename)
-leadernnoremap("ls", vim.lsp.buf.document_symbol)
-leadernnoremap("lS", vim.lsp.buf.workspace_symbol)
-nnoremap("lR", vim.lsp.buf.references)
-nnoremap("lI", vim.lsp.buf.implementation)
 
-leadernnoremap("g", function()
-	local files = {}
-	for filename in string.gmatch(vim.system({ "git", "ls-files" }):wait().stdout, "([^\n]+)") do
-		table.insert(files, { filename = filename, lnum = 1 })
-	end
-	vim.fn.setloclist(0, files)
-end)
 
 leadernnoremap("b", function()
-	tsend_keys(":ls<cr>:b ")
 end, { silent = false })
 
 local start_dir = vim.uv.cwd() -- load once
@@ -84,33 +67,8 @@ local start_dir = vim.uv.cwd() -- load once
 leadernnoremap("w", "<cmd>w!<cr>")
 leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
-leadernnoremap("f", function()
-	local co = coroutine.create(function()
-		local choices = require("fzf").fzf("find", "--multi", {
-			relative = "cursor",
-			border   = false,
-			fzf_cwd  = start_dir,
-		})
 
-		if choices == nil then return end
-
-		if #choices == 1 then
-			vim.cmd(":e " .. start_dir .. '/' .. choices[1])
-			return
-		end
-
-		local fnames = {}
-		for _, name in pairs(choices) do
-			table.insert(fnames, { filename = name, lnum = 1 })
-		end
-
-		vim.fn.setloclist(0, fnames)
-	end)
-
-	coroutine.resume(co)
-end)
 leadernnoremap("F", function()
-	tsend_keys(":silent lgrep! ")
 end, { silent = false })
 leadernnoremap("e", "<cmd>Explore<cr>") -- open netrw
 
@@ -147,3 +105,130 @@ vnoremap("<leader>gu", "<CMD>GitUrl<CR>")
 nnoremap("<Bs>", "<cmd>norm! $<cr>")
 nnoremap("<Del>", "<cmd>norm! $<cr>")
 
+leadernnoremap("f", {
+	callback = function()
+		-- ivy because it helps to actually read the contents better before moving into a file
+		return telescope_builtin.find_files(
+			telescope_themes.get_ivy({ border = false, layout_config = { prompt_position = "bottom" } })
+		)
+	end,
+	fallback = function()
+		local co = coroutine.create(function()
+			local choices = require("fzf").fzf("fd -t f", "--multi", {
+				relative = "cursor",
+				border   = false,
+				fzf_cwd  = start_dir,
+			})
+
+			if choices == nil then return end
+
+			if #choices == 1 then
+				vim.cmd(":e " .. choices[1])
+				return
+			end
+
+			local fnames = {}
+			for _, name in pairs(choices) do
+				table.insert(fnames, { filename = name, lnum = 1 })
+			end
+
+			vim.fn.setloclist(0, fnames)
+		end)
+		coroutine.resume(co)
+	end,
+})
+
+leadernnoremap("b", {
+	callback = function()
+		return telescope_builtin.buffers(telescope_themes.get_cursor({ previewer = false, border = false }))
+	end,
+	fallback = function()
+		tsend_keys(":ls<cr>:b ")
+	end,
+})
+leadernnoremap("sl", function()
+	-- I didn't want a previewer for this, just the preview in the background text
+	telescope_builtin.colorscheme(
+		vim.tbl_deep_extend("force", { enable_preview = true }, telescope_themes.get_dropdown({ border = false }))
+	)
+end)
+leadernnoremap("?", function()
+	telescope_builtin.oldfiles({ border = false })
+end)
+leadernnoremap("F", {
+	callback = function()
+		return telescope_builtin.live_grep(
+			telescope_themes.get_ivy({ border = false, layout_config = { prompt_position = "bottom" } })
+		)
+	end,
+	fallback = function()
+		tsend_keys(":silent lgrep! ")
+	end,
+})
+
+leadernnoremap("la", vim.lsp.buf.code_action)
+leadernnoremap("ld", {
+	fallback = vim.diagnostic.setqflist,
+	callback = "<cmd>Telescope lsp_document_diagnostics<cr>",
+})
+leadernnoremap("lf", function()
+	vim.lsp.buf.format({ async = true })
+end)
+leadernnoremap("lj", vim.lsp.diagnostic.goto_prev)
+leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
+leadernnoremap("lc", vim.lsp.codelens.run)
+leadernnoremap("lr", vim.lsp.buf.rename)
+leadernnoremap("ls", {
+	callback = function()
+		return telescope_builtin.lsp_document_symbols(telescope_themes.get_dropdown({ border = false }))
+	end,
+	fallback = vim.lsp.buf.document_symbol
+})
+leadernnoremap("lS", {
+	fallback = vim.lsp.buf.workspace_symbol,
+	callback = function()
+		return telescope_builtin.lsp_dynamic_workspace_symbols({ border = false })
+	end,
+})
+leadernnoremap("lR", {
+	fallack = vim.lsp.buf.references,
+	callback = function()
+		return telescope_builtin.lsp_references({ border = false })
+	end,
+})
+leadernnoremap("lI", {
+	fallack = vim.lsp.buf.implementation,
+	callback = function()
+		return telescope_builtin.lsp_implementations({ border = false })
+	end,
+})
+
+leadernnoremap("gf", {
+	callback = function() return telescope_builtin.git_files(telescope_themes.get_ivy({ border = false })) end,
+	fallback = function()
+		local files = {}
+		for filename in string.gmatch(vim.system({ "git", "ls-files" }):wait().stdout, "([^\n]+)") do
+			table.insert(files, { filename = filename, lnum = 1 })
+		end
+		vim.fn.setloclist(0, files)
+	end,
+})
+leadernnoremap("gb", function()
+	telescope_builtin.git_branches(telescope_themes.get_dropdown({ border = false }))
+end)
+
+leadernnoremap("H", function()
+	telescope_builtin.help_tags(telescope_themes.get_cursor({ previewer = false, border = false }))
+end)
+leadernnoremap("M", function()
+	telescope_builtin.man_pages(telescope_themes.get_cursor({ previewer = false, border = false }))
+end)
+leadernnoremap("R", function()
+	telescope_builtin.registers({ border = false })
+end)
+leadernnoremap("K", function()
+	telescope_builtin.keymaps(telescope_themes.get_cursor({ border = false }))
+end)
+leadernnoremap("C", function()
+	telescope_builtin.commands(telescope_themes.get_cursor({ border = false, previewer = false }))
+end)
