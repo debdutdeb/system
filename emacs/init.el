@@ -1,111 +1,130 @@
-;; Initialize straight.el package manager
+(setq ido-everywhere t)
+(setq ido-enable-flex-matching t)
+(ido-mode)
+(tool-bar-mode -1)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; Install use-package if it's not already installed
 (straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
 
 ;; don't do anything basically
 (defun my/ring-bell-function ())
 
-(tool-bar-mode -1)
+(setq-default indent-tabs-mode t)
+(setq tab-width 4)
 
-; (ido-mode)
 (setq inhibit-startup-message t
-      visible-bell nil
-      ring-bell-function 'my/ring-bell-function
-      display-line-numbers-type 'relative
-      cursor-type 'box
-      auto-save-default nil)
+	  visible-bell nil
+	  ring-bell-function 'my/ring-bell-function
+	  display-line-numbers-type 'relative
+	  cursor-type 'box
+	  auto-save-default nil)
+
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'prog-mode-hook 'display-line-numbers-mode)
 
 ;; custom el code
 (add-to-list 'load-path "~/.config/emacs/custom")
 
-(use-package undo-tree
-  :ensure t
-  :init (global-undo-tree-mode))
-
-(use-package swiper
-  :ensure t
-  :config
-  (ivy-mode)
-  :init
-  (setq ivy-display-style 'plain ; no need for fancy
-	ivy-use-virtual-buffers t
-	enable-recursive-minibuffers t
-	ivy-wrap t))
-
-(use-package counsel
-  :ensure t
-  :config (counsel-mode))
-
-(global-set-key (kbd "C-h b") 'describe-bindings)
-(global-set-key (kbd "C-h f") 'counsel-describe-function)
-(global-set-key (kbd "C-h i") 'info)
-(global-set-key (kbd "C-h k") 'describe-key)
-(global-set-key (kbd "C-h v") 'counsel-describe-variable)
-(global-set-key (kbd "C-s") 'swiper-isearch)
-(global-set-key (kbd "C-x C-f") 'counsel-fzf) ; this is a remap of counsel-find-file
+(use-package vterm
+  :straight t)
 
 (require 'treesit)
 
 (load-library "clang-format.elc")
 
 ;; TODO refactor to a separate library like null-ls
-(define-prefix-command 'formatting)
-(global-set-key (kbd "C-c l") 'formatting)
+(define-prefix-command 'lsp)
+(global-set-key (kbd "C-c l") 'lsp)
 
 ;;
-(global-set-key (kbd "C-c l f") 'clang-format-buffer)
-(global-set-key (kbd "C-c l r") 'clang-format-region)
+										; (global-set-key (kbd "C-c l f") 'clang-format-buffer) (global-set-key (kbd "C-c l r") 'clang-format-region)
+
+(defun toggle-eglot ()
+  (interactive)
+  (if (eq (eglot-current-server) nil)
+	  (eglot-ensure)
+	(eglot-shutdown-all)))
+
+(use-package evil
+  :straight t
+  :config
+  (setq evil-shift-width 4)
+  (evil-mode 1)
+  (evil-set-initial-state 'vterm-mode 'emacs))
+
+(with-eval-after-load 'evil
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-define-key 'normal 'global (kbd "<leader>ll") 'toggle-eglot)
+  (evil-define-key 'normal 'global (kbd "<leader>lf") 'eglot-format-buffer))
+
+(use-package company
+  :straight t
+  :config
+  (setq company-minimum-prefix-length 1
+		company-idle-delay nil)
+  :bind
+  ("C-x C-o" . company-complete)
+  ("C-c l f" . eglot-format-buffer)
+  :hook
+  (after-init . global-company-mode))
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
-	       `(go-ts-mode . ("gopls")))
-  (add-to-list 'eglot-server-programs
-	       `(cc-mode . ("/opt/homebrew/opt/llvm/bin/clangd")))
-  (add-to-list 'eglot-server-programs
-	       `(c++-mode . ("/opt/homebrew/opt/llvm/bin/clangd")))
-  (add-to-list 'eglot-server-programs
-	       `(zig-mode . ("zls")))
-  (add-to-list 'eglot-server-programs
-		`(c-mode . ("/opt/homebrew/opt/llvm/bin/clangd"))))
+			   `(go-ts-mode . ("gopls"))))
 
 (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
 
-(straight-use-package '(xkcd-303-mode :type git :host github :repo "elizagamedev/xkcd-303-mode.el"))
-
-(use-package zig-mode)
+(set-face-attribute 'default nil :height 220)
 
 (use-package treesit-auto
+  :straight t
   :config
   (global-treesit-auto-mode))
 
-;; add treesit-install-language-grammar
+(setq go-ts-config
+	  (make-treesit-auto-recipe
+	   :lang 'go
+	   :ts-mode 'go-ts-mode
+	   :url "https://github.com/tree-sitter/tree-sitter-go"
+	   :revision "master"
+	   :source-dir "src"))
 
-;; FIXME: use treesit-language-source-alist
-; (treesit--install-language-grammar-1 (concat user-emacs-directory "tree-sitter") 'comment "https://github.com/stsewd/tree-sitter-comment")
+(add-to-list 'treesit-auto-recipe-list go-ts-config)
 
-(set-frame-font "UbuntuMono Nerd Font 18" nil t)
+(set-frame-font "Inconsolata Nerd Font Mono" nil t)
+
+(use-package edraw
+  :straight (:type git :host github :repo "misohena/el-easydraw"))
+
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(wheatgrass)))
+ '(custom-safe-themes
+   '("993aac313027a1d6e70d45b98e121492c1b00a0daa5a8629788ed7d523fe62c1"
+     "330d5278ead8dd474f8e79d0cadae973aae3e56f86e6e6d1667d723992b34a59"
+     "34af44a659b79c9f92db13ac7776b875a8d7e1773448a8301f97c18437a822b6"
+     default))
+ '(package-selected-packages
+   '(straight vscode-dark-plus-theme treesit-auto popup leuven-theme evil
+	      counsel company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
