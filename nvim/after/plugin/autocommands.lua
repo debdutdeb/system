@@ -14,15 +14,15 @@ local ac = vim.api.nvim_create_autocmd
 
 local sessions = ag("sessions_management", { clear = true })
 
-ac("VimLeave", {
-	callback = function(_)
-		--if not vim.uv.fs_stat(".vim") then
-		--	vim.fn.mkdir(".vim")
-		--end
-		--vim.cmd(":mksession! " .. vim.fn.getcwd() .. "/.vim/session")
-	end,
-	group = sessions,
-})
+--ac("VimLeave", {
+--	callback = function(_)
+--		if not vim.uv.fs_stat(".vim") then
+--			vim.fn.mkdir(".vim")
+--		end
+--		vim.cmd(":mksession! " .. vim.fn.getcwd() .. "/.vim/session")
+--	end,
+--	group = sessions,
+--})
 
 ac("VimEnter", {
 	callback = function(_)
@@ -35,6 +35,9 @@ ac("VimEnter", {
 		if args and args:match("%[.+%]") then
 			return
 		end
+		vim.schedule(function()
+			Require("persistence").load()
+		end)
 		--if vim.uv.fs_stat(".vim/session") then
 		--	vim.cmd ":source .vim/session"
 		--else
@@ -50,19 +53,19 @@ ac("VimEnter", {
 
 local folds = ag("folds", { clear = true })
 
-vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
-	pattern = { "*.*" },
-	desc = "save view (folds), when closing file",
-	command = "mkview",
-	group = folds,
-})
-
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-	pattern = { "*.*" },
-	desc = "load view (folds), when opening file",
-	command = "silent! loadview",
-	group = folds,
-})
+--vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+--	pattern = { "*.*" },
+--	desc = "save view (folds), when closing file",
+--	command = "mkview",
+--	group = folds,
+--})
+--
+--vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+--	pattern = { "*.*" },
+--	desc = "load view (folds), when opening file",
+--	command = "silent! loadview",
+--	group = folds,
+--})
 
 --[[ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 	pattern = "*.tf",

@@ -19,7 +19,7 @@ lsp.b.config = {
 				useLibraryCodeForTypes = true,
 				diagnosticMode = 'openFilesOnly',
 			},
-			pythonPath = "/usr/local/bin/python3",
+			pythonPath = "python3",
 		},
 	},
 }

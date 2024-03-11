@@ -64,7 +64,7 @@ end, { silent = false })
 
 local start_dir = vim.uv.cwd() -- load once
 
-leadernnoremap("w", "<cmd>w!<cr>")
+leadernnoremap("w", function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end)
 leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
 
@@ -217,18 +217,21 @@ leadernnoremap("gb", function()
 	telescope_builtin.git_branches(telescope_themes.get_dropdown({ border = false }))
 end)
 
-leadernnoremap("H", function()
+-- Search namespace
+leadernnoremap("sh", function()
 	telescope_builtin.help_tags(telescope_themes.get_cursor({ previewer = false, border = false }))
 end)
-leadernnoremap("M", function()
+leadernnoremap("sm", function()
 	telescope_builtin.man_pages(telescope_themes.get_cursor({ previewer = false, border = false }))
 end)
-leadernnoremap("R", function()
+leadernnoremap("sr", function()
 	telescope_builtin.registers({ border = false })
 end)
-leadernnoremap("K", function()
+leadernnoremap("sk", function()
 	telescope_builtin.keymaps(telescope_themes.get_cursor({ border = false }))
 end)
-leadernnoremap("C", function()
+leadernnoremap("sc", function()
 	telescope_builtin.commands(telescope_themes.get_cursor({ border = false, previewer = false }))
 end)
+
+leadernnoremap("Sd", ":SessionsDeleteCurrent<cr>")

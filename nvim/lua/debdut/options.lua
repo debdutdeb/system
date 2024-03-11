@@ -58,9 +58,9 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 -- vim.g.netrw_liststyle = 3
-vim.g.netrw_localcopydircmd = "cp"
+--vim.g.netrw_localcopydircmd = "cp"
 
-vim.g.netrw_keepdir = 0
+--vim.g.netrw_keepdir = 1 -- not 0 as it breaks harpoon and other search capabilities
 
 
 

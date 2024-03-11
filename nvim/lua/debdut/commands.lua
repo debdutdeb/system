@@ -110,3 +110,13 @@ end, { nargs = 0 })
 vim.api.nvim_create_user_command("LspLog", function()
 	vim.cmd.edit(vim.fn.stdpath("state") .. "/lsp.log")
 end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("SessionsDeleteAll", function()
+	for _, dir in ipairs(Require("persistence").list()) do
+		vim.uv.fs_rmdir(dir)
+	end
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("SessionsDeleteCurrent", function()
+	vim.uv.fs_rmdir(Require("persistence").get_current())
+end, { nargs = 0 })

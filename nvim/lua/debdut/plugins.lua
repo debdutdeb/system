@@ -221,6 +221,17 @@ lazy.setup({
 			telescope.load_extension("fzf")
 		end,
 	},
+	{ "tpope/vim-abolish", lazy = false },
+	{
+		"folke/persistence.nvim",
+		opts = {
+			dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/"),
+			options = { "buffers", "curdir", "tabpages", "winsize" },
+			pre_save = nil,
+			save_empty = false,
+		},
+		lazy = false,
+	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {
