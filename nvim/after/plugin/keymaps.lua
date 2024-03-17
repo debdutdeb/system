@@ -146,6 +146,15 @@ leadernnoremap("b", {
 		tsend_keys(":ls<cr>:b ")
 	end,
 })
+
+leadernnoremap("m", {
+	callback = function()
+		return telescope_builtin.marks(telescope_themes.get_cursor({ previewer = false, border = false }))
+	end,
+	fallback = function()
+		vim.cmd(":marks<cr>")
+	end,
+})
 leadernnoremap("sl", function()
 	-- I didn't want a previewer for this, just the preview in the background text
 	telescope_builtin.colorscheme(

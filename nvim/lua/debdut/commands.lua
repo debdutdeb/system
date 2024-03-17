@@ -115,8 +115,10 @@ vim.api.nvim_create_user_command("SessionsDeleteAll", function()
 	for _, dir in ipairs(Require("persistence").list()) do
 		vim.uv.fs_rmdir(dir)
 	end
+	Require("persistence").stop() -- temporary so it doesn't save it again
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("SessionsDeleteCurrent", function()
 	vim.uv.fs_rmdir(Require("persistence").get_current())
+	Require("persistence").stop() -- temporary so it doesn't save it again
 end, { nargs = 0 })
