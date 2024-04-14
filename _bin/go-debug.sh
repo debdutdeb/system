@@ -10,10 +10,11 @@ if (($# == 0)) || [[ -d "$1" ]]; then
 else
 	_args+=("$1")
 	shift
-	if (($# > 0)); then _args+=("$@"); fi
+	if (($# > 0)); then _args+=(-- "$@"); fi
 fi
 
 dlv "${_args[@]}" &
 sleep "${DLV_sleep_delay:-3}"
 tmux split-window -h "dlv connect 127.0.0.1:$DLV_port"
 fg
+
