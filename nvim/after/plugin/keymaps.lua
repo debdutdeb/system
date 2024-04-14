@@ -65,6 +65,7 @@ end, { silent = false })
 local start_dir = vim.uv.cwd() -- load once
 
 leadernnoremap("w", function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end)
+leadernnoremap("W", function() vim.o.wrap = not vim.opt.wrap:get() end)
 leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
 
