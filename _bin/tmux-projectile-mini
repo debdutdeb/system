@@ -19,11 +19,6 @@ _do() {
 
 	session_name="$(basename "$session" | tr . _)"
 
-	if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-		tmux new-session -s $session_name -c $session
-		exit 0
-	fi
-
 	if ! tmux has-session -t="$session_name"; then
 		tmux new-session -ds "$session_name" -c "$session"
 	fi
