@@ -49,7 +49,7 @@ family = "UbuntuMono Nerd Font"
 style = "Italic"
 
 [font.normal]
-family = "Source Code Pro"
+family = "UbuntuMono Nerd Font"
 style = "Regular"
 
 [font.offset]
@@ -366,7 +366,7 @@ program = "/opt/homebrew/bin/zsh"
 
 [window]
 dynamic_padding = false
-opacity = 0.9
+opacity = 1
 title = "Alacritty"
 option_as_alt = "Both"
 
@@ -381,3 +381,8 @@ lines = 25
 [window.padding]
 x = 6
 y = 6
+
+[[keyboard.bindings]]
+action = "ToggleFullscreen"
+key = "Enter"
+mods = "Super | Command"
