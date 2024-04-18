@@ -55,23 +55,16 @@ end, { nargs = 1 })
 -- 	chaos.setup_commands()
 -- end
 
--- Apparently I need to call lsp.start for every single buffers
--- Don't ask me why, because I don't know.
--- I just, *had to* ..so added it here
-local function lsp_start_and_autostart()
-	vim.lsp.start(lsp.b.config)
+local function start_lsp()
+	local client_id = vim.lsp.start(lsp.b.config)
 	vim.api.nvim_create_autocmd("FileType", {
-		callback = function(_opts)
-			vim.lsp.start(lsp.b.config)
-		end,
+		-- FIXME should also make sure the new file is in the same workspace, currently, doesn't matter to me
+		callback = function() vim.lsp.buf_attach_client(0, client_id) end,
 		pattern = vim.bo.filetype,
 	})
 end
 
-
-vim.api.nvim_create_user_command("LspStart", function()
-	lsp_start_and_autostart()
-end, { nargs = 0 })
+vim.api.nvim_create_user_command("LspStart", start_lsp, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
 	vim.lsp.stop_client(vim.lsp.get_clients())
@@ -94,7 +87,7 @@ vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
 			})
 		end,
 	})
-	lsp_start_and_autostart()
+	start_lsp()
 	--coq.Now("--shut-up")
 end, { nargs = 0 })
 
@@ -104,7 +97,7 @@ end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspRestart", function()
 	pcall(function() vim.lsp.stop_client(vim.lsp.get_clients()) end) -- ignoring error for now
-	lsp_start_and_autostart()
+	start_lsp()
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspLog", function()
