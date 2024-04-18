@@ -55,49 +55,49 @@ end, { nargs = 1 })
 -- 	chaos.setup_commands()
 -- end
 
-local function start_lsp()
+local lspgroup = vim.api.nvim_create_augroup("LspGroup", { clear = true })
+
+local function startlsp()
 	local client_id = vim.lsp.start(lsp.b.config)
 	vim.api.nvim_create_autocmd("FileType", {
 		-- FIXME should also make sure the new file is in the same workspace, currently, doesn't matter to me
 		callback = function() vim.lsp.buf_attach_client(0, client_id) end,
 		pattern = vim.bo.filetype,
+		group = lspgroup,
 	})
 end
 
-vim.api.nvim_create_user_command("LspStart", start_lsp, { nargs = 0 })
+local function stoplsp()
+	vim.lsp.stop_client(vim.lsp.get_clients())
+	for _, autocmd in ipairs(vim.api.nvim_get_autocmds({ group = lspgroup })) do
+		vim.api.nvim_del_autocmd(autocmd.id)
+	end
+end
+
+vim.api.nvim_create_user_command("LspStart", startlsp, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
-	vim.lsp.stop_client(vim.lsp.get_clients())
+	pcall(stoplsp)
 	-- local coq = Require('coq')
 	-- lsp.b.config = lsp.b.config + {
 	-- 	capabilities = coq.lsp_ensure_capabilities(lsp.b.config.capabilities)
 	-- }
-	local group = vim.api.nvim_create_augroup("LspStartWithAutocomplete", { clear = true })
-	vim.api.nvim_create_autocmd("LspAttach", {
-		group = group,
+	vim.api.nvim_create_autocmd("InsertCharPre", {
+		pattern = "*",
+		group = lspgroup,
 		callback = function()
-			-- this may not be the best event to listen to for this task
-			-- but in practice this works fine
-			vim.api.nvim_create_autocmd("InsertCharPre", {
-				pattern = "*",
-				group = group,
-				callback = function()
-					vim.schedule(function() vim.lsp.omnifunc(1, 1) end)
-				end,
-			})
+			vim.schedule(function() vim.lsp.omnifunc(1, 1) end)
 		end,
 	})
-	start_lsp()
+	startlsp()
 	--coq.Now("--shut-up")
 end, { nargs = 0 })
 
-vim.api.nvim_create_user_command("LspStop", function()
-	vim.lsp.stop_client(vim.lsp.get_clients())
-end, { nargs = 0 })
+vim.api.nvim_create_user_command("LspStop", stoplsp, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspRestart", function()
-	pcall(function() vim.lsp.stop_client(vim.lsp.get_clients()) end) -- ignoring error for now
-	start_lsp()
+	pcall(stoplsp) -- ignoring error for now
+	startlsp()
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspLog", function()
