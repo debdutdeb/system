@@ -1,5 +1,6 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
+  "chaos.nvim": { "branch": "main", "commit": "6074ad8176ef5df4d2cfc09dc169cc83efc3b683" },
   "coq_nvim": { "branch": "coq", "commit": "9fdc6364f21803d66711c9057b918120e828d419" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
   "mason-null-ls.nvim": { "branch": "main", "commit": "2b8433f76598397fcc97318d410e0c4f7a4bea6a" },

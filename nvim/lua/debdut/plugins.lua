@@ -208,7 +208,8 @@ lazy.setup({
 	{
 		"debdutdeb/chaos.nvim",
 		lazy = false,
-		dir = "/Users/debdut/Documents/Repos/chaos.nvim",
+		dir = (function() if vim.uv.os_uname().sysname == "Linux" then return "/home/debdut/git/chaos.nvim" else return
+				"/Users/debdut/Documents/Repos/chaos.nvim" end end)(),
 		config = function()
 			-- something is going on here, with telescope's action merge. idk what. some type of race condition because
 			-- of lazy my guess is.
