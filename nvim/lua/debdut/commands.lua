@@ -105,13 +105,14 @@ vim.api.nvim_create_user_command("LspLog", function()
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("SessionsDeleteAll", function()
-	for _, session_file in ipairs(require("persistence").list()) do
+	--[[ for _, session_file in ipairs(Require("persistence").list()) do
 		vim.uv.fs_unlink(session_file)
-	end
+	end ]]
+	vim.uv.fs_rmdir(Require("persistence.config").options.dir)
 	require("persistence").stop() -- temporary so it doesn't save it again
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("SessionsDeleteCurrent", function()
-	vim.uv.fs_unlink(require("persistence").get_current())
+	vim.uv.fs_unlink(Require("persistence").get_current())
 	require("persistence").stop() -- temporary so it doesn't save it again
 end, { nargs = 0 })
