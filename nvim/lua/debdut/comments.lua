@@ -40,7 +40,7 @@ return {
 	},
 	---Function to call before (un)comment
 	pre_hook = (function()
-		return comment_context.create_pre_hook()
+			return comment_context.create_pre_hook()
 	end)(),
 	---Function to call after (un)comment
 	post_hook = nil,

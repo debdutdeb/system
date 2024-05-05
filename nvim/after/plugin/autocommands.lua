@@ -9,10 +9,10 @@ autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 
 au BufRead,BufNewFile *.bash setfiletype bash
 ]])
 
-local ag = vim.api.nvim_create_augroup
-local ac = vim.api.nvim_create_autocmd
+local create_augroup = vim.api.nvim_create_augroup
+local create_autcommand = vim.api.nvim_create_autocmd
 
-local sessions = ag("sessions_management", { clear = true })
+local sessions = create_augroup("sessions_management", { clear = true })
 
 --ac("VimLeave", {
 --	callback = function(_)
@@ -24,17 +24,22 @@ local sessions = ag("sessions_management", { clear = true })
 --	group = sessions,
 --})
 
-ac("VimEnter", {
+create_autcommand("VimEnter", {
 	callback = function(_)
 		-- create a scratch buffer
 		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
 			true)
 		vim.api.nvim_buf_set_name(scratch_bufnr, "Scratch buffer")
 		vim.bo[scratch_bufnr].filetype = "lua"
-		local args = vim.api.nvim_command_output ":args"
+		--[[ local args = vim.api.nvim_command_output ":args"
 		if args and args:match("%[.+%]") then
 			return
+		end ]]
+
+		if vim.fn.argc(-1) > 0 then
+			return
 		end
+
 		vim.schedule(function()
 			Require("persistence").load()
 		end)
@@ -51,7 +56,7 @@ ac("VimEnter", {
 	group = sessions,
 })
 
-local folds = ag("folds", { clear = true })
+local folds = create_augroup("folds", { clear = true })
 
 --vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
 --	pattern = { "*.*" },
@@ -74,30 +79,30 @@ local folds = ag("folds", { clear = true })
 	end
 }) ]]
 
-local qflist_group = ag("qflist_autoopen", { clear = true })
+local qflist_group = create_augroup("qflist_autoopen", { clear = true })
 
-ac("QuickFixCmdPost", {
+create_autcommand("QuickFixCmdPost", {
 	pattern = "l*", -- locationlist
 	command = "lopen",
 	group = qflist_group,
 })
 
-ac("QuickFixCmdPost", {
+create_autcommand("QuickFixCmdPost", {
 	pattern = "[^l]*", -- quickfixlist
 	command = "copen",
 	group = qflist_group,
 })
 
 
-ac({ "TextYankPost" }, {
+create_autcommand({ "TextYankPost" }, {
 	callback = function()
 		Require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
-	group = ag("yank_post_highlight", { clear = true }),
+	group = create_augroup("yank_post_highlight", { clear = true }),
 })
 
-ac("FileType", {
-	group = ag("q_to_close", { clear = true }),
+create_autcommand("FileType", {
+	group = create_augroup("q_to_close", { clear = true }),
 	callback = function(_)
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":q<cr>", { silent = true })
 	end,

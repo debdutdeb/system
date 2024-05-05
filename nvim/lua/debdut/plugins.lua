@@ -5,18 +5,18 @@
 -- config files to auto reload, or auto updating plugins (definitely not this, do I want to break my install every other day?).
 -- Hm. Might not be the worst idea to go back to packer either.
 
-local uselesspath = vim.fn.stdpath("data") .. "/useless/useless.nvim"
-if not vim.loop.fs_stat(uselesspath) then
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
 		"--filter=blob:none",
-		"https://github.com/debdutdeb/useless.nvim.git",
+		"https://github.com/folke/lazy.nvim.git",
 		"--branch=main", -- latest stable release
-		uselesspath,
+		lazypath,
 	})
 end
-vim.opt.rtp:prepend(uselesspath)
+vim.opt.rtp:prepend(lazypath)
 
 local ok, lazy = pcall(require, "lazy")
 if not ok then
@@ -43,6 +43,14 @@ lazy.setup({
 			require("debdut.null-ls")
 			require("mason-null-ls").setup({ automatic_installation = false })
 		end,
+		{
+			'https://codeberg.org/esensar/nvim-dev-container',
+			dependencies = 'nvim-treesitter/nvim-treesitter',
+			lazy = false,
+			config = function()
+				require('devcontainer').setup({ container_runtime = "docker" })
+			end,
+		}
 	},
 
 	-- "lspcontainers/lspcontainers.nvim",
@@ -87,6 +95,7 @@ lazy.setup({
 			"nvim-neotest/nvim-nio",
 			"theHamsta/nvim-dap-virtual-text",
 		},
+		keys = { "<leader>db", "<leader>dc" },
 		config = function()
 			require("debdut.dap")
 		end,
@@ -100,7 +109,9 @@ lazy.setup({
 	{
 		"numToStr/Comment.nvim",
 		dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
-		opts = require("debdut.comments"),
+		config = function()
+			require('Comment').setup(require("debdut.comments"))
+		end,
 		keys = {
 			{ "gcc", mode = "n" },
 			{ "gc",  mode = "v" },
@@ -411,7 +422,20 @@ lazy.setup({
 		},
 		--cmd = { "Oil" }
 		lazy = false,
-	}
+	},
+	-- need to load this before dap, as asked, but
+	-- since I am going to use this one's json decoder
+	-- I need this to load before dap then force patch dap
+	{
+		'stevearc/overseer.nvim',
+		lazy = false,
+		opts = {
+		},
+	},
+	{
+		"stevearc/resession.nvim",
+		lazy = true,
+	},
 }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	defaults = {

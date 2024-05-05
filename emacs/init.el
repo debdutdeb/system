@@ -43,7 +43,7 @@
 (use-package vterm
   :straight t)
 
-(require 'treesit)
+; (require 'treesit)
 
 (load-library "clang-format.elc")
 
@@ -93,8 +93,16 @@
 
 (use-package treesit-auto
   :straight t
+  :custom
+  (treesit-auto-install 'prompt)
   :config
+;  (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
+
+(use-package markdown-mode
+  :straight t
+  :mode ("\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
 
 (setq go-ts-config
 	  (make-treesit-auto-recipe
@@ -102,7 +110,7 @@
 	   :ts-mode 'go-ts-mode
 	   :url "https://github.com/tree-sitter/tree-sitter-go"
 	   :revision "master"
-	   :source-dir "src"))
+	   :source-dir "src"))       
 
 (add-to-list 'treesit-auto-recipe-list go-ts-config)
 
