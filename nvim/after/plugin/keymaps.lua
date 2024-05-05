@@ -182,7 +182,8 @@ leadernnoremap("F", {
 leadernnoremap("la", vim.lsp.buf.code_action)
 leadernnoremap("ld", {
 	fallback = vim.diagnostic.setqflist,
-	callback = "<cmd>Telescope lsp_document_diagnostics<cr>",
+	--callback = telescope_builtin.diagnostics,
+	callback = "Telescope diagnostics",
 })
 leadernnoremap("lf", function()
 	vim.lsp.buf.format({ async = true })

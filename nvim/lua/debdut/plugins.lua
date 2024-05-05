@@ -83,14 +83,17 @@ lazy.setup({
 	{
 		"mfussenegger/nvim-dap", -- TODO
 		dependencies = {
-			"leoluz/nvim-dap-go",
 			"rcarriga/nvim-dap-ui", -- requires nim-dap
+			"nvim-neotest/nvim-nio",
 			"theHamsta/nvim-dap-virtual-text",
 		},
 		config = function()
 			require("debdut.dap")
 		end,
+		lazy = false,
 	},
+
+	"nvim-neotest/nvim-nio",
 
 	"JoosepAlviste/nvim-ts-context-commentstring",
 
@@ -208,8 +211,14 @@ lazy.setup({
 	{
 		"debdutdeb/chaos.nvim",
 		lazy = false,
-		dir = (function() if vim.uv.os_uname().sysname == "Linux" then return "/home/debdut/git/chaos.nvim" else return
-				"/Users/debdut/Documents/Repos/chaos.nvim" end end)(),
+		dir = (function()
+			if vim.uv.os_uname().sysname == "Linux" then
+				return "/home/debdut/git/chaos.nvim"
+			else
+				return
+				"/Users/debdut/Documents/Repos/chaos.nvim"
+			end
+		end)(),
 		config = function()
 			-- something is going on here, with telescope's action merge. idk what. some type of race condition because
 			-- of lazy my guess is.

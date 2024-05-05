@@ -1,20 +1,52 @@
-local ok, dap = pcall(require, "dap")
-if not ok then
-	return
-end
-local ok, dapui = pcall(require, "dapui")
-if not ok then
-	return
-end
-local ok, dap_virtual_text = pcall(require, "nvim-dap-virtual-text")
-if ok then
+local dap = Require("dap")
+
+dap.adapters.delve = {
+  type = 'server',
+  port = '${port}',
+  executable = {
+    command = 'dlv',
+    args = {'dap', '-l', '127.0.0.1:${port}'},
+    -- add this if on windows, otherwise server won't open successfully
+    -- detached = false
+  }
+}
+
+-- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
+dap.configurations.go = {
+  {
+    type = "delve",
+    name = "Debug",
+    request = "launch",
+    program = "${file}"
+  },
+  {
+    type = "delve",
+    name = "Debug test", -- configuration for debugging test files
+    request = "launch",
+    mode = "test",
+    program = "${file}"
+  },
+  -- works with go.mod packages and sub packages 
+  {
+    type = "delve",
+    name = "Debug test (go.mod)",
+    request = "launch",
+    mode = "test",
+    program = "./${relativeFileDirname}"
+  },
+}
+
+local dapui = Require('dapui')
+
+local vtok, dap_virtual_text = pcall(require, "nvim-dap-virtual-text")
+if vtok then
 	dap_virtual_text.setup()
 end
 
 local Remap = require("chaos.keymaps")
 
-require("debdut.dap.delve")
-require("debdut.dap.zig")
+--require("debdut.dap.delve")
+--require("debdut.dap.zig")
 -- require("debdut.dap.typescript")
 
 dapui.setup()
@@ -32,21 +64,11 @@ dap.listeners.before.event_terminated["dapui_config"] = dapui.close
 dap.listeners.before.event_exited["dapui_config"] = dapui.close
 -- dap.listeners.before.event_stopped["dapui_config"] = dapui.close
 
-local function dap_continue()
-	if vim.fn.filereadable(vim.fn.getcwd() .. "/.vscode/launch.json") == 1 then
-		local vscode_dap_ok, vscode_dap = pcall(require, "dap.ext.vscode")
-		if vscode_dap_ok then
-			vscode_dap.load_launchjs(nil, {})
-		end
-	end
-	dap.continue()
-end
-
 vim.fn.sign_define("DapBreakpoint", { text = "Bp", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "St", texthl = "", linehl = "", numhl = "" })
 
 local nnoremap = Remap.nnoremap
-nnoremap("<leader>dc", dap_continue)
+nnoremap("<leader>dc", dap.continue)
 nnoremap("<leader>dj", dap.step_over)
 nnoremap("<leader>di", dap.step_into)
 nnoremap("<leader>do", dap.step_out)
