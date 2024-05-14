@@ -19,7 +19,7 @@ local LSP = {}
 
 LSP.s = { type = "state" }
 
-function LSP.s:emit(event, value)
+function LSP.s:changed(event, value)
 	LSP_Handler:emit_change(self.type, event, value)
 end
 
@@ -28,7 +28,9 @@ LSP_Handler:on_change("state", "client", function(client_id)
 		-- connection just dropped
 		vim.iter(vim.api.nvim_list_bufs()):each(function(bufnr)
 			local state = rawget(LSP.s, bufnr)
-			state.client = nil
+			if state then
+				state.client = nil
+			end
 		end)
 	end
 end)
@@ -52,13 +54,13 @@ LSP.s = setmetatable(LSP.s, {
 		end
 		rawset(self, bufnr, item)
 
-		self:emit(k, v)
+		self:changed(k, v)
 	end,
 })
 
 LSP.o = { type = "option" }
 
-function LSP.o:emit(event, value)
+function LSP.o:changed(event, value)
 	LSP_Handler:emit_change(self.type, event, value)
 end
 
