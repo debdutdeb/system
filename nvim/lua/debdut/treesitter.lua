@@ -80,7 +80,7 @@ return {
 				goto_definition = false,
 				list_definitions = false,
 				list_definitions_toc = false,
-				goto_next_usage = "<C-a>",
+				goto_next_usage = "<C-n>",
 				goto_previous_usage = "<C-p>",
 			},
 		},
