@@ -55,7 +55,7 @@ end, { nargs = 1 })
 -- 	chaos.setup_commands()
 -- end
 
-local lspgroup = vim.api.nvim_create_augroup("LspGroup", { clear = true })
+local lspgroup = vim.api.nvim_create_augroup("lsp-group", { clear = true })
 
 local function startlsp()
 	local client_id = vim.lsp.start(lsp.b.config)
@@ -91,6 +91,22 @@ vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
 	})
 	startlsp()
 	--coq.Now("--shut-up")
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("LspStartWithCmp", function()
+	pcall(stoplsp)
+	Require("lazy.core.loader").load("nvim-cmp", {} --[[ reasons argument is optional in signature, but _loader complains down the road due to direct ipairs call ]])
+	lsp.b.config = vim.tbl_deep_extend('force', lsp.b.config, {
+		capabilities = Require("cmp_nvim_lsp").default_capabilities()
+		})
+	vim.api.nvim_create_autocmd("InsertCharPre", {
+		pattern = "*",
+		group = lspgroup,
+		callback = function()
+			vim.schedule(function() vim.lsp.omnifunc(1, 1) end)
+		end,
+	})
+	startlsp()
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("LspStop", stoplsp, { nargs = 0 })
