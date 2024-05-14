@@ -58,7 +58,7 @@ end, { nargs = 1 })
 local lspgroup = vim.api.nvim_create_augroup("lsp-group", { clear = true })
 
 local function startlsp()
-	local client_id = vim.lsp.start(lsp.b.config)
+	local client_id = vim.lsp.start(lsp.s.config)
 	vim.api.nvim_create_autocmd("FileType", {
 		-- FIXME should also make sure the new file is in the same workspace, currently, doesn't matter to me
 		callback = function() vim.lsp.buf_attach_client(0, client_id) end,
@@ -66,7 +66,7 @@ local function startlsp()
 		group = lspgroup,
 	})
 
-	lsp.b.client = { id = client_id }
+	lsp.s.client = { id = client_id }
 end
 
 local function stoplsp()
@@ -75,7 +75,7 @@ local function stoplsp()
 		vim.api.nvim_del_autocmd(autocmd.id)
 	end
 
-	lsp.b.client = nil
+	lsp.s.client = nil
 end
 
 vim.api.nvim_create_user_command("LspStart", startlsp, { nargs = 0 })
@@ -100,7 +100,7 @@ end, { nargs = 0 })
 vim.api.nvim_create_user_command("LspStartWithCmp", function()
 	pcall(stoplsp)
 	Require("lazy.core.loader").load("nvim-cmp", {} --[[ reasons argument is optional in signature, but _loader complains down the road due to direct ipairs call ]])
-	lsp.b.config = vim.tbl_deep_extend('force', lsp.b.config, {
+	lsp.s.config = vim.tbl_deep_extend('force', lsp.s.config, {
 		capabilities = Require("cmp_nvim_lsp").default_capabilities()
 		})
 	vim.api.nvim_create_autocmd("InsertCharPre", {

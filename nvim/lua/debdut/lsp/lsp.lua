@@ -5,25 +5,25 @@ local LSP_Handler = {
 	},
 }
 
-function LSP_Handler:option_changed(option, value)
-	if type(self.events["option_changed_" .. option]) == "function" then
-		self.events["option_changed_" .. option](value)
+function LSP_Handler:emit_change(kind, option, value)
+	if type(self.events[kind .. "_changed_" .. option]) == "function" then
+		self.events[kind .. "_changed_" .. option](value)
 	end
 end
 
-function LSP_Handler:on_option_change(option, fn)
-	self.events["option_changed_" .. option] = fn
+function LSP_Handler:on_change(kind, option, fn)
+	self.events[kind .. "_changed_" .. option] = fn
 end
 
 local LSP = {}
 
-LSP.b = { type = "configurations" }
+LSP.s = { type = "state" }
 
-function LSP.b:emit(event, value)
+function LSP.s:emit(event, value)
 	-- noop
 end
 
-LSP.b = setmetatable(LSP.b, {
+LSP.s = setmetatable(LSP.s, {
 	__index = function(self, k)
 		vim.validate({ _ = { k, 's' } })
 		local bufnr = vim.api.nvim_get_current_buf()
@@ -46,16 +46,16 @@ LSP.b = setmetatable(LSP.b, {
 	end,
 })
 
-LSP.o = { type = "options" }
+LSP.o = { type = "option" }
 
 function LSP.o:emit(event, value)
-	LSP_Handler:option_changed(event, value)
+	LSP_Handler:emit_change(self.type, event, value)
 end
 
-LSP.o = setmetatable(LSP.o, getmetatable(LSP.b))
+LSP.o = setmetatable(LSP.o, getmetatable(LSP.s))
 
-LSP_Handler:on_option_change("server_name", function(server_name)
-	lsp.b.config = Require("lspconfig.configs")[server_name]
+LSP_Handler:on_change("option", "server_name", function(server_name)
+	lsp.s.config = Require("lspconfig.configs")[server_name]
 end)
 
 function LSP.status()
@@ -63,7 +63,7 @@ function LSP.status()
 		return ""
 	end
 
-	local language_client_str = lsp.o.server_name .. (lsp.b.client and "(connected)" or "(disconnected)")
+	local language_client_str = lsp.o.server_name .. (lsp.s.client and "(connected)" or "(disconnected)")
 
 	local clients = vim.lsp.buf_get_clients()
 

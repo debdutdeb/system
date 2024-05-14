@@ -14,7 +14,7 @@ vim.diagnostic.config({
 	},
 })
 
-_G.lsp = require("debdut.lsp.lsp").LSP
+_G.lsp = Require("debdut.lsp.lsp").LSP
 
 Require("neodev").setup {}
 
