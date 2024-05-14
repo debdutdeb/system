@@ -64,6 +64,13 @@ Require("mason-tool-installer").setup {
 	start_delay = 5,
 }
 
+local function client_on_attach(client, bufnr)
+	if client.server_capabilities.inlayHintProvider ~= nil and client.server_capabilities.inlayHintProvider then
+		-- :h vim.lsp.inlay_hint
+		vim.lsp.inlay_hint.enable(bufnr, true)
+	end
+end
+
 Require("mason-lspconfig").setup {}
 
 for _, name in ipairs(language_servers) do
@@ -73,6 +80,7 @@ for _, name in ipairs(language_servers) do
 	end
 
 	config.autostart = false
+	config.on_attach = client_on_attach
 
 	Require("lspconfig")[name].setup(config)
 end
