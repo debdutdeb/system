@@ -65,6 +65,8 @@ local function startlsp()
 		pattern = vim.bo.filetype,
 		group = lspgroup,
 	})
+
+	lsp.b.client = { id = client_id }
 end
 
 local function stoplsp()
@@ -72,6 +74,8 @@ local function stoplsp()
 	for _, autocmd in ipairs(vim.api.nvim_get_autocmds({ group = lspgroup })) do
 		vim.api.nvim_del_autocmd(autocmd.id)
 	end
+
+	lsp.b.client = nil
 end
 
 vim.api.nvim_create_user_command("LspStart", startlsp, { nargs = 0 })

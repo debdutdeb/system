@@ -69,7 +69,7 @@ vim.opt.grepprg = "rg --no-heading --column \"$*\""
 vim.opt.winbar = "%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 
 vim.opt.statusline =
-"fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('#vim.lsp.get_clients()')}"
+"fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.lsp.buf_is_attached(0, lsp.b.client and lsp.b.client.id) and _A[1] or _A[2]', ['  ', ''])}%{luaeval('lsp.b.client and lsp.o.server_name .. _A or lsp.o.server_name', '(connected)')}::%{luaeval('vim.iter(vim.lsp.buf_get_clients()):map(function(tbl) return tbl.name end):filter(function(name) return name ~= lsp.o.server_name end):join(_A)', ',')}"
 
 vim.cmd "colorscheme habamax"
 
