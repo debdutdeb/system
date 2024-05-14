@@ -20,8 +20,18 @@ local LSP = {}
 LSP.s = { type = "state" }
 
 function LSP.s:emit(event, value)
-	-- noop
+	LSP_Handler:emit_change(self.type, event, value)
 end
+
+LSP_Handler:on_change("state", "client", function(client_id)
+	if client_id == nil then
+		-- connection just dropped
+		vim.iter(vim.api.nvim_list_bufs()):each(function(bufnr)
+			local state = rawget(LSP.s, bufnr)
+			state.client = nil
+		end)
+	end
+end)
 
 LSP.s = setmetatable(LSP.s, {
 	__index = function(self, k)
