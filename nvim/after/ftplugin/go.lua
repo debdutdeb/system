@@ -1,1 +1,1 @@
-lsp.o.server_name = "clangd"
+lsp.o.server_name = "gopls"
