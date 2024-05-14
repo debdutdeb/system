@@ -68,8 +68,11 @@ vim.opt.grepprg = "rg --no-heading --column \"$*\""
 
 vim.opt.winbar = "%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 
+-- TODO see how others like lualine is doing this
+-- TODO see what is the frequency of these functions getting called
+-- TODO we don't have to rerun all the time,could listen for events and then refresh some cached string
 vim.opt.statusline =
-"fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.lsp.buf_is_attached(0, lsp.b.client and lsp.b.client.id) and _A[1] or _A[2]', ['  ', ''])}%{luaeval('lsp.b.client and lsp.o.server_name .. _A or lsp.o.server_name', '(connected)')}::%{luaeval('vim.iter(vim.lsp.buf_get_clients()):map(function(tbl) return tbl.name end):filter(function(name) return name ~= lsp.o.server_name end):join(_A)', ',')}"
+"fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.lsp.buf_is_attached(0, lsp.b.client and lsp.b.client.id) and _A[1] or _A[2]', ['  ', ''])}%{luaeval('lsp.status()')}"
 
 vim.cmd "colorscheme habamax"
 
