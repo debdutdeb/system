@@ -72,6 +72,7 @@ for _, name in ipairs(language_servers) do
 		config = {}
 	end
 
-	Require("lspconfig")[name].setup(vim.tbl_deep_extend("force", {}, { autostart = false },
-		config))
+	config.autostart = false
+
+	Require("lspconfig")[name].setup(config)
 end
