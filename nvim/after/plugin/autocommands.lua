@@ -12,7 +12,7 @@ au BufRead,BufNewFile *.bash setfiletype bash
 local create_augroup = vim.api.nvim_create_augroup
 local create_autcommand = vim.api.nvim_create_autocmd
 
-local sessions = create_augroup("sessions_management", { clear = true })
+local sessions = create_augroup("my/sessions-management", { clear = true })
 
 --ac("VimLeave", {
 --	callback = function(_)
@@ -79,7 +79,7 @@ local folds = create_augroup("folds", { clear = true })
 	end
 }) ]]
 
-local qflist_group = create_augroup("qflist_autoopen", { clear = true })
+local qflist_group = create_augroup("my/qflist", { clear = true })
 
 create_autcommand("QuickFixCmdPost", {
 	pattern = "l*", -- locationlist
@@ -98,11 +98,11 @@ create_autcommand({ "TextYankPost" }, {
 	callback = function()
 		Require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
-	group = create_augroup("yank_post_highlight", { clear = true }),
+	group = create_augroup("my/yank-post-highlight", { clear = true }),
 })
 
 create_autcommand("FileType", {
-	group = create_augroup("q_to_close", { clear = true }),
+	group = qflist_group,
 	callback = function(_)
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":q<cr>", { silent = true })
 	end,

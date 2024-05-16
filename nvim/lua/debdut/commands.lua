@@ -55,7 +55,7 @@ end, { nargs = 1 })
 -- 	chaos.setup_commands()
 -- end
 
-local lspgroup = vim.api.nvim_create_augroup("lsp-group", { clear = true })
+local lspgroup = vim.api.nvim_create_augroup("my/lsp-group", { clear = true })
 
 local function startlsp()
 	local client_id = vim.lsp.start(lsp.s.config)
