@@ -28,6 +28,7 @@ local language_servers = {
 	"gopls",
 	"tsserver",
 	"lua_ls",
+	"pyright",
 }
 
 local formatters = {

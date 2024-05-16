@@ -20,8 +20,15 @@ nnoremap("<S-l>", "<cmd>bnext<CR>")
 nnoremap("<S-h>", "<cmd>bprevious<CR>")
 
 -- Move text up and down
-nnoremap("<A-j>", "<Esc>:m .+1<CR>==gi")
-nnoremap("<A-k>", "<Esc>:m .-2<CR>==gi")
+-- normal mode
+nnoremap("<A-S-j>", ":m .+1<CR>==")
+nnoremap("<A-S-k>", ":m .-2<CR>==")
+-- insert mode
+inoremap("<A-j>", "<Esc>:m .+1<CR>==gi")
+inoremap("<A-k>", "<Esc>:m .-2<CR>==gi")
+-- visual mode
+vnoremap("<A-j>", ":m .+1<CR>==")
+vnoremap("<A-k>", ":m .-2<CR>==")
 
 -- Insert --
 -- Press jk fast to exit insert mode
@@ -34,9 +41,7 @@ inoremap("kj", "<ESC>")
 vnoremap("<", "<gv")
 vnoremap(">", ">gv")
 
--- Move text up and down
-vnoremap("<A-j>", ":m .+1<CR>==")
-vnoremap("<A-k>", ":m .-2<CR>==")
+-- don't save overwritten text on register
 vnoremap("p", '"_dP')
 
 -- find and replace
