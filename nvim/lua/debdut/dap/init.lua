@@ -51,7 +51,43 @@ local Remap = require("chaos.keymaps")
 --require("debdut.dap.zig")
 -- require("debdut.dap.typescript")
 
-dapui.setup()
+dapui.setup({
+	controls = { enabled = false },
+	floating = { border = "none" },
+	icons = {
+		--[[ just avoiding "icons" altoigether ]]
+		collapsed = ">",
+		expanded = "v",
+		current_frame = ">",
+	},
+    layouts = { { --[[ mostly defaults, "c" marks what changes ]]
+        elements = { {
+            id = "scopes",
+            size = 0.25
+          }, {
+            id = "watches", -- c (order, switches with breakpoints)
+            size = 0.25
+          }, {
+            id = "stacks",
+            size = 0.25
+          }, {
+            id = "breakpoints", -- c (order, switches with breakpoints)
+            size = 0.25
+          } },
+        position = "right", -- c
+        size = 40
+      }, {
+        elements = { {
+            id = "repl",
+            size = 0.5
+          }, {
+            id = "console",
+            size = 0.5
+          } },
+        position = "bottom",
+        size = 10
+      } },
+})
 
 -- local send_key_normal_mode = Remap.nsend_keys
 dap.listeners.after.event_initialized.dapui_config = function()
