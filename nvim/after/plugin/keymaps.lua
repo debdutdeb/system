@@ -21,14 +21,20 @@ nnoremap("<S-h>", "<cmd>bprevious<CR>")
 
 -- Move text up and down
 -- normal mode
-nnoremap("<A-S-j>", ":m .+1<CR>==")
-nnoremap("<A-S-k>", ":m .-2<CR>==")
+nnoremap("<A-J>", ":m .+1<CR>==")
+nnoremap("<A-K>", ":m .-2<CR>==")
 -- insert mode
 inoremap("<A-j>", "<Esc>:m .+1<CR>==gi")
 inoremap("<A-k>", "<Esc>:m .-2<CR>==gi")
+
+inoremap("<A-J>", "<Esc>:m .+1<CR>==gi")
+inoremap("<A-K>", "<Esc>:m .-2<CR>==gi")
 -- visual mode
 vnoremap("<A-j>", ":m .+1<CR>==")
 vnoremap("<A-k>", ":m .-2<CR>==")
+
+vnoremap("<A-J>", ":m .+1<CR>==")
+vnoremap("<A-K>", ":m .-2<CR>==")
 
 -- Insert --
 -- Press jk fast to exit insert mode
@@ -55,6 +61,9 @@ xnoremap("K", ":move '<-2<CR>gv-gv")
 xnoremap("<A-j>", ":move '>+1<CR>gv-gv")
 xnoremap("<A-k>", ":move '<-2<CR>gv-gv")
 
+xnoremap("<A-J>", ":move '>+1<CR>gv-gv")
+xnoremap("<A-K>", ":move '<-2<CR>gv-gv")
+
 local function leadernnoremap(key, cmd, opts)
 	nnoremap("<leader>" .. key, cmd, opts)
 end
@@ -63,9 +72,8 @@ end
 leadernnoremap("ll", "<cmd>LspStart<cr>")
 leadernnoremap("lL", "<cmd>LspStartWithAutocomplete<cr>")
 
-
-leadernnoremap("b", function()
-end, { silent = false })
+leadernnoremap("o", "o<Esc>")
+leadernnoremap("O", "O<Esc>")
 
 local start_dir = vim.uv.cwd() -- load once
 
