@@ -74,6 +74,8 @@ vim.opt.winbar = "%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 vim.opt.statusline =
 "fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.lsp.buf_is_attached(0, lsp.s.client and lsp.s.client.id) and _A[1] or _A[2]', ['  ', ''])}%{luaeval('lsp.status()')}"
 
+vim.opt.laststatus = 3 -- single statusline ":h 'laststatus'"
+
 vim.cmd "colorscheme habamax"
 
 vim.opt.foldmethod = "syntax"

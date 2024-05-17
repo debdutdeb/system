@@ -53,17 +53,20 @@ local Remap = require("chaos.keymaps")
 
 dapui.setup()
 
-local send_key_normal_mode = Remap.nsend_keys
-dap.listeners.after.event_initialized["dapui_config"] = function()
+-- local send_key_normal_mode = Remap.nsend_keys
+dap.listeners.after.event_initialized.dapui_config = function()
 	dapui.open()
 	-- move repl/output buffer to another tab
 	-- move main write buffer to another tab then stay there
-	send_key_normal_mode("<C-w>j<C-w><S-t>gT<C-w>k<C-w><S-t>")
+	-- send_key_normal_mode("<C-w>j<C-w><S-t>gT<C-w>k<C-w><S-t>")
 end
 
-dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+dap.listeners.after.launch.dapui_config = dapui.open
+dap.listeners.after.attach.dapui_config = dapui.open
 
-dap.listeners.before.event_exited["dapui_config"] = dapui.close
+dap.listeners.before.event_terminated.dapui_config = dapui.close
+
+dap.listeners.before.event_exited.dapui_config = dapui.close
 -- dap.listeners.before.event_stopped["dapui_config"] = dapui.close
 
 vim.fn.sign_define("DapBreakpoint", { text = "Bp", texthl = "", linehl = "", numhl = "" })
@@ -86,3 +89,4 @@ nnoremap("<leader>dj", dap.step_over)
 nnoremap("<leader>di", dap.step_into)
 nnoremap("<leader>do", dap.step_out)
 nnoremap("<leader>db", dap.toggle_breakpoint)
+nnoremap("<leader>d?", function() dapui.eval(nil, { enter = true }) end)

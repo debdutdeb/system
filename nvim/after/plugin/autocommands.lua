@@ -10,7 +10,7 @@ au BufRead,BufNewFile *.bash setfiletype bash
 ]])
 
 local create_augroup = vim.api.nvim_create_augroup
-local create_autcommand = vim.api.nvim_create_autocmd
+local create_autocommand = vim.api.nvim_create_autocmd
 
 local sessions = create_augroup("my/sessions-management", { clear = true })
 
@@ -24,7 +24,7 @@ local sessions = create_augroup("my/sessions-management", { clear = true })
 --	group = sessions,
 --})
 
-create_autcommand("VimEnter", {
+create_autocommand("VimEnter", {
 	callback = function(_)
 		-- create a scratch buffer
 		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
@@ -81,30 +81,31 @@ local folds = create_augroup("folds", { clear = true })
 
 local qflist_group = create_augroup("my/qflist", { clear = true })
 
-create_autcommand("QuickFixCmdPost", {
+create_autocommand("QuickFixCmdPost", {
 	pattern = "l*", -- locationlist
 	command = "lopen",
 	group = qflist_group,
 })
 
-create_autcommand("QuickFixCmdPost", {
+create_autocommand("QuickFixCmdPost", {
 	pattern = "[^l]*", -- quickfixlist
 	command = "copen",
 	group = qflist_group,
 })
 
 
-create_autcommand({ "TextYankPost" }, {
+create_autocommand({ "TextYankPost" }, {
 	callback = function()
 		Require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
 	group = create_augroup("my/yank-post-highlight", { clear = true }),
 })
 
-create_autcommand("FileType", {
+create_autocommand("FileType", {
 	group = qflist_group,
 	callback = function(_)
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":q<cr>", { silent = true })
 	end,
 	pattern = { "qf", "help" },
 })
+
