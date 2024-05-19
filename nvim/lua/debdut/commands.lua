@@ -81,9 +81,9 @@ local function stoplsp()
 	lsp.s.client = nil
 end
 
-vim.api.nvim_create_user_command("LspStart", startlsp, { nargs = 0 })
+vim.api.nvim_create_user_command("MyLspStart", startlsp, { nargs = 0 })
 
-vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
+vim.api.nvim_create_user_command("MyLspStartWithAutocomplete", function()
 	pcall(stoplsp)
 	-- local coq = Require('coq')
 	-- lsp.b.config = lsp.b.config + {
@@ -100,7 +100,7 @@ vim.api.nvim_create_user_command("LspStartWithAutocomplete", function()
 	--coq.Now("--shut-up")
 end, { nargs = 0 })
 
-vim.api.nvim_create_user_command("LspStartWithCmp", function()
+vim.api.nvim_create_user_command("MyLspStartWithCmp", function()
 	pcall(stoplsp)
 	Require("lazy.core.loader").load("nvim-cmp",
 		{} --[[ reasons argument is optional in signature, but _loader complains down the road due to direct ipairs call ]])
@@ -117,14 +117,14 @@ vim.api.nvim_create_user_command("LspStartWithCmp", function()
 	startlsp()
 end, { nargs = 0 })
 
-vim.api.nvim_create_user_command("LspStop", stoplsp, { nargs = 0 })
+vim.api.nvim_create_user_command("MyLspStop", stoplsp, { nargs = 0 })
 
-vim.api.nvim_create_user_command("LspRestart", function()
+vim.api.nvim_create_user_command("MyLspRestart", function()
 	pcall(stoplsp) -- ignoring error for now
 	startlsp()
 end, { nargs = 0 })
 
-vim.api.nvim_create_user_command("LspLog", function()
+vim.api.nvim_create_user_command("MyLspLog", function()
 	vim.cmd.edit(vim.fn.stdpath("state") .. "/lsp.log")
 end, { nargs = 0 })
 

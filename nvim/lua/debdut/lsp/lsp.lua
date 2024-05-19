@@ -67,12 +67,18 @@ end
 LSP.o = setmetatable(LSP.o, getmetatable(LSP.s))
 
 LSP_Handler:on_change("option", "server_name", function(server_name)
-	local server = Require("lspconfig.configs")[server_name]
-
 	-- https://github.com/neovim/nvim-lspconfig/blob/a27179f56c6f98a4cdcc79ee2971b514815a4940/lua/lspconfig/async.lua#L15C9-L15C41
 	coroutine.resume(coroutine.create(function()
-		lsp.s.config = server.make_config(server.get_root_dir(Require('lspconfig.util').path.sanitize(vim.api
-		.nvim_buf_get_name(0))))
+		local server = Require("lspconfig.configs")[server_name]
+
+		-- TODO: understand and effectively port lspconfig's code here
+
+		local bufname = vim.api.nvim_buf_get_name(0)
+
+		local root_dir = server.get_root_dir(Require("lspconfig.util").path.sanitize(bufname)) or
+		Require("lspconfig.util").path.dirname(Require("lspconfig.util").path.sanitize(bufname))
+
+		lsp.s.config = server.make_config(root_dir)
 	end))
 end)
 
