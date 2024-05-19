@@ -13,6 +13,24 @@ dap.adapters.delve = {
 
 dap.adapters.go = dap.adapters.delve
 
+dap.adapters.delve_manual = {
+	type = "server",
+	host = "127.0.0.1",
+	port = 9000,
+}
+
+-- https://github.com/leoluz/nvim-dap-go/blob/5faf165f5062187320eaf9d177c3c1f647adc22e/lua/dap-go.lua#L36C1-L45C4
+local function filtered_pick_process()
+	local opts = {}
+	vim.ui.input(
+		{ prompt = "Search by process name (lua pattern), or hit enter to select from the process list: " },
+		function(input)
+			opts["filter"] = input or ""
+		end
+	)
+	return Require("dap.utils").pick_process(opts)
+end
+
 -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
 dap.configurations.go = {
 	{
@@ -36,6 +54,20 @@ dap.configurations.go = {
 		mode = "test",
 		program = "./${relativeFileDirname}"
 	},
+	{
+		type = "delve",
+		name = "Attach to process",
+		mode = "local",
+		request = "attach",
+		processId = filtered_pick_process,
+	},
+	{
+		type = "delve_manual",
+		name = "Attach to process (manual)",
+		mode = "local",
+		request = "attach",
+		processId = filtered_pick_process,
+	}
 }
 
 local dapui = Require('dapui')
@@ -92,7 +124,7 @@ dapui.setup({
 -- local send_key_normal_mode = Remap.nsend_keys
 dap.listeners.after.event_initialized.dapui_config = function()
 	dapui.open()
-	-- move repl/output buffer to another tab
+	-- move repl/output buffer to another tab (no longer 9.5.24 1012)
 	-- move main write buffer to another tab then stay there
 	-- send_key_normal_mode("<C-w>j<C-w><S-t>gT<C-w>k<C-w><S-t>")
 end

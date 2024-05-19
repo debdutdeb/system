@@ -72,7 +72,7 @@ vim.opt.winbar = "%=r/o=%R,l=%L,c=%c,%%=%p,help=%H,preview=%W,ft=%Y%M"
 -- TODO see what is the frequency of these functions getting called
 -- TODO we don't have to rerun all the time,could listen for events and then refresh some cached string
 vim.opt.statusline =
-"fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('vim.lsp.buf_is_attached(0, lsp.s.client and lsp.s.client.id) and _A[1] or _A[2]', ['  ', ''])}%{luaeval('lsp.status()')}"
+"fname=%t,%<lines=%L,bufnr=%n,args=%a%=%{luaeval('vim.lsp.status()')}%{luaeval('lsp and vim.lsp.buf_is_attached(0, lsp.s.client and lsp.s.client.id) and _A[1] or _A[2]', ['  ', ''])}%{luaeval('lsp and lsp.status()')}"
 
 vim.opt.laststatus = 3 -- single statusline ":h 'laststatus'"
 
