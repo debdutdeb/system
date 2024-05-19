@@ -61,7 +61,7 @@ Require("mason-tool-installer").setup {
 		["mason-null-ls"] = true,
 		["mason-nvim-dap"] = true,
 	},
-	debounce_hours = 7 * 24,
+	-- debounce_hours = 7 * 24,
 	start_delay = 5,
 }
 
