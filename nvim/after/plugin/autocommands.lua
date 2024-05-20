@@ -41,6 +41,10 @@ create_autocommand("VimEnter", {
 		end
 
 		vim.schedule(function()
+			if not Require("persistence").get_last() then
+				return Require("telescope.builtin").find_files(Require("telescope.themes").get_cursor({ border = true, layout_config = { width = { padding = 0 } } }))
+			end
+
 			Require("persistence").load()
 		end)
 		--if vim.uv.fs_stat(".vim/session") then
@@ -110,4 +114,3 @@ create_autocommand("FileType", {
 	end,
 	pattern = { "qf", "help" },
 })
-

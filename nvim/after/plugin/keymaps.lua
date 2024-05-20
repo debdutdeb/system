@@ -1,6 +1,5 @@
 local Remap = Require("chaos.keymaps")
 
-local telescope = Require("telescope")
 local telescope_builtin = Require("telescope.builtin")
 local telescope_themes = Require("telescope.themes")
 

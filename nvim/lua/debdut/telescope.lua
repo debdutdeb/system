@@ -8,10 +8,17 @@ end
 
 return {
 	defaults = {
+		border = false,
 		path_display = { "smart" },
 
 		file_ignore_patterns = {
 			"node_modules",
+		},
+
+		layout_strategy = "flex",
+		layout_config = {
+			height = 0.95,
+			width = 0.5,
 		},
 
 		mappings = {
@@ -22,10 +29,7 @@ return {
 				["<C-n>"] = actions.move_selection_next,
 				["<C-p>"] = actions.move_selection_previous,
 
-				["<C-c>"] = actions.close,
-
-				["<Down>"] = actions.move_selection_next,
-				["<Up>"] = actions.move_selection_previous,
+				["<C-g>"] = actions.close,
 
 				["<CR>"] = default_with_optional_save_colorscheme,
 				["<C-x>"] = actions.select_horizontal,
@@ -48,7 +52,9 @@ return {
 
 			n = {
 				["<esc>"] = actions.close,
+				["<C-g>"] = actions.close,
 				["<CR>"] = actions.select_default,
+				["<C-y>"] = actions.select_default,
 				["<C-x>"] = actions.select_horizontal,
 				["<C-v>"] = actions.select_vertical,
 				["<C-t>"] = actions.select_tab,
