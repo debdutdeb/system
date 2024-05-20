@@ -84,7 +84,6 @@ leadernnoremap("c", "<cmd>bd!<cr>")
 leadernnoremap("F", function()
 end, { silent = false })
 --leadernnoremap("e", "<cmd>Explore<cr>") -- open netrw
-leadernnoremap("e", "<cmd>Oil<cr>") -- open oil
 
 
 leadernnoremap("/", "<cmd>nohl<cr>")
