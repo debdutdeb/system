@@ -47,9 +47,11 @@ create_autocommand("VimEnter", {
 		--	vim.cmd ":source .vim/session"
 		--else
 		-- open a scratch buffer
-		local no_buf = vim.api.nvim_get_current_buf()
+		-- local no_buf = vim.api.nvim_get_current_buf()
 		vim.cmd([[:buffer ]] .. scratch_bufnr)
-		vim.cmd([[:bdelete ]] .. no_buf)
+		-- if vim.api.nvim_buf_get_name(no_buf) == "" then
+		-- 	-- vim.cmd([[:bdelete ]] .. no_buf)
+		-- end
 		--end
 	end,
 	nested = true,
