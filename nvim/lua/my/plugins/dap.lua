@@ -3,6 +3,7 @@ return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			"nvim-neotest/nvim-nio",
+			'stevearc/overseer.nvim',
 		},
 		keys = { "<leader>db", "<leader>dc" },
 		config = function()
