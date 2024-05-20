@@ -166,5 +166,6 @@ return {
 		},
 	},
 	--cmd = { "Oil" }
-	lazy = false,
+	keys = { "<leader>e" },
+	cmd = { "Oil" },
 }
