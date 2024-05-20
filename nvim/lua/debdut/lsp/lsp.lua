@@ -5,10 +5,11 @@ local LSP_Handler = {
 	},
 }
 
-function LSP_Handler:emit_change(kind, option, value)
+function LSP_Handler:emit_change(kind, option, opts)
 	local fns = self.events[kind .. "_changed_" .. option] or {}
+
 	for _, fn in ipairs(fns) do
-		fn(value)
+		fn(opts)
 	end
 end
 
@@ -24,11 +25,12 @@ local LSP = {}
 
 LSP.s = { type = "state" }
 
-function LSP.s:changed(event, value)
-	LSP_Handler:emit_change(self.type, event, value)
+function LSP.s:changed(event, opts)
+	LSP_Handler:emit_change(self.type, event, opts)
 end
 
-LSP_Handler:on_change("state", "client", function(client_id)
+LSP_Handler:on_change("state", "client", function(opts)
+	local client_id = opts.value
 	if client_id == nil then
 		-- connection just dropped
 		vim.iter(vim.api.nvim_list_bufs()):each(function(bufnr)
@@ -49,18 +51,21 @@ LSP.s = setmetatable(LSP.s, {
 		return tbl_for_bufnr and tbl_for_bufnr[k]
 	end,
 
-	__newindex = function(self, k, v)
-		vim.validate({ _ = { k, 's' } })
+	__newindex = function(self, key, value)
+		vim.validate({ _ = { key, 's' } })
 		local bufnr = vim.api.nvim_get_current_buf()
 		local item = rawget(self, bufnr)
 		if item then
-			item[k] = v
+			item[key] = value
 		else
-			item = { [k] = v }
+			item = { [key] = value }
 		end
 		rawset(self, bufnr, item)
 
-		self:changed(k, v)
+		self:changed(key, {
+			bufnr = bufnr,
+			value = value,
+		})
 	end,
 })
 
@@ -72,10 +77,12 @@ end
 
 LSP.o = setmetatable(LSP.o, getmetatable(LSP.s))
 
-LSP_Handler:on_change("option", "server_name", function(server_name)
-	local lspconfig = Require("lspconfig")
+LSP_Handler:on_change("option", "server_name", function(data)
+	local server_name = data.value
 
-	if lspconfig[server_name] then
+	local configs = Require("lspconfig.configs")
+
+	if configs[server_name] then
 		return
 	end
 
@@ -90,22 +97,24 @@ LSP_Handler:on_change("option", "server_name", function(server_name)
 		end
 	end
 
-	lspconfig.setup(config)
+	Require('lspconfig')[server_name].setup(config)
 end)
 
-LSP_Handler:on_change("option", "server_name", function(server_name)
+LSP_Handler:on_change("option", "server_name", function(data)
 	-- https://github.com/neovim/nvim-lspconfig/blob/a27179f56c6f98a4cdcc79ee2971b514815a4940/lua/lspconfig/async.lua#L15C9-L15C41
 	coroutine.resume(coroutine.create(function()
+		local server_name = data.value
+
 		local server = Require("lspconfig.configs")[server_name]
 
 		-- TODO: understand and effectively port lspconfig's code here
 
-		local bufname = vim.api.nvim_buf_get_name(0)
+		local bufname = vim.api.nvim_buf_get_name(data.bufnr)
 
 		local root_dir = server.get_root_dir(Require("lspconfig.util").path.sanitize(bufname)) or
 			Require("lspconfig.util").path.dirname(Require("lspconfig.util").path.sanitize(bufname))
 
-		lsp.s.config = server.make_config(root_dir)
+		lsp.s[data.bufnr].config = server.make_config(root_dir)
 	end))
 end)
 

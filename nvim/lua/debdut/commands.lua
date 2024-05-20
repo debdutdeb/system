@@ -14,38 +14,33 @@ vim.api.nvim_create_user_command("LoadLocalPlugin", function(opts)
 	end
 end, { nargs = 1 })
 
--- local lspconfig_configs = require("lspconfig.configs")
--- local lspconfig_util = require("lspconfig.util")
--- local plenary_filetype = require("plenary.filetype")
--- local lsp_servers_configured = require("debdut.lsp.servers")
---
--- vim.api.nvim_create_user_command("LspRootDir", function(opts)
--- 	-- use LspInfo instead
--- 	--[[ vim.cmd(":LspInfo")
--- 	if true then
--- 		return
--- 	end ]]
--- 	local file = vim.api.nvim_buf_get_name(0)
--- 	local get_configured_server = function()
--- 		for _, client in pairs(lspconfig_util.get_other_matching_providers(plenary_filetype.detect(file))) do
--- 			for _, server in pairs(lsp_servers_configured) do
--- 				if server == client.name then
--- 					return server
--- 				end
--- 			end
--- 		end
--- 	end
--- 	local config = lspconfig_configs[get_configured_server()]
--- 	if not config then
--- 		return
--- 	end
--- 	local root_dir = config.get_root_dir(lspconfig_util.path.dirname(file))
--- 	vim.notify(root_dir)
--- end, { nargs = 0 })
---
--- vim.api.nvim_create_user_command("Format", function(_opts)
--- 	vim.lsp.buf.format({ async = true })
--- end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("LspRootDir", function(opts)
+	-- use LspInfo instead
+	--[[ vim.cmd(":LspInfo")
+	if true then
+		return
+	end ]]
+	local utils = Require("lspconfig.util")
+	local file = vim.api.nvim_buf_get_name(0)
+	local get_configured_server = function()
+		for _, server_name in pairs(utils.get_active_clients_list_by_ft(Require("plenary.filetype").detect(file))) do
+			if server_name == lsp.s.config.name then return server_name end
+		end
+	end
+	local config = Require("lspconfig.configs")[get_configured_server()]
+	if not config then
+		return
+	end
+	coroutine.resume(coroutine.create(function()
+		local root_dir = config.get_root_dir(utils.path.sanitize(file))
+		vim.notify(root_dir)
+	end))
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("Format", function(_opts)
+	vim.lsp.buf.format({ async = true })
+end, { nargs = 0 })
 --
 --
 --
