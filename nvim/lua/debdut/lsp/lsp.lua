@@ -6,13 +6,18 @@ local LSP_Handler = {
 }
 
 function LSP_Handler:emit_change(kind, option, value)
-	if type(self.events[kind .. "_changed_" .. option]) == "function" then
-		self.events[kind .. "_changed_" .. option](value)
+	local fns = self.events[kind .. "_changed_" .. option] or {}
+	for _, fn in ipairs(fns) do
+		fn(value)
 	end
 end
 
 function LSP_Handler:on_change(kind, option, fn)
-	self.events[kind .. "_changed_" .. option] = fn
+	local fns = self.events[kind .. "_changed_" .. option] or {}
+
+	table.insert(fns, fn)
+
+	self.events[kind .. "_changed_" .. option] = fns
 end
 
 local LSP = {}
@@ -34,6 +39,7 @@ LSP_Handler:on_change("state", "client", function(client_id)
 		end)
 	end
 end)
+
 
 LSP.s = setmetatable(LSP.s, {
 	__index = function(self, k)
@@ -67,6 +73,27 @@ end
 LSP.o = setmetatable(LSP.o, getmetatable(LSP.s))
 
 LSP_Handler:on_change("option", "server_name", function(server_name)
+	local lspconfig = Require("lspconfig")
+
+	if lspconfig[server_name] then
+		return
+	end
+
+	local ok, config = pcall(require, "debdut.lsp.settings." .. server_name)
+	if not ok then config = {} end
+
+	config.autostart = false
+	config.on_attach = function(client, bufnr)
+		if client.server_capabilities.inlayHintProvider ~= nil and client.server_capabilities.inlayHintProvider then
+			-- :h vim.lsp.inlay_hint
+			vim.lsp.inlay_hint.enable(bufnr, true)
+		end
+	end
+
+	lspconfig.setup(config)
+end)
+
+LSP_Handler:on_change("option", "server_name", function(server_name)
 	-- https://github.com/neovim/nvim-lspconfig/blob/a27179f56c6f98a4cdcc79ee2971b514815a4940/lua/lspconfig/async.lua#L15C9-L15C41
 	coroutine.resume(coroutine.create(function()
 		local server = Require("lspconfig.configs")[server_name]
@@ -76,7 +103,7 @@ LSP_Handler:on_change("option", "server_name", function(server_name)
 		local bufname = vim.api.nvim_buf_get_name(0)
 
 		local root_dir = server.get_root_dir(Require("lspconfig.util").path.sanitize(bufname)) or
-		Require("lspconfig.util").path.dirname(Require("lspconfig.util").path.sanitize(bufname))
+			Require("lspconfig.util").path.dirname(Require("lspconfig.util").path.sanitize(bufname))
 
 		lsp.s.config = server.make_config(root_dir)
 	end))
@@ -107,5 +134,12 @@ function LSP.status()
 	return language_client_str ..
 		"::" .. filtered_client_str
 end
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(event)
+		lsp.s.client = { id = event.data.client_id }
+	end,
+	group = vim.api.nvim_create_augroup("LSP_Handler-group", { clear = true }),
+})
 
 return { LSP = LSP, LSP_Handler = LSP_Handler }

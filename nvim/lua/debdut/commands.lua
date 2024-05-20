@@ -63,7 +63,6 @@ local function startlsp()
 		-- FIXME should also make sure the new file is in the same workspace, currently, doesn't matter to me
 		callback = function()
 			vim.lsp.buf_attach_client(0, client_id)
-			lsp.s.client = { id = client_id }
 		end,
 		pattern = vim.bo.filetype,
 		group = lspgroup,
@@ -106,13 +105,6 @@ vim.api.nvim_create_user_command("MyLspStartWithCmp", function()
 		{} --[[ reasons argument is optional in signature, but _loader complains down the road due to direct ipairs call ]])
 	lsp.s.config = vim.tbl_deep_extend('force', lsp.s.config, {
 		capabilities = Require("cmp_nvim_lsp").default_capabilities()
-	})
-	vim.api.nvim_create_autocmd("InsertCharPre", {
-		pattern = "*",
-		group = lspgroup,
-		callback = function()
-			vim.schedule(function() vim.lsp.omnifunc(1, 1) end)
-		end,
 	})
 	startlsp()
 end, { nargs = 0 })

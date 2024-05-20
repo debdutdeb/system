@@ -10,6 +10,7 @@ local grammers = {
 	"jsonc", -- for devcontainers
 	"vim",
 	-- "help",
+	"vimdoc",
 	"hcl",
 	"comment", -- for todo fixme etc
 	"markdown",
