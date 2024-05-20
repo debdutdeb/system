@@ -21,38 +21,47 @@ function LSP_Handler:on_change(kind, option, fn)
 	self.events[kind .. "_changed_" .. option] = fns
 end
 
-local LSP = {}
-
-LSP.s = { type = "state" }
+local LSP = {
+	s = {
+		kind = "state"
+	},
+	o = {
+		kind = "option"
+	},
+}
 
 function LSP.s:changed(event, opts)
-	LSP_Handler:emit_change(self.type, event, opts)
+	LSP_Handler:emit_change(self.kind, event, opts)
 end
 
-LSP_Handler:on_change("state", "client", function(opts)
-	local client_id = opts.value
-	if client_id == nil then
-		-- connection just dropped
-		vim.iter(vim.api.nvim_list_bufs()):each(function(bufnr)
-			local state = rawget(LSP.s, bufnr)
-			if state then
-				state.client = nil
-			end
-		end)
-	end
-end)
-
+function LSP.o:changed(event, value)
+	LSP_Handler:emit_change(self.kind, event, value)
+end
 
 LSP.s = setmetatable(LSP.s, {
-	__index = function(self, k)
-		vim.validate({ _ = { k, 's' } })
+	__index = function(self, access)
+		vim.validate({ _ = { access, { 's', 'number' } } })
+		if type(access) == 'number' then
+			local bufnr = access
+			if bufnr < 0 then
+				bufnr = #vim.tbl_keys(self) + bufnr + 1 -- negative indexing
+			end
+
+			return rawget(self, bufnr)
+		end
+
 		local bufnr = vim.api.nvim_get_current_buf()
 		local tbl_for_bufnr = rawget(self, bufnr)
-		return tbl_for_bufnr and tbl_for_bufnr[k]
+		return tbl_for_bufnr and tbl_for_bufnr[access]
 	end,
 
 	__newindex = function(self, key, value)
-		vim.validate({ _ = { key, 's' } })
+		vim.validate({ _ = { key, { 's', 'n' } } })
+		if type(key) == "number" then
+			rawset(self, key, value)
+			return
+		end
+
 		local bufnr = vim.api.nvim_get_current_buf()
 		local item = rawget(self, bufnr)
 		if item then
@@ -62,6 +71,7 @@ LSP.s = setmetatable(LSP.s, {
 		end
 		rawset(self, bufnr, item)
 
+
 		self:changed(key, {
 			bufnr = bufnr,
 			value = value,
@@ -69,11 +79,6 @@ LSP.s = setmetatable(LSP.s, {
 	end,
 })
 
-LSP.o = { type = "option" }
-
-function LSP.o:changed(event, value)
-	LSP_Handler:emit_change(self.type, event, value)
-end
 
 LSP.o = setmetatable(LSP.o, getmetatable(LSP.s))
 
@@ -114,16 +119,22 @@ LSP_Handler:on_change("option", "server_name", function(data)
 		local root_dir = server.get_root_dir(Require("lspconfig.util").path.sanitize(bufname)) or
 			Require("lspconfig.util").path.dirname(Require("lspconfig.util").path.sanitize(bufname))
 
-		lsp.s[data.bufnr].config = server.make_config(root_dir)
+
+		local new_config = server.make_config(root_dir, data.bufnr)
+		if LSP.s[data.bufnr] then
+			LSP.s[data.bufnr].config = new_config
+		else
+			LSP.s[data.bufnr] = { config = new_config }
+		end
 	end))
 end)
 
 function LSP.status()
-	if not lsp.o.server_name then
+	if not LSP.o.server_name then
 		return ""
 	end
 
-	local language_client_str = lsp.o.server_name .. (lsp.s.client and "(connected)" or "(disconnected)")
+	local language_client_str = LSP.o.server_name .. (LSP.s.client and "(connected)" or "(disconnected)")
 
 	local clients = vim.lsp.get_clients()
 
@@ -132,7 +143,7 @@ function LSP.status()
 	end
 
 	local filtered_client_str = vim.iter(clients):map(function(client) return client.name end):filter(function(name)
-		return name ~= lsp.o
+		return name ~= LSP.o
 			.server_name
 	end):join(",")
 
@@ -144,9 +155,22 @@ function LSP.status()
 		"::" .. filtered_client_str
 end
 
+LSP_Handler:on_change("state", "client", function(opts)
+	local client_id = opts.value
+	if client_id == nil then
+		-- connection just dropped
+		vim.iter(vim.api.nvim_list_bufs()):each(function(bufnr)
+			local state = rawget(LSP.s, bufnr)
+			if state then
+				state.client = nil
+			end
+		end)
+	end
+end)
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(event)
-		lsp.s.client = { id = event.data.client_id }
+		LSP.s.client = { id = event.data.client_id }
 	end,
 	group = vim.api.nvim_create_augroup("LSP_Handler-group", { clear = true }),
 })
