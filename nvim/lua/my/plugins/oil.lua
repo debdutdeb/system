@@ -1,6 +1,8 @@
 return {
 	'stevearc/oil.nvim',
-	lazy = false,
+	lazy = true,
+	event = "BufEnter oil-ssh://*",
+	keys = "<leader>e",
 	config = function()
 		require("oil").setup {
 			-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
