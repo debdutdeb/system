@@ -6,6 +6,7 @@ return {
 			'stevearc/overseer.nvim',
 		},
 		keys = { "<leader>db", "<leader>dc" },
+		-- cmd = { "DebugWithArgs" },
 		config = function()
 			require("debdut.dap")
 		end,

@@ -159,3 +159,37 @@ vim.api.nvim_create_user_command("SessionsDeleteCurrent", function()
 	vim.uv.fs_unlink(require("persistence").get_current())
 	require("persistence").stop() -- temporary so it doesn't save it again
 end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("DebugWithArgs", function(t)
+	local args = vim.split(vim.fn.expand(t.args), '\n')
+	require("dap").run({
+		type = vim.bo.filetype,
+		cwd = "${workspaceFolder}",
+		request = 'launch',
+		name = 'Launch file with custom arguments (adhoc)',
+		program = function()
+			return coroutine.create(function(coro)
+				local options = {}
+				require("telescope.pickers")
+					.new(options, {
+						prompt_title = "Path to package or executable",
+						finder = require("telescope.finders").new_oneshot_job(
+							{ "fd", "--hidden", "--no-ignore", "--type", "x" }, {}),
+						sorter = require("telescope.config").values.generic_sorter(options),
+						attach_mappings = function(buffer_number)
+							require("telescope.actions").select_default:replace(function()
+								require("telescope.actions").close(buffer_number)
+								coroutine.resume(coro, require("telescope.actions.state").get_selected_entry()[1])
+							end)
+							return true
+						end,
+					})
+					:find()
+			end)
+		end,
+		args = args,
+	})
+end, {
+	complete = 'file',
+	nargs = '*'
+})

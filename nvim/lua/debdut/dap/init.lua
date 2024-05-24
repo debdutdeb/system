@@ -1,6 +1,6 @@
 local dap = require("dap")
 
-dap.adapters.delve = {
+dap.adapters.go = {
 	type = 'server',
 	port = '${port}',
 	executable = {
@@ -11,9 +11,7 @@ dap.adapters.delve = {
 	}
 }
 
-dap.adapters.go = dap.adapters.delve
-
-dap.adapters.delve_manual = {
+dap.adapters.delve = {
 	type = "server",
 	host = "127.0.0.1",
 	port = 9000,
@@ -34,40 +32,53 @@ end
 -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
 dap.configurations.go = {
 	{
-		type = "delve",
+		type = "go",
 		name = "Debug",
+		cwd = "${workspaceFolder}",
 		request = "launch",
 		program = "${file}"
 	},
 	{
-		type = "delve",
+		type = "go",
 		name = "Debug test", -- configuration for debugging test files
 		request = "launch",
+		cwd = "${workspaceFolder}",
 		mode = "test",
 		program = "${file}"
 	},
 	-- works with go.mod packages and sub packages
 	{
-		type = "delve",
+		type = "go",
 		name = "Debug test (go.mod)",
+		cwd = "${workspaceFolder}",
 		request = "launch",
 		mode = "test",
 		program = "./${relativeFileDirname}"
 	},
 	{
-		type = "delve",
+		type = "go",
 		name = "Attach to process",
+		cwd = "${workspaceFolder}",
 		mode = "local",
 		request = "attach",
 		processId = filtered_pick_process,
 	},
 	{
-		type = "delve_manual",
+		type = "go",
+		name = "Debug module",
+		cwd = "${workspaceFolder}",
+		request = "launch",
+		program = "${workspaceFolder}",
+		args = function() return vim.split(vim.fn.expand(vim.fn.input("Arguments: ")), " ") end,
+	},
+	{
+		type = "delve",
 		name = "Attach to process (manual)",
 		mode = "local",
+		cwd = "${workspaceFolder}",
 		request = "attach",
 		processId = filtered_pick_process,
-	}
+	},
 }
 
 local dapui = require('dapui')
@@ -92,33 +103,33 @@ dapui.setup({
 		expanded = "v",
 		current_frame = ">",
 	},
-    layouts = { { --[[ mostly defaults, "c" marks what changes ]]
-        elements = { {
-            id = "scopes",
-            size = 0.25
-          }, {
-            id = "watches", -- c (order, switches with breakpoints)
-            size = 0.25
-          }, {
-            id = "stacks",
-            size = 0.25
-          }, {
-            id = "breakpoints", -- c (order, switches with breakpoints)
-            size = 0.25
-          } },
-        position = "right", -- c
-        size = 40
-      }, {
-        elements = { {
-            id = "repl",
-            size = 0.5
-          }, {
-            id = "console",
-            size = 0.5
-          } },
-        position = "bottom",
-        size = 10
-      } },
+	layouts = { { --[[ mostly defaults, "c" marks what changes ]]
+		elements = { {
+			id = "scopes",
+			size = 0.25
+		}, {
+			id = "watches", -- c (order, switches with breakpoints)
+			size = 0.25
+		}, {
+			id = "stacks",
+			size = 0.25
+		}, {
+			id = "breakpoints", -- c (order, switches with breakpoints)
+			size = 0.25
+		} },
+		position = "right", -- c
+		size = 40
+	}, {
+		elements = { {
+			id = "repl",
+			size = 0.5
+		}, {
+			id = "console",
+			size = 0.5
+		} },
+		position = "bottom",
+		size = 10
+	} },
 })
 
 -- local send_key_normal_mode = Remap.nsend_keys
@@ -135,6 +146,7 @@ dap.listeners.after.attach.dapui_config = dapui.open
 dap.listeners.before.event_terminated.dapui_config = dapui.close
 
 dap.listeners.before.event_exited.dapui_config = dapui.close
+dap.listeners.before.disconnect.dapui_config = dapui.close
 -- dap.listeners.before.event_stopped["dapui_config"] = dapui.close
 
 vim.fn.sign_define("DapBreakpoint", { text = "Bp", texthl = "", linehl = "", numhl = "" })
