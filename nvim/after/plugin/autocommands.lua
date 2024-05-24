@@ -117,8 +117,3 @@ create_autocommand("FileType", {
 	pattern = { "qf", "help" },
 })
 
-create_autocommand("FileType", {
-	pattern = "lua",
-	group = create_augroup("my/lua-auto-cmp", { clear = true }),
-	command = "LspStartWithCmp",
-})
