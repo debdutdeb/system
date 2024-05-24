@@ -1,4 +1,4 @@
-local dap = Require("dap")
+local dap = require("dap")
 
 dap.adapters.delve = {
 	type = 'server',
@@ -28,7 +28,7 @@ local function filtered_pick_process()
 			opts["filter"] = input or ""
 		end
 	)
-	return Require("dap.utils").pick_process(opts)
+	return require("dap.utils").pick_process(opts)
 end
 
 -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
@@ -70,7 +70,7 @@ dap.configurations.go = {
 	}
 }
 
-local dapui = Require('dapui')
+local dapui = require('dapui')
 
 local vtok, dap_virtual_text = pcall(require, "nvim-dap-virtual-text")
 if vtok then
@@ -144,7 +144,7 @@ local dap_vscode = require "dap.ext.vscode"
 
 dap_vscode.json_decode = require("overseer.json").decode
 
-Require("overseer").patch_dap(true)
+require("overseer").patch_dap(true)
 
 local function dap_continue()
 	dap_vscode.load_launchjs(nil, {})

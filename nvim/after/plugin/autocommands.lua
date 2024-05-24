@@ -27,6 +27,8 @@ local sessions = create_augroup("my/sessions-management", { clear = true })
 create_autocommand("VimEnter", {
 	callback = function(_)
 		-- create a scratch buffer
+		if vim.bo.filetype == "lazy" then return end
+
 		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
 			true)
 		vim.api.nvim_buf_set_name(scratch_bufnr, "Scratch buffer")
@@ -41,11 +43,11 @@ create_autocommand("VimEnter", {
 		end
 
 		vim.schedule(function()
-			if not Require("persistence").get_last() then
-				return Require("telescope.builtin").find_files(Require("telescope.themes").get_cursor({ border = true, layout_config = { width = { padding = 0 } } }))
+			if not require("persistence").get_last() then
+				return require("telescope.builtin").find_files(require("telescope.themes").get_cursor({ border = true, layout_config = { width = { padding = 0 } } }))
 			end
 
-			Require("persistence").load()
+			require("persistence").load()
 		end)
 		--if vim.uv.fs_stat(".vim/session") then
 		--	vim.cmd ":source .vim/session"
@@ -102,7 +104,7 @@ create_autocommand("QuickFixCmdPost", {
 
 create_autocommand({ "TextYankPost" }, {
 	callback = function()
-		Require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
+		require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
 	group = create_augroup("my/yank-post-highlight", { clear = true }),
 })
@@ -113,4 +115,10 @@ create_autocommand("FileType", {
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":q<cr>", { silent = true })
 	end,
 	pattern = { "qf", "help" },
+})
+
+create_autocommand("FileType", {
+	pattern = "lua",
+	group = create_augroup("my/lua-auto-cmp", { clear = true }),
+	command = "LspStartWithCmp",
 })

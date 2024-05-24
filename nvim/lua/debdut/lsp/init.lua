@@ -14,24 +14,39 @@ vim.diagnostic.config({
 	},
 })
 
-_G.lsp = Require("debdut.lsp.lsp").LSP
-
-Require("neodev").setup {}
+require("neodev").setup {}
 
 local language_servers = {
-	"bashls",
-	"clangd",
-	"dockerls",
-	"html",
-	"jsonls",
-	"yamlls",
-	"gopls",
-	"tsserver",
-	"pyright",
-}
-
-local autostart_language_servers = {
-	"lua_ls",
+	bashls = {
+		autostart = false,
+	},
+	clangd = {
+		autostart = false,
+	},
+	dockerls = {
+		autostart = false,
+	},
+	html = {
+		autostart = false,
+	},
+	jsonls = {
+		autostart = false,
+	},
+	yamlls = {
+		autostart = false,
+	},
+	gopls = {
+		autostart = false,
+	},
+	tsserver = {
+		autostart = false,
+	},
+	pyright = {
+		autostart = false,
+	},
+	lua_ls = {
+		autostart = true,
+	},
 }
 
 local formatters = {
@@ -47,15 +62,15 @@ local debug_servers = {
 local manual_installs = {
 }
 
-Require("mason").setup {}
+require("mason").setup {}
 
 local ensure_installed = {}
 
-for _, list in ipairs({ language_servers, formatters, linters, debug_servers, manual_installs, autostart_language_servers }) do
+for _, list in ipairs({ language_servers, formatters, linters, debug_servers, manual_installs, vim.tbl_keys(language_servers) }) do
 	vim.list_extend(ensure_installed, list)
 end
 
-Require("mason-tool-installer").setup {
+require("mason-tool-installer").setup {
 	ensure_installed = ensure_installed,
 	auto_update = false,
 	run_on_start = true,
@@ -75,15 +90,13 @@ local function client_on_attach(client, bufnr)
 	end
 end
 
-Require("mason-lspconfig").setup {}
+require("mason-lspconfig").setup {}
 
-for _, name in ipairs(autostart_language_servers) do
+for name, extension in pairs(language_servers) do
 	local ok, config = pcall(require, "debdut.lsp.settings." .. name)
 	if not ok then
 		config = {}
 	end
 
-	config.on_attach = client_on_attach
-
-	Require("lspconfig")[name].setup(config)
+	require("lspconfig")[name].setup(vim.tbl_extend('force', config, { on_attach = client_on_attach }, extension))
 end

@@ -8,12 +8,12 @@ dap_js.setup({
 })
 
 for _, language in ipairs({ "typescript", "javascript", "node" }) do
-	Require("dap").configurations[language] = {
+	require("dap").configurations[language] = {
 		{
 			type = "pwa-node",
 			request = "attach",
 			name = "Attach",
-			processId = Require("dap.utils").pick_process,
+			processId = require("dap.utils").pick_process,
 			cwd = "${workspaceFolder}",
 		},
 		{

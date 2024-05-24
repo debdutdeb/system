@@ -9,7 +9,7 @@ return {
 			"saadparwaiz1/cmp_luasnip",
 		},
 		config = function()
-			local cmp = Require("cmp")
+			local cmp = require("cmp")
 		cmp.setup {
 			sources = {
 				{ name = "nvim_lsp" },
@@ -31,7 +31,7 @@ return {
 			-- Enable luasnip to handle snippet expansion for nvim-cmp
 			snippet = {
 				expand = function(args)
-					Require("luasnip").lsp_expand(args.body)
+					require("luasnip").lsp_expand(args.body)
 				end,
 			},
 		}

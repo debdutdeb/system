@@ -99,14 +99,14 @@ lazy.setup({ import = "my/plugins" }, {
 
 			-- open lazygit log
 			["<localleader>l"] = function(plugin)
-				Require("lazy.util").float_term({ "lazygit", "log" }, {
+				require("lazy.util").float_term({ "lazygit", "log" }, {
 					cwd = plugin.dir,
 				})
 			end,
 
 			-- open a terminal for the plugin dir
 			["<localleader>t"] = function(plugin)
-				Require("lazy.util").float_term(nil, {
+				require("lazy.util").float_term(nil, {
 					cwd = plugin.dir,
 				})
 			end,

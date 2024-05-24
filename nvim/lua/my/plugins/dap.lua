@@ -7,7 +7,7 @@ return {
 		},
 		keys = { "<leader>db", "<leader>dc" },
 		config = function()
-			Require("debdut.dap")
+			require("debdut.dap")
 		end,
 	},
 	{

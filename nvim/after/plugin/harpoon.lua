@@ -4,7 +4,7 @@ if not (harpoon_mark_ok and harpoon_ui_ok) then
 	return
 end
 
-local nnoremap = Require("chaos.keymaps").nnoremap
+local nnoremap = require("chaos.keymaps").nnoremap
 
 nnoremap("<leader>a", function()
 	harpoon_mark.add_file()

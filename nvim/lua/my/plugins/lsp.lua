@@ -14,7 +14,7 @@ return {
       "b0o/SchemaStore.nvim",
     },
     config = function()
-		Require("debdut.lsp")
+		require("debdut.lsp")
     end,
 		lazy = false
   },

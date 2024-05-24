@@ -21,14 +21,14 @@ vim.api.nvim_create_user_command("LspRootDir", function(opts)
 	if true then
 		return
 	end ]]
-	local utils = Require("lspconfig.util")
+	local utils = require("lspconfig.util")
 	local file = vim.api.nvim_buf_get_name(0)
 	local get_configured_server = function()
-		for _, server_name in pairs(utils.get_active_clients_list_by_ft(Require("plenary.filetype").detect(file))) do
+		for _, server_name in pairs(utils.get_active_clients_list_by_ft(require("plenary.filetype").detect(file))) do
 			if server_name == lsp.s.config.name then return server_name end
 		end
 	end
-	local config = Require("lspconfig.configs")[get_configured_server()]
+	local config = require("lspconfig.configs")[get_configured_server()]
 	if not config then
 		return
 	end
@@ -50,7 +50,7 @@ end, { nargs = 0 })
 -- 	chaos.setup_commands()
 -- end
 
-local lspgroup = vim.api.nvim_create_augroup("my/lsp-group", { clear = true })
+--[[ local lspgroup = vim.api.nvim_create_augroup("my/lsp-group", { clear = true })
 
 local function startlsp()
 	local client_id = vim.lsp.start(lsp.s.config)
@@ -73,13 +73,13 @@ local function stoplsp()
 	end
 
 	lsp.s.client = nil
-end
+end ]]
 
-vim.api.nvim_create_user_command("MyLspStart", startlsp, { nargs = 0 })
+-- vim.api.nvim_create_user_command("MyLspStart", startlsp, { nargs = 0 })
 
-vim.api.nvim_create_user_command("MyLspStartWithAutocomplete", function()
-	pcall(stoplsp)
-	-- local coq = Require('coq')
+--[[ vim.api.nvim_create_user_command("MyLspStartWithAutocomplete", function()
+	-- pcall(stoplsp)
+	-- local coq = require('coq')
 	-- lsp.b.config = lsp.b.config + {
 	-- 	capabilities = coq.lsp_ensure_capabilities(lsp.b.config.capabilities)
 	-- }
@@ -92,38 +92,70 @@ vim.api.nvim_create_user_command("MyLspStartWithAutocomplete", function()
 	})
 	startlsp()
 	--coq.Now("--shut-up")
-end, { nargs = 0 })
+end, { nargs = 0 }) ]]
 
-vim.api.nvim_create_user_command("MyLspStartWithCmp", function()
-	pcall(stoplsp)
-	Require("lazy.core.loader").load("nvim-cmp",
+vim.api.nvim_create_user_command("LspStartWithCmp", function()
+	require("lazy.core.loader").load("nvim-cmp",
 		{} --[[ reasons argument is optional in signature, but _loader complains down the road due to direct ipairs call ]])
-	lsp.s.config = vim.tbl_deep_extend('force', lsp.s.config, {
-		capabilities = Require("cmp_nvim_lsp").default_capabilities()
-	})
-	startlsp()
+
+	local configs = require("lspconfig.util").get_config_by_ft(vim.bo.filetype)
+
+	if #configs == 0 then
+		vim.notify("no lsp configurations set for this filetype")
+		return
+	end
+
+
+	---@param config table
+	local set_capabilities = function(config)
+		config.capabilities = require("cmp_nvim_lsp").default_capabilities(configs.capabilities)
+	end
+
+	local selection = -1
+
+	if #configs == 1 then
+		selection = 1
+	elseif #configs > 1 then
+		local prompt = ""
+
+		for i, config in ipairs(configs) do
+			prompt = prompt .. string.format("%d. %s\n", i, config.name)
+		end
+
+		selection = vim.input(prompt)
+	end
+
+
+	if selection < 1 or selection > #configs then
+		error("incorrect option")
+		return
+	end
+
+	set_capabilities(configs[selection])
+
+	configs[selection].launch()
 end, { nargs = 0 })
 
-vim.api.nvim_create_user_command("MyLspStop", stoplsp, { nargs = 0 })
-
-vim.api.nvim_create_user_command("MyLspRestart", function()
-	pcall(stoplsp) -- ignoring error for now
-	startlsp()
-end, { nargs = 0 })
+-- vim.api.nvim_create_user_command("MyLspStop", stoplsp, { nargs = 0 })
+--
+-- vim.api.nvim_create_user_command("MyLspRestart", function()
+-- 	pcall(stoplsp) -- ignoring error for now
+-- 	startlsp()
+-- end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("MyLspLog", function()
 	vim.cmd.edit(vim.fn.stdpath("state") .. "/lsp.log")
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("SessionsDeleteAll", function()
-	--[[ for _, session_file in ipairs(Require("persistence").list()) do
+	--[[ for _, session_file in ipairs(require("persistence").list()) do
 		vim.uv.fs_unlink(session_file)
 	end ]]
-	vim.uv.fs_rmdir(Require("persistence.config").options.dir)
+	vim.uv.fs_rmdir(require("persistence.config").options.dir)
 	require("persistence").stop() -- temporary so it doesn't save it again
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("SessionsDeleteCurrent", function()
-	vim.uv.fs_unlink(Require("persistence").get_current())
+	vim.uv.fs_unlink(require("persistence").get_current())
 	require("persistence").stop() -- temporary so it doesn't save it again
 end, { nargs = 0 })
