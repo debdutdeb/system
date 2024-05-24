@@ -68,8 +68,8 @@ local function leadernnoremap(key, cmd, opts)
 end
 
 -- LSP
-leadernnoremap("ll", "<cmd>MyLspStart<cr>")
-leadernnoremap("lL", "<cmd>MyLspStartWithAutocomplete<cr>")
+leadernnoremap("ll", "<cmd>LspStart<cr>")
+leadernnoremap("lL", "<cmd>LspStartWithCmp<cr>")
 
 leadernnoremap("o", "o<Esc>")
 leadernnoremap("O", "O<Esc>")
