@@ -11,6 +11,6 @@ return {
 	end)(),
 	priority = 1000,
 	config = function()
-		require("chaos")
+		require("chaos").setup_commands()
 	end,
 }
