@@ -112,7 +112,8 @@ for _, key_fn in pairs({ nnoremap, inoremap, vnoremap, xnoremap }) do
 	key_fn("<Left>", nil)
 end
 
-vnoremap("<leader>gu", "<CMD>GitUrl<CR>")
+vnoremap("<leader>gu", "<CMD>GitUrl!<CR>")
+nnoremap("<leader>gu", "<CMD>GitUrl!<CR>")
 require("chaos.fun")
 vnoremap("<leader>cf", "<CMD>Freeze /tmp/freeze.png<CR>")
 
