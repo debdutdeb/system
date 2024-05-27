@@ -114,6 +114,6 @@ create_autocommand("FileType", {
 	callback = function(_)
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":q<cr>", { silent = true })
 	end,
-	pattern = { "qf", "help" },
+	pattern = { "qf", "help", "fugitive", "git" },
 })
 

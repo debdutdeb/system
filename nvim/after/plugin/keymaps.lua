@@ -261,3 +261,9 @@ leadernnoremap("sc", function()
 end)
 
 leadernnoremap("Sd", ":SessionsDeleteCurrent<cr>")
+
+nnoremap("<A-G>", ":Git<cr>")
+nnoremap("<A-g>", ":Git ", { silent = false })
+nnoremap("<A-g>-", ":Git ", { silent = false })
+nnoremap("<A-g>p", ":Git! push<cr>")
+nnoremap("<A-g>P", ":Git! push -f<cr>")
