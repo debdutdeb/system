@@ -5,6 +5,7 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter-refactor",
+			 "treesitter-context",
 		},
 		config = function()
 			require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
@@ -23,7 +24,7 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
-		dependencies = { "ts" },
+		name = "treesitter-context",
 		opts = require("debdut.treesitter_context"),
 	},
 	"nvim-treesitter/nvim-treesitter-refactor",
