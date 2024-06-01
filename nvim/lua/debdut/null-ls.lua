@@ -36,12 +36,12 @@ null_ls.setup({
 			filetypes = { "sh", "bash" },
 		}),
 		-- formatting.shellharden,
-		code_actions.shellcheck.with({
-			filetypes = { "sh", "bash" },
-		}),
-		diagnostics.shellcheck.with({
-			filetypes = { "sh", "bash" },
-		}),
+		-- code_actions.shellcheck.with({
+		-- 	filetypes = { "sh", "bash" },
+		-- }),
+		-- diagnostics.shellcheck.with({
+		-- 	filetypes = { "sh", "bash" },
+		-- }),
 		formatting.clang_format,
 		-- diagnostics.clang_check,
 		-- diagnostics.flake8

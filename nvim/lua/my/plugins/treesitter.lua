@@ -1,7 +1,7 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		ft = { "c", "cpp", "lua", "go", "typescript", "typescriptreact", "javascript", "javascriptreact", "rust", "markdown", "hcl", "terraform" },
+		ft = require('debdut.filetypes-that-need-code-things'),
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter-refactor",

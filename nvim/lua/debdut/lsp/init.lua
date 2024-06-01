@@ -50,9 +50,16 @@ local language_servers = {
 }
 
 local formatters = {
+	"prettier",
+	"black",
+	-- "sylua",
+	"shfmt",
+	"clang_format",
+	-- "perltidy",
 }
 
 local linters = {
+	"shellcheck",
 }
 
 local debug_servers = {
@@ -60,13 +67,16 @@ local debug_servers = {
 }
 
 local manual_installs = {
+	"perltidy",
 }
+
+require("mason-null-ls").setup {}
 
 require("mason").setup {}
 
 local ensure_installed = {}
 
-for _, list in ipairs({ language_servers, formatters, linters, debug_servers, manual_installs, vim.tbl_keys(language_servers) }) do
+for _, list in ipairs({ language_servers, formatters, linters, debug_servers, vim.tbl_keys(language_servers) }) do
 	vim.list_extend(ensure_installed, list)
 end
 
@@ -80,10 +90,12 @@ require("mason-tool-installer").setup {
 		["mason-nvim-dap"] = true,
 	},
 	-- debounce_hours = 7 * 24,
-	start_delay = 5,
+	-- start_delay = 5,
 }
 
 local function client_on_attach(client, bufnr)
+	if client.name == "tsserver" then return end
+
 	if client.server_capabilities.inlayHintProvider ~= nil and client.server_capabilities.inlayHintProvider then
 		-- :h vim.lsp.inlay_hint
 		vim.lsp.inlay_hint.enable(bufnr, true)
