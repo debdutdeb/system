@@ -262,8 +262,20 @@ end)
 
 leadernnoremap("Sd", ":SessionsDeleteCurrent<cr>")
 
-nnoremap("<A-G>", ":Git<cr>")
-nnoremap("<A-g>", ":Git! ", { silent = false })
-nnoremap("<A-g>-", ":Git ", { silent = false })
-nnoremap("<A-g>p", ":Git! push<cr>")
-nnoremap("<A-g>P", ":Git! push -f<cr>")
+nnoremap("<A-g>.", ":G<cr>")
+nnoremap("<A-g><space>", ":G! ", { silent = false })
+-- git push
+nnoremap("<A-g>pp", ":G! push origin HEAD<CR>")
+nnoremap("<A-g>pf", ":G! push origin HEAD -f<CR>")
+-- git status
+nnoremap("<A-g>ss", ":G status --short %<cr>")
+nnoremap("<A-g>sl", ":G status --long %<cr>")
+-- git add
+nnoremap("<A-g>ap", ":G add --patch %<cr>")
+nnoremap("<A-g>af", ":G add %<cr>")
+-- git diff
+nnoremap("<A-g>ds", ":Gdiffsplit<cr>")
+-- git commit
+nnoremap("<A-g>cc", ":G commit<cr>")
+nnoremap("<A-g>c<space>", ":G commit ", { silent = false })
+nnoremap("<A-g>cm", ":G commit -m ", { silent = false })
