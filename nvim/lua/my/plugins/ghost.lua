@@ -1,0 +1,3 @@
+return {
+	"raghur/vim-ghost",
+}
