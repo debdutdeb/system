@@ -279,3 +279,7 @@ nnoremap("<A-g>ds", ":Gdiffsplit<cr>")
 nnoremap("<A-g>cc", ":G commit<cr>")
 nnoremap("<A-g>c<space>", ":G commit ", { silent = false })
 nnoremap("<A-g>cm", ":G commit -m ", { silent = false })
+
+nnoremap("[c", function()
+  require("treesitter-context").go_to_context(vim.v.count1)
+end, { silent = true })

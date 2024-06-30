@@ -10,6 +10,7 @@ return {
 		-- appear in the context window.
 		default = {
 			"class",
+			"abstract_class",
 			"function",
 			"method",
 			"for",
@@ -74,4 +75,6 @@ return {
 	-- Separator between context and content. Should be a single character string, like '-'.
 	-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
 	separator = nil,
+	multiline_threshold = 20,
+	line_numbers = true,
 }
