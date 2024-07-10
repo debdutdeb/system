@@ -18,6 +18,7 @@ local grammers = {
 	"zig",
 	"lua",
 	"html",
+	"org",
 }
 
 local plenary_path = require("plenary.path")
@@ -35,7 +36,7 @@ return {
 	parser_install_dir = parser_install_dir,
 	ensure_installed = grammers, -- one of "all" or a list of languages
 	-- the following is causing some issues :' )
-	ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
+	ignore_install = { "phpdoc", "org" }, -- List of parsers to ignore installing
 	highlight = {
 		enable = true,          -- false will disable the whole extension
 		additional_vim_regex_highlighting = true,

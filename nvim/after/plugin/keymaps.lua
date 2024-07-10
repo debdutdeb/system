@@ -71,8 +71,8 @@ end
 leadernnoremap("ll", "<cmd>LspStart<cr>")
 leadernnoremap("lL", "<cmd>LspStartWithCmp<cr>")
 
-leadernnoremap("o", "o<Esc>")
-leadernnoremap("O", "O<Esc>")
+nnoremap("<M-o>", "o<Esc>")
+nnoremap("<M-O>", "O<Esc>")
 
 local start_dir = vim.uv.cwd() -- load once
 
