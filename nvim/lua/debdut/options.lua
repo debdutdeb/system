@@ -76,7 +76,7 @@ vim.opt.statusline =
 
 vim.opt.laststatus = 3 -- single statusline ":h 'laststatus'"
 
-vim.cmd "colorscheme habamax"
+-- vim.cmd "colorscheme habamax"
 
 vim.opt.foldmethod = "syntax"
 vim.opt.foldenable = true
