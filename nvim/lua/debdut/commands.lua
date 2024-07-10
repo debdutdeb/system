@@ -194,3 +194,12 @@ end, {
 	complete = 'file',
 	nargs = '*'
 })
+
+vim.api.nvim_create_user_command("Present", function()
+	vim.cmd "Presenting"
+	vim.schedule(function()
+		vim.cmd 'setlocal cocu=nvc'
+	end)
+end, {
+	nargs = 0,
+})
