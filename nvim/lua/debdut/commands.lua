@@ -198,6 +198,7 @@ end, {
 vim.api.nvim_create_user_command("Present", function()
 	vim.cmd "Presenting"
 	vim.schedule(function()
+		vim.cmd 'setlocal wrap'
 		vim.cmd 'setlocal cocu=nvc'
 	end)
 end, {
