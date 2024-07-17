@@ -48,6 +48,10 @@ vnoremap(">", ">gv")
 
 -- don't save overwritten text on register
 vnoremap("p", '"_dP')
+nnoremap("<A-p>", "o<Esc>p")
+nnoremap("<A-P>", "O<Esc>P")
+inoremap("<A-p>", "<Return><C-r>\"")
+inoremap("<A-P>", "<Esc><A-P>i")
 
 -- find and replace
 vnoremap("<leader>r", "\"hy:%s/<C-r>h//g<left><left>", { silent = false })
