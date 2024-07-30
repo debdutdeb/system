@@ -3,11 +3,7 @@ if not null_ls_status_ok then
 	return
 end
 
--- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
 local formatting = null_ls.builtins.formatting
--- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
-local diagnostics = null_ls.builtins.diagnostics
-local code_actions = null_ls.builtins.code_actions
 
 local function get_prettier_path()
 	local dirs = vim.fs.find("node_modules", {
@@ -45,10 +41,10 @@ null_ls.setup({
 		formatting.clang_format,
 		-- diagnostics.clang_check,
 		-- diagnostics.flake8
-		formatting.perltidy,
+		-- formatting.perltidy,
 		-- eslint_d is using +2g memory, not good
-		-- diagnostics.eslint_d, -- like eslint but faster?
-		code_actions.gitsigns,
+	    require("none-ls.diagnostics.eslint_d"), -- like eslint but faster?
+		-- code_actions.gitsigns,
 	},
 })
 
