@@ -2,7 +2,7 @@ local actions = require("telescope.actions")
 
 local chaotic_color = require("chaos.colorschemes")
 local default_with_optional_save_colorscheme = actions.select_default
-if chaotic_color ~= NIL then
+if chaotic_color ~= nil then
 	default_with_optional_save_colorscheme = chaotic_color.maybe_save_colorscheme + actions.select_default
 end
 

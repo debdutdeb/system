@@ -5,7 +5,7 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter-refactor",
-			 "treesitter-context",
+			"treesitter-context",
 		},
 		config = function()
 			require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
@@ -28,4 +28,9 @@ return {
 		opts = require("debdut.treesitter_context"),
 	},
 	"nvim-treesitter/nvim-treesitter-refactor",
-}
+	{
+		"ray-x/lsp_signature.nvim",
+		ft = require('debdut.filetypes-that-need-code-things'),
+		-- opts = {},
+		-- config = function(_, opts) require 'lsp_signature'.setup(opts) end
+	} }
