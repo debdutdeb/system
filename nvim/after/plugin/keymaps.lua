@@ -288,8 +288,32 @@ nnoremap("[c", function()
 	require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true })
 
+---@param path string
+local function _morph_path_for_ft(path)
+	local js_types = function()
+		-- no real regex to make this easier
+		-- help?
+		local patterns = { "%.ts$", "%.js$", "%.jsx$", "%.tsx$" }
+		for _, pattern in ipairs(patterns) do
+			if path:match(pattern) then
+				return path:gsub(pattern, "")
+			end
+		end
+	end
+
+	local morph_tbl = {
+		typescript = js_types,
+		javascript = js_types,
+		javascriptreact = js_types,
+		typescriptreact = js_types,
+	}
+
+	return morph_tbl[vim.bo.filetype]()
+end
+
 nnoremap("<C-f>", function()
 	require 'chaos.utils'.get_file_relative_path_with_telescope(function(path)
+		path = _morph_path_for_ft(path)
 		vim.fn.setreg("+", path)
 		vim.schedule(function()
 			vim.notify("relative path copied to register +")
@@ -299,9 +323,9 @@ end, { silent = false });
 
 inoremap("<C-f>", function()
 	require 'chaos.utils'.get_file_relative_path_with_telescope(function(path)
+		path = _morph_path_for_ft(path)
 		vim.api.nvim_put({ path }, "", false, true)
 		-- why am i put in normal more -_-
 		tsend_keys('a')
 	end)
 end, { silent = false })
-
