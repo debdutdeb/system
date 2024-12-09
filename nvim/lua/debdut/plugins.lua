@@ -23,7 +23,7 @@ lazy.setup({ import = "my/plugins" }, {
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 	change_detection = { notify = false },
 	defaults = {
-		lazy = true, -- should plugins be lazy-loaded?
+		lazy = false, -- should plugins be lazy-loaded?
 		version = nil,
 		-- default `cond` you can use to globally disable a lot of plugins
 		-- when running inside vscode for example

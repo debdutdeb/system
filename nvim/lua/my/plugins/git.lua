@@ -2,8 +2,11 @@ return {
 	{
 		"tpope/vim-fugitive",
 		event = "VeryLazy",
+		dependencies = { "debdutdeb/chaos.nvim" },
 		cond = function()
-			return require("chaos.git_handlers").is_git_worktree()
+			local ok, git = pcall(require, "chaos.git_handlers")
+			if not ok then return false end
+			return git.is_git_worktree()
 			--[[ return #vim.fs.find('.git',
 				{ upward = true, type = 'directory', limit = 1, stop = vim.uv.os_homedir(), path = vim.fs.dirname(vim
 				.api.nvim_buf_get_name(0)), }) == 1 ]]
@@ -12,8 +15,11 @@ return {
 	{
 		"lewis6991/gitsigns.nvim",
 		event = "VeryLazy",
+		dependencies = { "debdutdeb/chaos.nvim" },
 		cond = function()
-			return require("chaos.git_handlers").is_git_worktree()
+			local ok, git = pcall(require, "chaos.git_handlers")
+			if not ok then return false end
+			return git.is_git_worktree()
 		end,
 		opts = {
 			signs                             = {
