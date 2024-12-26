@@ -38,7 +38,7 @@ local language_servers = {
 	gopls = {
 		autostart = false,
 	},
-	tsserver = {
+	ts_ls = {
 		autostart = false,
 	},
 	pyright = {
@@ -94,7 +94,7 @@ require("mason-tool-installer").setup {
 }
 
 local function client_on_attach(client, bufnr)
-	if client.name == "tsserver" then return end
+	if client.name == "ts_ls" then return end
 
 	--[[ if client.server_capabilities.inlayHintProvider ~= nil and client.server_capabilities.inlayHintProvider then
 		-- :h vim.lsp.inlay_hint

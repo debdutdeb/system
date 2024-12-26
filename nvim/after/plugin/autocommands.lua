@@ -1,3 +1,5 @@
+if vim == nil then vim = {} end
+
 vim.cmd([[
 augroup _auto_resize
 autocmd!
@@ -42,13 +44,37 @@ create_autocommand("VimEnter", {
 			return
 		end
 
-		vim.schedule(function()
-			if not require("persistence").get_last() then
-				return require("telescope.builtin").find_files(require("telescope.themes").get_cursor({ border = true, layout_config = { width = { padding = 0 } } }))
+		local schedule_load_or_default = setmetatable({
+			fn = function() end,
+			count = 0,
+		}, {
+			__call = function(self)
+				self.fn()
 			end
+		})
 
-			require("persistence").load()
-		end)
+		schedule_load_or_default.fn = function()
+			vim.schedule(function()
+				local ok, p = pcall(require, "persistence")
+				if not ok then
+					if schedule_load_or_default.count == 5 then
+						vim.notify("persistence loading reached retry limit, not trying again")
+						return
+					end
+					schedule_load_or_default.count = schedule_load_or_default.count + 1
+					return schedule_load_or_default.fn()
+				end
+
+				local _, stat = pcall(vim.uv.fs_stat, p.current())
+				if stat == nil then
+					return require("telescope.builtin").find_files(require("telescope.themes").get_cursor({ border = true, layout_config = { width = { padding = 0 } } }))
+				end
+
+				p.load()
+			end)
+		end
+
+		schedule_load_or_default()
 		--if vim.uv.fs_stat(".vim/session") then
 		--	vim.cmd ":source .vim/session"
 		--else
@@ -116,4 +142,3 @@ create_autocommand("FileType", {
 	end,
 	pattern = { "qf", "help", "fugitive", "git" },
 })
-
