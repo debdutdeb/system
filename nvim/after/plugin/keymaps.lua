@@ -329,3 +329,10 @@ inoremap("<C-f>", function()
 		tsend_keys('a')
 	end)
 end, { silent = false })
+
+
+leadernnoremap("pd", "<cmd>NeovimProjectDiscover<cr>")
+leadernnoremap("ph", "<cmd>NeovimProjectHistory<cr>")
+leadernnoremap("plr", "<cmd>NeovimProjectLoadRecent<cr>")
+leadernnoremap("plh", "<cmd>NeovimProjectLoadHistory<cr>")
+leadernnoremap("pll", "<cmd>NeovimProjectLoad<cr>")
