@@ -19,6 +19,7 @@ local grammers = {
 	"lua",
 	"html",
 	"org",
+	"dockerfile",
 }
 
 local plenary_path = require("plenary.path")
