@@ -336,3 +336,16 @@ leadernnoremap("ph", "<cmd>NeovimProjectHistory<cr>")
 leadernnoremap("plr", "<cmd>NeovimProjectLoadRecent<cr>")
 leadernnoremap("plh", "<cmd>NeovimProjectLoadHistory<cr>")
 leadernnoremap("pll", "<cmd>NeovimProjectLoad<cr>")
+
+local _deloaded = {}
+
+leadernnoremap("dpt", function()
+	-- disable plugin telescope
+	require("lazy.core.loader").deactivate(require("lazy.core.config").plugins["telescope.nvim"])
+end)
+
+leadernnoremap("lpt", function()
+	-- load plugin telescope
+	require("lazy.core.loader").load("telescope")
+	vim.notify("loaded telescope")
+end)
