@@ -33,7 +33,7 @@ local language_servers = {
 		autostart = false,
 	},
 	yamlls = {
-		autostart = false,
+		autostart = true,
 	},
 	gopls = {
 		autostart = false,
@@ -47,6 +47,13 @@ local language_servers = {
 	lua_ls = {
 		autostart = true,
 	},
+	perlnavigator = {
+		autostart = false,
+	},
+	ansiblels = {
+		-- https://github.com/neovim/nvim-lspconfig/blob/94dda50b2d9a29d0b76562a9027029538840e2d7/lua/lspconfig/configs/ansiblels.lua#L26
+		autostart = true,
+	},
 }
 
 local formatters = {
@@ -56,10 +63,12 @@ local formatters = {
 	"shfmt",
 	"clang_format",
 	-- "perltidy",
+	"biome",
 }
 
 local linters = {
 	"shellcheck",
+	"biome",
 }
 
 local debug_servers = {

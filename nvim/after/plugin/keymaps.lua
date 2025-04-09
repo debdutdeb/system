@@ -82,7 +82,7 @@ local start_dir = vim.uv.cwd() -- load once
 
 leadernnoremap("w", function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end)
 leadernnoremap("W", function() vim.o.wrap = not vim.opt.wrap:get() end)
-leadernnoremap("q", "<cmd>q!<cr>")
+-- leadernnoremap("q", "<cmd>q!<cr>")
 leadernnoremap("c", "<cmd>bd!<cr>")
 
 leadernnoremap("F", function()
@@ -221,7 +221,7 @@ leadernnoremap("lS", {
 	end,
 })
 leadernnoremap("lR", {
-	fallack = vim.lsp.buf.references,
+	fallback = vim.lsp.buf.references,
 	callback = function()
 		return telescope_builtin.lsp_references({ border = false })
 	end,
@@ -337,8 +337,6 @@ leadernnoremap("plr", "<cmd>NeovimProjectLoadRecent<cr>")
 leadernnoremap("plh", "<cmd>NeovimProjectLoadHistory<cr>")
 leadernnoremap("pll", "<cmd>NeovimProjectLoad<cr>")
 
-local _deloaded = {}
-
 leadernnoremap("dpt", function()
 	-- disable plugin telescope
 	require("lazy.core.loader").deactivate(require("lazy.core.config").plugins["telescope.nvim"])
@@ -349,3 +347,13 @@ leadernnoremap("lpt", function()
 	require("lazy.core.loader").load("telescope")
 	vim.notify("loaded telescope")
 end)
+
+leadernnoremap("tn", function ()
+	telescope_builtin = nil
+end)
+
+leadernnoremap("tt", function()
+	telescope_builtin = require("telescope.builtin")
+end)
+
+nnoremap("<C-b>", "<cmd>Neotree toggle action=show position=right<cr>")
