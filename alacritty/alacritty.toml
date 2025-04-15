@@ -31,7 +31,7 @@ foreground = "#c5c8c6"
 
 [env]
 TERM = "xterm-256color"
-ZDOTDIR = "/opt/zsh"
+# ZDOTDIR = "/opt/zsh"
 
 [font]
 size = 18.0
@@ -361,8 +361,9 @@ foreground = "#c5c8c6"
 [scrolling]
 history = 5000
 
-[shell]
-program = "/opt/homebrew/bin/zsh"
+[terminal.shell]
+# program = "/opt/homebrew/bin/zsh"
+program = "/bin/bash"
 
 [window]
 dynamic_padding = false
