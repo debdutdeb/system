@@ -1,5 +1,3 @@
-local _, neotree = pcall(require, "neo-tree")
-
 -- luarocks install magick
 
 return {
@@ -13,12 +11,16 @@ return {
 	},
 	lazy = false, -- neo-tree will lazily load itself
 	---@module "neo-tree"
-	---@type neotree.Config?
+	---@type require('neo-tree').Config?
 	opts = {
 		-- fill any relevant options here
 		border = "none",
 		window = {
 			position = "right",
+		},
+		filesystem = {
+			-- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/5224467c6a49a6c77b8a8333f4d9af0abc788e10/lua/neo-tree/setup/netrw.lua#L14
+			hijack_netrw_behavior = "" -- I don't know what it should be to be disabled but meh.
 		}
 	},
 }

@@ -56,6 +56,8 @@ local language_servers = {
 	},
 }
 
+vim.treesitter.language.register('yaml', 'yaml.ansible') -- make it load on ansible files
+
 local formatters = {
 	"prettier",
 	"black",
@@ -69,6 +71,7 @@ local formatters = {
 local linters = {
 	"shellcheck",
 	"biome",
+	"ansible-lint"
 }
 
 local debug_servers = {
@@ -110,7 +113,7 @@ local function client_on_attach(client, bufnr)
 		vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 	end ]]
 
-	require"lsp_signature".on_attach({}, bufnr)
+	require "lsp_signature".on_attach({}, bufnr)
 end
 
 require("mason-lspconfig").setup {}
