@@ -1,5 +1,6 @@
 return {
 	"folke/persistence.nvim",
+	enabled = vim.g.vscode == nil,
 	opts = {
 		-- hack to support branches kinda
 		dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/") .. (function()

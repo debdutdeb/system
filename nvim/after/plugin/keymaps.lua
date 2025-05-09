@@ -1,3 +1,7 @@
+if vim.g.vscode then
+	return
+end
+
 local Remap = require("chaos.keymaps")
 
 local telescope_builtin = require("telescope.builtin")

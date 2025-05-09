@@ -2,13 +2,10 @@
 if vim.g.vscode then
 	local vscode = require 'vscode'
 
-	if vscode.eval 'return !!vscode.vscode_neovim_activated' then
-		return {}
-	end
-
-	vscode.eval 'vscode.vscode_neovim_activated = true'
-
-	vscode.action 'vscode-neovim.stop'
+	-- don't need to load plugins here
+	require("debdut.options")
+	require("debdut.commands")
+	require("debdut.vscode.keymaps")
 
 	return {}
 end

@@ -28,6 +28,7 @@ local sessions = create_augroup("my/sessions-management", { clear = true })
 
 create_autocommand("VimEnter", {
 	callback = function(_)
+		if vim.g.vscode then return end
 		-- create a scratch buffer
 		if vim.bo.filetype == "lazy" then return end
 
