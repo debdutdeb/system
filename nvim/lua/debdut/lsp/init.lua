@@ -82,7 +82,7 @@ local manual_installs = {
 	"perltidy",
 }
 
-require("mason-null-ls").setup {}
+-- require("mason-null-ls").setup {}
 
 require("mason").setup {}
 
@@ -98,7 +98,7 @@ require("mason-tool-installer").setup {
 	run_on_start = true,
 	integrations = {
 		["mason-lspconfig"] = true,
-		["mason-null-ls"] = true,
+		-- ["mason-null-ls"] = true,
 		["mason-nvim-dap"] = true,
 	},
 	-- debounce_hours = 7 * 24,

@@ -5,9 +5,9 @@ return {
     dependencies = {
       "folke/neodev.nvim",
       "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+			{"williamboman/mason-lspconfig.nvim",version="^1.0.0"},
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-	  "jay-babu/mason-null-ls.nvim",
+	  -- "jay-babu/mason-null-ls.nvim",
 
       -- Schema information
       "b0o/SchemaStore.nvim",

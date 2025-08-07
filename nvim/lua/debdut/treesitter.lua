@@ -20,6 +20,7 @@ local grammers = {
 	"html",
 	"org",
 	"dockerfile",
+	"toml",
 }
 
 local plenary_path = require("plenary.path")

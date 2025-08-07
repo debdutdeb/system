@@ -20,7 +20,7 @@ return {
 		},
 		filesystem = {
 			-- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/5224467c6a49a6c77b8a8333f4d9af0abc788e10/lua/neo-tree/setup/netrw.lua#L14
-			hijack_netrw_behavior = "" -- I don't know what it should be to be disabled but meh.
+			hijack_netrw_behavior = "open_current" -- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/46fa0c22ca39e05fe15744102d21feb07fe9a94a/lua/neo-tree/setup/init.lua#L622
 		}
 	},
 }
