@@ -7,3 +7,4 @@ emacs/recentf
 emacs/straight
 emacs/tree-sitter
 emacs/custom/**.elc
+.DS_Store

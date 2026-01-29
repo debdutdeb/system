@@ -1,0 +1,35 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+# 
+# Get rid of the extra newline at the start
+add_newline = false
+
+# Order of appearance
+format = """
+$directory\
+$git_branch\
+$git_status\
+$kubernetes\
+$character"""
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "bold magenta"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold red"
+format = "([\\[$all_status$ahead_behind\\]]($style) )"
+
+[kubernetes]
+disabled = false
+format = 'at [⎈ $context(\($namespace\))]($style) '
+style = "bold cyan"
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[➜](bold red) "
