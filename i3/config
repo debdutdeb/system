@@ -216,3 +216,9 @@ bindsym $mod+shift+f exec --no-startup-id bash -c 'fdfind . /home/debdut --type 
 bindsym $mod+s exec --no-startup-id ~/.scripts/launch_rofi.sh
 bindsym $mod+w exec --no-startup-id rofi -show window
 bindsym $alt+k exec --no-startup-id rofi -show keys
+
+#qhy not
+for_window [title="hover_image_pinterest_weird_rat"] floating enable, sticky enable, border none
+# for_window [title="hover_image_pinterest_weird_rat"] move right 10000px, move down 10000px
+
+exec_always --no-startup-id ~/.scripts/hover_img

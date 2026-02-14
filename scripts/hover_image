@@ -1,0 +1,24 @@
+#!/bin/bash
+
+img="$HOME/.assets/pinterest_weird_rat.jpeg"
+
+title="hover_image_`basename $img | sed 's/\.jpeg//'`"
+
+[ -f "$img" ] || exit
+
+width=100
+height=100
+
+screen_w=$(xdotool getdisplaygeometry | awk '{print $1}')
+screen_h=$(xdotool getdisplaygeometry | awk '{print $2}')
+
+pos_x=$((screen_w - width - 20))
+pos_y=$((screen_h - height - 50))
+
+pkill -f "title $title"
+
+feh --title "$title" -g ${width}x${height} -Z --scale-down "$img" &
+
+sleep 0.1
+
+i3-msg "[title=\"$title\"] move absolute position $pos_x px $pos_y px"
