@@ -1,0 +1,12 @@
+#!/bin/sh
+
+choice=$(fdfind . "$HOME" --type f --hidden --exclude .git | \
+         rofi -dmenu -i -p "OpenFile:" -font "Ubuntu 11")
+
+[ -z "$choice" ] && exit
+
+if [ -f "$choice" ]; then
+    mousepad "$choice"
+else
+	mousepad "$choice"
+fi

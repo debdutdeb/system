@@ -1,4 +1,5 @@
-return {
+return {}
+--[[ return {
 	{
 		"vhyrro/luarocks.nvim",
 		priority = 1000,
@@ -20,4 +21,4 @@ return {
 			require("telescope").extensions.rest.select_env()
 		end,
 	},
-}
+} ]]

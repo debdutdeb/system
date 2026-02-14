@@ -1,0 +1,24 @@
+configuration {
+    modi: "window,drun,filebrowser,windowcd,keys";
+    
+    font: "DejaVu Sans 11";
+    show-icons: true;
+    icon-theme: "nuoveXT.2.2";
+    terminal: "alacritty";
+
+    filebrowser {
+        directory: "/home/debdut";
+        directories-first: true;
+        command: "xdg-open"; 
+		matching: "fuzzy";
+        sorting-method: "name";
+    }
+
+    kb-row-up: "Up,Control+p";
+    kb-row-down: "Down,Control+n";
+    kb-accept-entry: "Control+m,Return,KP_Enter";
+    kb-mode-next: "Shift+Right,Control+Tab";
+    kb-remove-to-eol: "Control+Shift+e"; 
+}
+
+@theme "sidebar"

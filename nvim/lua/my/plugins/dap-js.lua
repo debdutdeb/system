@@ -1,4 +1,6 @@
-return {
+return {}
+
+--[[ return {
 	{
 		"microsoft/vscode-js-debug",
 		-- add NODE_VERSION specifically since for some reason novm is unable to install nested versions correctly, not that it should honestly
@@ -32,4 +34,4 @@ return {
 			end
 		end,
 	}
-}
+} ]]
