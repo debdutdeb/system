@@ -30,8 +30,6 @@ create_autocommand("VimEnter", {
 	callback = function(_)
 		if vim.g.vscode then return end
 		-- create a scratch buffer
-		if vim.bo.filetype == "lazy" then return end
-
 		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
 			true)
 		vim.api.nvim_buf_set_name(scratch_bufnr, "Scratch buffer")
@@ -131,7 +129,7 @@ create_autocommand("QuickFixCmdPost", {
 
 create_autocommand({ "TextYankPost" }, {
 	callback = function()
-		require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
+		require('vim.hl').on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
 	group = create_augroup("my/yank-post-highlight", { clear = true }),
 })

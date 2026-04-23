@@ -37,11 +37,13 @@ vim.opt.runtimepath:prepend(parser_install_dir)
 return {
 	parser_install_dir = parser_install_dir,
 	ensure_installed = grammers, -- one of "all" or a list of languages
+	auto_install = true,
 	-- the following is causing some issues :' )
 	ignore_install = { "phpdoc", "org" }, -- List of parsers to ignore installing
 	highlight = {
 		enable = true,          -- false will disable the whole extension
 		additional_vim_regex_highlighting = true,
+		disable = { "oil" },
 	},
 	autopairs = {
 		enable = false, -- nyah
@@ -57,6 +59,7 @@ return {
 	indent = {
 		enable = true,
 		disable = { --[["python", "css"--]]
+			"c", "cpp", -- broken once if statements are added; check autocommands
 		},
 	},
 	playground = {

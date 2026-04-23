@@ -1,3 +1,0 @@
-return {
-	"raghur/vim-ghost",
-}

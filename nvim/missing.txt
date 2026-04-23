@@ -1,0 +1,5 @@
+perlnavigator — not packaged in nixpkgs (as of 2026-04-23)
+  mason name : perlnavigator
+  upstream   : https://github.com/bscan/PerlNavigator
+  workaround : install manually via mason (:MasonInstall perlnavigator)
+               or build from source and add to PATH before launching nvim

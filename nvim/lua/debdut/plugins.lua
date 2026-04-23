@@ -1,177 +1,538 @@
-local lazy_version = "v10.20.4"
+-- All plugins: runtimepath in fixed order, then one startup-time setup chain
+-- (no plugin manager, no lazy-loading).
+-- Under Nix: NIX_NVIM_PLUGIN_DIRS points to a flake-generated path map; each
+-- plugin is loaded from the Nix store.  Without Nix: use ~/.local/share/nvim/lazy/<name>
+-- (the same directory layout the old lazy.nvim install produced).
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=" .. lazy_version,
-		lazypath,
-	})
+---@param map table<string, string> key -> path
+---@param order string[]
+local function apply_rtp(map, order)
+	for _, key in ipairs(order) do
+		local p = map[key]
+		if p and vim.uv.fs_stat(p) then
+			vim.opt.rtp:prepend(p)
+		end
+	end
 end
-vim.opt.rtp:prepend(lazypath)
 
-local ok, lazy = pcall(require, "lazy")
-if not ok then
+-- Keys in prepend order.  Must match the generated Nix file (RTP map keys) and
+-- the fallback `lazy/` folder names in path_from_lazy below.
+local RTP_ORDER = {
+	"plenary",
+	"nvimNio",
+	"nvimWebDevicons",
+	"nui",
+	"luaEvents",
+	"hybridNvim",
+	"neodev",
+	"schemastore",
+	"mason",
+	"masonLspconfig",
+	"masonNullLs",
+	"noneLs",
+	"noneLsExtras",
+	"nvimTsContextCommentstring",
+	"commentNvim",
+	"luasnip",
+	"cmpNvimLsp",
+	"cmpPath",
+	"cmpBuffer",
+	"cmpLuasnip",
+	"nvimCmp",
+	"nvimTreesitterRefactor",
+	"nvimTsAutotag",
+	"nvimTreesitter",
+	"treesitterContext",
+	"playground",
+	"lspSignature",
+	"nvimLspconfig",
+	"persistence",
+	"neovimSessionManager",
+	"neovimProject",
+	"fzfLua",
+	"telescopeFzfNative",
+	"telescope",
+	"telescopeOrgmode",
+	"chaosNvim",
+	"vimFugitive",
+	"gitsigns",
+	"overseer",
+	"nvimDap",
+	"nvimDapVirtualText",
+	"nvimDapUi",
+	"dapVscodeJs",
+	"nvimSurround",
+	"harpoon",
+	"mongoNvim",
+	"neoTree",
+	"oil",
+	"orgBullets",
+	"orgmode",
+	"pomodoro",
+	"presenting",
+	"tmuxNvim",
+	"vimAbolish",
+	"vimGhost",
+	"vimTableMode",
+}
+
+---@param key string
+---@return string|nil
+local function path_from_lazy(key)
+	--- lazy-lock.json keys and RTP_ORDER keys
+	local T = {
+		plenary = "plenary.nvim",
+		nvimNio = "nvim-nio",
+		nvimWebDevicons = "nvim-web-devicons",
+		nui = "nui.nvim",
+		luaEvents = "lua-events",
+		hybridNvim = "hybrid.nvim",
+		neodev = "neodev.nvim",
+		schemastore = "SchemaStore.nvim",
+		mason = "mason.nvim",
+		masonLspconfig = "mason-lspconfig.nvim",
+		masonNullLs = "mason-null-ls.nvim",
+		noneLs = "none-ls.nvim",
+		noneLsExtras = "none-ls-extras.nvim",
+		nvimTsContextCommentstring = "nvim-ts-context-commentstring",
+		commentNvim = "Comment.nvim",
+		luasnip = "LuaSnip",
+		cmpNvimLsp = "cmp-nvim-lsp",
+		cmpPath = "cmp-path",
+		cmpBuffer = "cmp-buffer",
+		cmpLuasnip = "cmp_luasnip",
+		nvimCmp = "nvim-cmp",
+		nvimTreesitterRefactor = "nvim-treesitter-refactor",
+		nvimTsAutotag = "nvim-ts-autotag",
+		nvimTreesitter = "ts",
+		treesitterContext = "treesitter-context",
+		playground = "playground",
+		lspSignature = "lsp_signature.nvim",
+		nvimLspconfig = "nvim-lspconfig",
+		persistence = "persistence.nvim",
+		neovimSessionManager = "neovim-session-manager",
+		neovimProject = "neovim-project",
+		fzfLua = "fzf-lua",
+		telescopeFzfNative = "telescope-fzf-native.nvim",
+		telescope = "telescope.nvim",
+		telescopeOrgmode = "telescope-orgmode.nvim",
+		chaosNvim = "chaos.nvim",
+		vimFugitive = "vim-fugitive",
+		gitsigns = "gitsigns.nvim",
+		overseer = "overseer.nvim",
+		nvimDap = "nvim-dap",
+		nvimDapVirtualText = "nvim-dap-virtual-text",
+		nvimDapUi = "nvim-dap-ui",
+		dapVscodeJs = "dap-vscode-js",
+		nvimSurround = "nvim-surround",
+		harpoon = "harpoon",
+		mongoNvim = "mongo.nvim",
+		neoTree = "neo-tree.nvim",
+		oil = "oil.nvim",
+		orgBullets = "org-bullets.nvim",
+		orgmode = "orgmode",
+		pomodoro = "pomodoro.nvim",
+		presenting = "presenting.nvim",
+		tmuxNvim = "tmux.nvim",
+		vimAbolish = "vim-abolish",
+		vimGhost = "vim-ghost",
+		vimTableMode = "vim-table-mode",
+	}
+	local sub = T[key]
+	if not sub then
+		return nil
+	end
+	return vim.fn.stdpath("data") .. "/lazy/" .. sub
+end
+
+---@return table<string, string>
+local function nix_path_map()
+	local f = vim.env.NIX_NVIM_PLUGIN_DIRS
+	if f and f ~= "" and vim.uv.fs_stat(f) then
+		local ok, t = pcall(dofile, f)
+		-- Reject the old lazy.nvim merge file (list of { "owner/repo", dir = "..." }).
+		if ok and type(t) == "table" and type(t.plenary) == "string" then
+			return t
+		end
+		vim.notify(
+			"[plugins] NIX_NVIM_PLUGIN_DIRS is missing or not the flat path map; using ~/.local/share/nvim/lazy/ fallback",
+			vim.log.levels.WARN
+		)
+	end
+	local m = {}
+	for _, key in ipairs(RTP_ORDER) do
+		m[key] = path_from_lazy(key)
+	end
+	return m
+end
+
+local plugin_paths = nix_path_map()
+apply_rtp(plugin_paths, RTP_ORDER)
+
+if not plugin_paths.plenary or vim.uv.fs_stat(plugin_paths.plenary) == nil then
+	vim.notify(
+		"[plugins] Plugin tree not found. Rebuild with `nix build` (Nix) or keep ~/.local/share/nvim/lazy/ as before.",
+		vim.log.levels.WARN
+	)
 	return
 end
 
-lazy.setup({ import = "my/plugins" }, {
-	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
-	change_detection = { notify = false },
-	defaults = {
-		lazy = false, -- should plugins be lazy-loaded?
-		version = nil,
-		-- default `cond` you can use to globally disable a lot of plugins
-		-- when running inside vscode for example
-		cond = nil, ---@type boolean|fun(self:LazyPlugin):boolean|nil
-		-- version = "*", -- enable this to try installing the latest stable versions of plugins
-	},
-	-- leave nil when passing the spec as the first argument to setup()
-	spec = nil, ---@type LazySpec
-	lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json", -- lockfile generated after running update.
-	-- concurrency = jit.os:find("Windows") and (vim.loop.available_parallelism() * 2) or nil, ---@type number limit the maximum amount of concurrent tasks
-	git = {
-		-- defaults for the `Lazy log` command
-		-- log = { "-10" }, -- show the last 10 commits
-		log = { "-8" }, -- show commits from the last 3 days
-		timeout = 120, -- kill processes that take more than 2 minutes
-		url_format = "https://github.com/%s.git",
-		-- lazy.nvim requires git >=2.19.0. If you really want to use lazy with an older version,
-		-- then set the below to false. This should work, but is NOT supported and will
-		-- increase downloads a lot.
-		filter = true,
-	},
-	--[[ dev = {
-		-- directory where you store your local plugin projects
-		path = "~/projects",
-		---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-		patterns = {}, -- For example {"folke"}
-		fallback = false, -- Fallback to git when local plugin doesn't exist
-	}, ]]
-	install = {
-		-- install missing plugins on startup. This doesn't increase startup time.
-		missing = true,
-		-- try to load one of these colorschemes when starting an installation during startup
-		-- colorscheme = { "carbonfox" },
-	},
-	ui = {
-		-- a number <1 is a percentage., >1 is a fixed size
-		size = { width = 0.8, height = 0.8 },
-		wrap = true, -- wrap the lines in the ui
-		-- The border to use for the UI window. Accepts same border values as |nvim_open_win()|.
+-- Project init (neovim-project) — sessionoptions before project setup
+vim.opt.sessionoptions:append("globals")
+if not pcall(vim.cmd.colorscheme, "hybrid") then
+	vim.cmd.colorscheme("default")
+end
+
+-- persistence.nvim
+do
+	if vim.g.vscode == nil then
+		local sep = "/"
+		if vim.fn.has("win32") == 1 then
+			sep = "[\\:]"
+		end
+		local origin = vim.trim(vim.fn.system("git remote get-url origin")):gsub(sep, "%%")
+		local path_suffix
+		if vim.v.shell_error ~= 0 then
+			path_suffix = ""
+		else
+			local branch = vim.trim(vim.fn.system("git branch --show-current"))
+			if vim.v.shell_error ~= 0 then
+				path_suffix = origin .. "/"
+			else
+				path_suffix = origin .. "%%" .. branch .. "/"
+			end
+		end
+		require("persistence").setup({
+			dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/") .. path_suffix,
+			options = { "buffers", "curdir", "tabpages", "winsize" },
+			pre_save = nil,
+			save_empty = false,
+		})
+	end
+end
+
+-- neovim-project
+do
+	require("neovim-project").setup({
+		projects = { "~/git/*" },
+		picker = { type = "telescope" },
+		last_session_on_startup = false,
+		dashboard_mode = true,
+	})
+end
+
+-- treesitter
+require("nvim-treesitter.configs").setup(require("debdut.treesitter"))
+require("treesitter-context").setup(require("debdut.treesitter_context"))
+pcall(function()
+	require("nvim-ts-autotag").setup()
+end)
+
+
+-- Comment
+require("Comment").setup(require("debdut.comments"))
+
+-- nvim-cmp + cmp_nvim_lsp: cmp.setup first, then require("cmp_nvim_lsp").setup() so the
+-- `nvim_lsp` source is actually registered (cmp.register_source on InsertEnter). Only
+-- `require("cmp_nvim_lsp")` is not enough — the after/plugin script may not run with Nix rtp.
+local cmp_nvim_lsp = require("cmp_nvim_lsp")
+do
+	local cmp = require("cmp")
+	local ok_cmp_luasnip = pcall(require, "cmp_luasnip")
+	local sources = {
+		{ name = "nvim_lsp" },
+		{ name = "path" },
+		{ name = "buffer" },
+	}
+	if ok_cmp_luasnip then
+		table.insert(sources, 2, { name = "luasnip" })
+	end
+	cmp.setup({
+		completion = {
+			completeopt = "menu,menuone,noselect",
+		},
+		sources = sources,
+		mapping = cmp.mapping.preset.insert({
+			["<C-Space>"] = cmp.mapping.complete(),
+			["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+			["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+			["<C-y>"] = cmp.mapping(
+				cmp.mapping.confirm {
+					behavior = cmp.ConfirmBehavior.Insert,
+					select = true,
+				},
+				{ "i", "c" }
+			),
+		}),
+		snippet = {
+			expand = function(args)
+				require("luasnip").lsp_expand(args.body)
+			end,
+		},
+	})
+	-- Registers InsertEnter → register each LSP client as `nvim_lsp` source (required).
+	cmp_nvim_lsp.setup()
+end
+
+require("debdut.lsp")
+
+-- telescope + fzf native
+do
+	local tel = require("telescope")
+	tel.setup(require("debdut.telescope"))
+	pcall(tel.load_extension, "fzf")
+end
+
+-- chaos
+require("chaos").setup_commands()
+
+-- gitsigns + fugitive (only in a git worktree, same as previous cond)
+do
+	local ok, git = pcall(require, "chaos.git_handlers")
+	local in_git = ok and git.is_git_worktree()
+	if in_git then
+		require("gitsigns").setup({
+			signcolumn = false,
+			numhl = false,
+			linehl = false,
+			word_diff = false,
+			watch_gitdir = { follow_files = false },
+			auto_attach = false,
+			attach_to_untracked = false,
+			current_line_blame = false,
+			current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
+		})
+		-- fugitive: Vim plugin, no setup
+	end
+end
+
+-- overseer, then dap
+require("overseer").setup({ dap = false })
+require("debdut.dap")
+
+-- JS/TS dap
+do
+	local dap = require("dap")
+	local dap_vscode_js = require("dap-vscode-js")
+	dap_vscode_js.setup({
+		debugger_path = vim.g.vscode_js_debug_path
+			or (vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
+		adapters = {
+			"chrome",
+			"pwa-node",
+			"pwa-chrome",
+			"pwa-msedge",
+			"node-terminal",
+			"pwa-extensionHost",
+			"node",
+			"chrome",
+		},
+	})
+	for _, language in
+		ipairs({
+			"javascript",
+			"typescript",
+			"javascriptreact",
+			"typescriptreact",
+			"tsx",
+			"jsx",
+		})
+	do
+		dap.configurations[language] = {
+			{
+				type = "pwa-node",
+				request = "attach",
+				name = "Attach",
+				skipFiles = { "<node_internals>/**" },
+				port = 9229,
+			},
+		}
+	end
+end
+
+-- surround
+require("nvim-surround").setup({})
+
+-- harpoon
+require("debdut.harpoon")
+
+-- oil
+do
+	require("oil").setup {
+		default_file_explorer = false,
+		columns = {},
+		buf_options = {
+			buflisted = false,
+			bufhidden = "hide",
+		},
+		win_options = {
+			wrap = false,
+			signcolumn = "no",
+			cursorcolumn = false,
+			foldcolumn = "0",
+			spell = false,
+			list = false,
+			conceallevel = 3,
+			concealcursor = "nvic",
+		},
+		delete_to_trash = false,
+		skip_confirm_for_simple_edits = false,
+		prompt_save_on_select_new_entry = true,
+		cleanup_delay_ms = 2000,
+		lsp_file_methods = { timeout_ms = 1000, autosave_changes = false },
+		constrain_cursor = "editable",
+		experimental_watch_for_changes = false,
+		keymaps = {
+			["g?"] = "actions.show_help",
+			["<CR>"] = "actions.select",
+			["<C-s>"] = false,
+			["<C-h>"] = false,
+			["<leader>s"] = "actions.select_vsplit",
+			["<leader>h"] = "actions.select_split",
+			["<C-t>"] = "actions.select_tab",
+			["<C-p>"] = "actions.preview",
+			["<C-c>"] = "actions.close",
+			["<leader>l"] = "actions.refresh",
+			["<C-l>"] = false,
+			["-"] = "actions.parent",
+			["_"] = "actions.open_cwd",
+			["`"] = "actions.cd",
+			["~"] = "actions.tcd",
+			["gs"] = "actions.change_sort",
+			["gx"] = "actions.open_external",
+			["g."] = "actions.toggle_hidden",
+			["g\\"] = "actions.toggle_trash",
+		},
+		keymaps_help = { border = "none" },
+		use_default_keymaps = true,
+		view_options = {
+			show_hidden = false,
+			is_hidden_file = function(name, _)
+				return vim.startswith(name, ".")
+			end,
+			is_always_hidden = function()
+				return false
+			end,
+			natural_order = true,
+			sort = { { "type", "asc" }, { "name", "asc" } },
+		},
+		float = {
+			padding = 2,
+			max_width = 0,
+			max_height = 0,
+			border = "none",
+			win_options = { winblend = 0 },
+			override = function(conf)
+				return conf
+			end,
+		},
+		preview = {
+			max_width = 0.9,
+			min_width = { 40, 0.4 },
+			width = nil,
+			max_height = 0.9,
+			min_height = { 5, 0.1 },
+			height = nil,
+			border = "none",
+			win_options = { winblend = 0 },
+			update_on_cursor_moved = true,
+		},
+		progress = {
+			max_width = 0.9,
+			min_width = { 40, 0.4 },
+			width = nil,
+			max_height = { 10, 0.9 },
+			min_height = { 5, 0.1 },
+			height = nil,
+			border = "none",
+			minimized_border = "none",
+			win_options = { winblend = 0 },
+		},
+		ssh = { border = "none" },
+	}
+	vim.keymap.set("n", "<leader>e", "<cmd>Oil<cr>")
+end
+
+-- neo-tree
+do
+	require("neo-tree").setup({
 		border = "none",
-		title = nil, ---@type string only works when border is not "none"
-		title_pos = "right", ---@type "center" | "left" | "right"
-		icons = {
-			cmd = "cmd:",
-			config = "cfg:",
-			event = "event:",
-			ft = "ft:",
-			init = "init:",
-			import = "import:",
-			keys = "keys:",
-			lazy = "lazy:",
-			loaded = "loaded:",
-			not_loaded = "not_loaded:",
-			plugin = "plugin:",
-			runtime = "runtime:",
-			source = "source:",
-			start = "start:",
-			task = "task:",
-			list = {
-				"ball",
-				"here",
-				"star",
-				"line",
-			},
-		},
-		-- leave nil, to automatically select a browser depending on your OS.
-		-- If you want to use a specific browser, you can define it here
-		browser = nil, ---@type string?
-		throttle = 20, -- how frequently should the ui process render events
-		custom_keys = {
-			-- you can define custom key maps here.
-			-- To disable one of the defaults, set it to false
+		window = { position = "right" },
+		filesystem = { hijack_netrw_behavior = "open_current" },
+	})
+end
 
-			-- open lazygit log
-			["<localleader>l"] = function(plugin)
-				require("lazy.util").float_term({ "lazygit", "log" }, {
-					cwd = plugin.dir,
-				})
+-- mongodb
+do
+	require("mongo").setup {
+		default_url = "mongodb://localhost:27017",
+		find_on_collection_selected = false,
+	}
+end
+
+-- pomodoro
+do
+	require("pomodoro").setup({
+		time_work = 30,
+		time_break_short = 5,
+		time_break_long = 20,
+		timers_to_long_break = 4,
+	})
+end
+
+-- presenting.nvim
+do
+	local Presenting = require("presenting")
+	Presenting.setup({
+		options = {
+			width = math.ceil(vim.api.nvim_win_get_width(0) * 0.75),
+		},
+		separator = {
+			markdown = "^#+ ",
+			org = "^*+ ",
+			adoc = "^==+ ",
+			asciidoctor = "^==+ ",
+		},
+		keymaps = {
+			["n"] = function()
+				Presenting.next()
 			end,
-
-			-- open a terminal for the plugin dir
-			["<localleader>t"] = function(plugin)
-				require("lazy.util").float_term(nil, {
-					cwd = plugin.dir,
-				})
+			["p"] = function()
+				Presenting.prev()
+			end,
+			["q"] = function()
+				Presenting.quit()
+			end,
+			["f"] = function()
+				Presenting.first()
+			end,
+			["l"] = function()
+				Presenting.last()
+			end,
+			["<CR>"] = function()
+				Presenting.next()
+			end,
+			["<BS>"] = function()
+				Presenting.prev()
 			end,
 		},
-	},
-	diff = {
-		-- diff command <d> can be one of:
-		-- * browser: opens the github compare view. Note that this is always mapped to <K> as well,
-		--   so you can have a different command for diff <d>
-		-- * git: will run git diff and open a buffer with filetype git
-		-- * terminal_git: will open a pseudo terminal with git diff
-		-- * diffview.nvim: will open Diffview to show the diff
-		cmd = "git",
-	},
-	checker = {
-		-- automatically check for plugin updates
-		enabled = false,
-		concurrency = nil, ---@type number? set to 1 to check for updates very slowly
-		notify = true, -- get a notification when new updates are found
-		frequency = 3600, -- check for updates every hour
-	},
-	change_detection = {
-		-- automatically check for config file changes and reload the ui
-		enabled = false,
-		notify = true, -- get a notification when changes are found
-	},
-	performance = {
-		cache = {
-			enabled = true,
-		},
-		reset_packpath = true, -- reset the package path to improve startup time
-		rtp = {
-			reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
-			---@type string[]
-			paths = {},  -- add any custom paths here that you want to includes in the rtp
-			---@type string[] list any plugins you want to disable here
-			disabled_plugins = {
-				-- "gzip",
-				-- "matchit",
-				-- "matchparen",
-				-- "netrwPlugin",
-				-- "tarPlugin",
-				-- "tohtml",
-				-- "tutor",
-				-- "zipPlugin",
-			},
-		},
-	},
-	-- lazy can generate helptags from the headings in markdown readme files,
-	-- so :help works even for plugins that don't have vim docs.
-	-- when the readme opens with :help it will be correctly displayed as markdown
-	readme = {
-		enabled = true,
-		root = vim.fn.stdpath("state") .. "/lazy/readme",
-		files = { "README.md", "lua/**/README.md" },
-		-- only generate markdown helptags for plugins that dont have docs
-		skip_if_doc_exists = true,
-	},
-	state = vim.fn.stdpath("state") .. "/lazy/state.json", -- state info for checker and other things
-	build = {
-		-- Plugins can provide a `build.lua` file that will be executed when the plugin is installed
-		-- or updated. When the plugin spec also has a `build` command, the plugin's `build.lua` not be
-		-- executed. In this case, a warning message will be shown.
-		warn_on_override = true,
-	},
-})
+	})
+end
 
--- vim.opt.rtp:prepend("/Users/debdut/Documents/Repos/chaos.nvim")
+-- tmux
+do
+	require("tmux").setup({
+		copy_sync = {
+			enable = true,
+			ignore_buffers = { empty = false },
+			redirect_to_clipboard = false,
+			register_offset = 0,
+			sync_clipboard = true,
+			sync_registers = true,
+			sync_deletes = true,
+			sync_unnamed = true,
+		},
+		navigation = { cycle_navigation = true, enable_default_keybindings = true, persist_zoom = false },
+		resize = { enable_default_keybindings = true, resize_step_x = 1, resize_step_y = 1 },
+	})
+end

@@ -95,8 +95,7 @@ end ]]
 end, { nargs = 0 }) ]]
 
 vim.api.nvim_create_user_command("LspStartWithCmp", function()
-	require("lazy.core.loader").load("nvim-cmp",
-		{} --[[ reasons argument is optional in signature, but _loader complains down the road due to direct ipairs call ]])
+	pcall(require, "cmp_nvim_lsp")
 
 	local configs = require("lspconfig.util").get_config_by_ft(vim.bo.filetype)
 

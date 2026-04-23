@@ -13,17 +13,6 @@ install_nvim() {
 	popd
 }
 
-install_nvm() {
-	sudo mkdir /opt/nvm
-	sudo chown "$(id -u):$(id -g)" /opt/nvm
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | NVM_DIR=/opt/nvm bash
-	source /opt/nvm/nvm.sh
-}
-
-install_node16() {
-	nvm install 16
-}
-
 install_dependencies() {
 	export DEBIAN_FRONTEND=noninteractive
 	sudo apt-get update &&
@@ -47,8 +36,6 @@ install_neovim_config() {
 
 setup() {
 	install_dependencies
-	install_nvm
-	install_node16
 	install_nvim
 	install_neovim_config
 	echo "# run 'exec bash' to refresh the shell"

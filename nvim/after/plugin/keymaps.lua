@@ -2,7 +2,10 @@ if vim.g.vscode then
 	return
 end
 
-local Remap = require("chaos.keymaps")
+local ok, Remap = pcall(require, 'chaos.keymaps')
+if not ok then
+	return
+end
 
 local telescope_builtin = require("telescope.builtin")
 local telescope_themes = require("telescope.themes")
@@ -342,14 +345,11 @@ leadernnoremap("plh", "<cmd>NeovimProjectLoadHistory<cr>")
 leadernnoremap("pll", "<cmd>NeovimProjectLoad<cr>")
 
 leadernnoremap("dpt", function()
-	-- disable plugin telescope
-	require("lazy.core.loader").deactivate(require("lazy.core.config").plugins["telescope.nvim"])
+	vim.notify("telescope is always loaded (lazy.nvim removed)", vim.log.levels.INFO)
 end)
 
 leadernnoremap("lpt", function()
-	-- load plugin telescope
-	require("lazy.core.loader").load("telescope")
-	vim.notify("loaded telescope")
+	vim.notify("telescope is always loaded (lazy.nvim removed)", vim.log.levels.INFO)
 end)
 
 leadernnoremap("tn", function ()

@@ -21,7 +21,7 @@ local language_servers = {
 		autostart = false,
 	},
 	clangd = {
-		autostart = false,
+		autostart = true,
 	},
 	dockerls = {
 		autostart = false,
@@ -58,54 +58,15 @@ local language_servers = {
 
 vim.treesitter.language.register('yaml', 'yaml.ansible') -- make it load on ansible files
 
-local formatters = {
-	"prettier",
-	"black",
-	-- "sylua",
-	"shfmt",
-	"clang_format",
-	-- "perltidy",
-	"biome",
-}
-
-local linters = {
-	"shellcheck",
-	"biome",
-	"ansible-lint"
-}
-
-local debug_servers = {
-	"delve",
-}
-
-local manual_installs = {
-	"perltidy",
-}
-
--- require("mason-null-ls").setup {}
-
 require("mason").setup {}
-
-local ensure_installed = {}
-
-for _, list in ipairs({ language_servers, formatters, linters, debug_servers, vim.tbl_keys(language_servers) }) do
-	vim.list_extend(ensure_installed, list)
-end
-
-require("mason-tool-installer").setup {
-	ensure_installed = ensure_installed,
-	auto_update = false,
-	run_on_start = true,
-	integrations = {
-		["mason-lspconfig"] = true,
-		-- ["mason-null-ls"] = true,
-		["mason-nvim-dap"] = true,
-	},
-	-- debounce_hours = 7 * 24,
-	-- start_delay = 5,
-}
+require("mason-lspconfig").setup {}
 
 local function client_on_attach(client, bufnr)
+	-- Nvim 0.11+ built-in LSP completion is not nvim-cmp; keep it off or two systems compete.
+	if vim.lsp.completion and client and client.id then
+		pcall(vim.lsp.completion.enable, false, client.id, bufnr)
+	end
+
 	if client.name == "ts_ls" then return end
 
 	if client.server_capabilities.inlayHintProvider ~= nil and client.server_capabilities.inlayHintProvider then
@@ -116,7 +77,13 @@ local function client_on_attach(client, bufnr)
 	require "lsp_signature".on_attach({}, bufnr)
 end
 
-require("mason-lspconfig").setup {}
+-- Merge full client capabilities with cmp completion advertising (default_capabilities() alone
+-- only returns a textDocument slice; do not replace the whole client capabilities table).
+local capabilities = vim.tbl_deep_extend(
+	"force",
+	vim.lsp.protocol.make_client_capabilities(),
+	require("cmp_nvim_lsp").default_capabilities()
+)
 
 for name, extension in pairs(language_servers) do
 	local ok, config = pcall(require, "debdut.lsp.settings." .. name)
@@ -124,5 +91,10 @@ for name, extension in pairs(language_servers) do
 		config = {}
 	end
 
-	require("lspconfig")[name].setup(vim.tbl_extend('force', config, { on_attach = client_on_attach }, extension))
+
+	-- lspconfig per-server `config` merged with on_attach, capabilities, and e.g. autostart
+	require("lspconfig")[name].setup(vim.tbl_extend("force", config, {
+		on_attach = client_on_attach,
+		capabilities = capabilities,
+	}, extension))
 end

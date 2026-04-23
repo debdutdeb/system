@@ -5,7 +5,7 @@ end
 vim.opt.backup = false                          -- creates a backup file
 vim.opt.clipboard = "unnamedplus"               -- allows neovim to access the system clipboard
 vim.opt.cmdheight = 2                           -- more space in the neovim command line for displaying messages
-vim.opt.completeopt = { "menuone", "noselect" } -- mostly just for cmp
+vim.opt.completeopt = { "menu", "menuone", "noselect" } -- for nvim-cmp pum; cmp can override
 vim.opt.conceallevel = 0                        -- so that `` is visible in markdown files
 vim.opt.fileencoding = "utf-8"                  -- the encoding written to a file
 vim.opt.hlsearch = false                        -- don't highlight all matches on previous search pattern
@@ -16,7 +16,7 @@ vim.opt.pumheight = 10                          -- pop up menu height
 vim.opt.showmode = true
 vim.opt.showtabline = 1                         -- always show tabs
 vim.opt.smartcase = true                        -- smart case
-vim.opt.smartindent = true                      -- make indenting smarter again
+vim.opt.smartindent = false                      -- make indenting smarter again
 vim.opt.splitbelow = false                      -- force all horizontal splits to go below current window XXX
 vim.opt.splitright = false                      -- force all vertical splits to go to the right of current window XXX
 vim.opt.swapfile = true                         -- creates a swapfile
