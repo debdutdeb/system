@@ -142,12 +142,12 @@
             telescopeFzfNative = pkgs.vimUtils.buildVimPlugin {
               name = "telescope-fzf-native.nvim";
               src = inputs.plugin-telescope-fzf-native;
-              nativeBuildInputs = [ pkgs.cmake pkgs.pkg-config ];
+              nativeBuildInputs = [ pkgs.cmake pkgs.pkg-config pkgs.fzf ];
               buildPhase = ''
                 cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
                 cmake --build build --config Release
-                cmake --install build --prefix build
               '';
+              # cmake --install build --prefix build
               doCheck = false;
             };
           };
@@ -226,6 +226,7 @@
             pkgs.cmake
             pkgs.ripgrep
             pkgs.fd
+			pkgs.fzf
 
             # LSP servers
             pkgs.bash-language-server          # bashls
