@@ -88,13 +88,13 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym Mod1+h split h
+bindsym $alt+shift+h split h
 
 # split in vertical orientation
-bindsym Mod1+v split v
+bindsym $alt+shift+v split v
 
 # enter fullscreen mode for the focused container
-bindsym Mod1+f fullscreen toggle
+bindsym $alt+shift+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $alt+s layout stacking
@@ -201,12 +201,15 @@ exec --no-startup-id nitrogen --restore
 #my config
 
 #??
-assign [class=^c|Code$] 2
-assign [class=^firefox$] 3
+#assign [class=^c|Code$] 2
+assign [class=^firefox$] 2
 assign [class=^g|Google-chrome$] 3
+assign [class=^jetbrains-studio$] 4
+
+for_window [class="Emulator"] floating enable
 
 # grep:bindings
-bindsym Mod1+l exec --no-startup-id i3lock
+# bindsym $mod+l exec --no-startup-id i3lock
 
 #rofi
 bindsym $mod+d exec --no-startup-id rofi -show drun
@@ -215,7 +218,8 @@ bindsym $mod+shift+f exec --no-startup-id bash -c 'fdfind . /home/debdut --type 
 # List scripts in .scripts and execute the choice
 bindsym $mod+s exec --no-startup-id ~/.scripts/launch_rofi.sh
 bindsym $mod+w exec --no-startup-id rofi -show window
-bindsym $alt+k exec --no-startup-id rofi -show keys
+#bindsym $alt+k exec --no-startup-id rofi -show keys
+bindsym $alt+r exec --no-startup-id rofi -show run
 
 #qhy not
 for_window [title="hover_image_pinterest_weird_rat"] floating enable, sticky enable, border none
