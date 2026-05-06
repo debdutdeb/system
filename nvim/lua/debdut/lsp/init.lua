@@ -18,37 +18,37 @@ require("neodev").setup {}
 
 local language_servers = {
 	bashls = {
-		autostart = false,
+		autostart = true,
 	},
 	clangd = {
 		autostart = true,
 	},
 	dockerls = {
-		autostart = false,
+		autostart = true,
 	},
 	html = {
-		autostart = false,
+		autostart = true,
 	},
 	jsonls = {
-		autostart = false,
+		autostart = true,
 	},
 	yamlls = {
 		autostart = true,
 	},
 	gopls = {
-		autostart = false,
+		autostart = true,
 	},
 	ts_ls = {
-		autostart = false,
+		autostart = true,
 	},
 	pyright = {
-		autostart = false,
+		autostart = true,
 	},
 	lua_ls = {
 		autostart = true,
 	},
 	perlnavigator = {
-		autostart = false,
+		autostart = true,
 	},
 	ansiblels = {
 		-- https://github.com/neovim/nvim-lspconfig/blob/94dda50b2d9a29d0b76562a9027029538840e2d7/lua/lspconfig/configs/ansiblels.lua#L26
