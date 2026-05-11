@@ -239,6 +239,7 @@
             pkgs.pyright                        # pyright
             pkgs.lua-language-server            # lua_ls
             pkgs.ansible-language-server        # ansiblels
+			pkgs.rust-analyzer
 
             # formatters
             pkgs.prettier                       # prettier
