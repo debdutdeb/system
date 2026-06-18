@@ -43,7 +43,7 @@ return {
 	highlight = {
 		enable = true,          -- false will disable the whole extension
 		additional_vim_regex_highlighting = true,
-		disable = { "oil" },
+		disable = { "oil", "markdown" },
 	},
 	autopairs = {
 		enable = false, -- nyah
@@ -60,6 +60,7 @@ return {
 		enable = true,
 		disable = { --[["python", "css"--]]
 			"c", "cpp", -- broken once if statements are added; check autocommands
+			"markdown",
 		},
 	},
 	playground = {
@@ -94,6 +95,7 @@ return {
 	},
 	incremental_selection = {
 		enable = true,
+		disable = { "markdown" },
 		keymaps = {
 			init_selection = "gnn", -- starts nexts
 			node_incremental = "grn",

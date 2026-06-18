@@ -40,9 +40,10 @@ return {
 			"architecture_body",
 			"entity_declaration",
 		}, ]]
-		markdown = {
-			"section",
-		},
+		--markdown = {
+			-- TODO: fix this annoying errors popping up on every keypress
+			-- "section",
+		--},
 		--[[ elixir = {
 			"anonymous_function",
 			"arguments",
