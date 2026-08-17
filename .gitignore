@@ -9,3 +9,7 @@ emacs/tree-sitter
 emacs/custom/**.elc
 .DS_Store
 nvim/result
+
+emacs/tramp
+emacs/transient/
+emacs/ido.*

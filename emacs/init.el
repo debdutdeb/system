@@ -20,6 +20,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+(require 'use-package)
 
 ;; don't do anything basically
 (defun my/ring-bell-function ())
@@ -45,20 +46,24 @@
 
 ; (require 'treesit)
 
-(load-library "clang-format.elc")
+(load-library "clang-format")
 
-;; TODO refactor to a separate library like null-ls
-(define-prefix-command 'lsp)
-(global-set-key (kbd "C-c l") 'lsp)
 
 ;;
 										; (global-set-key (kbd "C-c l f") 'clang-format-buffer) (global-set-key (kbd "C-c l r") 'clang-format-region)
 
-(defun toggle-eglot ()
-  (interactive)
-  (if (eq (eglot-current-server) nil)
-	  (eglot-ensure)
-	(eglot-shutdown-all)))
+(add-to-list 'exec-path (expand-file-name "~/go/bin"))
+(setenv "PATH"
+        (concat (expand-file-name "~/go/bin")
+                ":"
+                (getenv "PATH")))
+(add-to-list 'exec-path (expand-file-name "~/.nix-profile/bin"))
+(setenv "PATH"
+        (concat (expand-file-name "~/.nix-profile/bin")
+                ":"
+                (getenv "PATH")))
+
+(setq evil-want-keybinding nil)
 
 (use-package evil
   :straight t
@@ -67,21 +72,14 @@
   (evil-mode 1)
   (evil-set-initial-state 'vterm-mode 'emacs))
 
-(with-eval-after-load 'evil
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-define-key 'normal 'global (kbd "<leader>ll") 'toggle-eglot)
-  (evil-define-key 'normal 'global (kbd "<leader>lf") 'eglot-format-buffer))
+(setq corfu-auto t)
+(setq corfu-auto-prefix 1)
 
-(use-package company
-  :straight t
-  :config
-  (setq company-minimum-prefix-length 1
-		company-idle-delay nil)
-  :bind
-  ("C-x C-o" . company-complete)
-  ("C-c l f" . eglot-format-buffer)
-  :hook
-  (after-init . global-company-mode))
+(use-package corfu
+ :straight t
+  :init
+  (global-corfu-mode))
+
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
@@ -89,37 +87,137 @@
 
 (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
 
-(set-face-attribute 'default nil :height 220)
-
-(use-package treesit-auto
-  :straight t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-;  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+(set-face-attribute 'default nil :height 160)
 
 (use-package markdown-mode
   :straight t
   :mode ("\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown"))
 
-(setq go-ts-config
-	  (make-treesit-auto-recipe
-	   :lang 'go
-	   :ts-mode 'go-ts-mode
-	   :url "https://github.com/tree-sitter/tree-sitter-go"
-	   :revision "master"
-	   :source-dir "src"))       
-
-(add-to-list 'treesit-auto-recipe-list go-ts-config)
-
-(set-frame-font "Inconsolata Nerd Font Mono" nil t)
+(set-frame-font "ubuntu mono" nil t)
 
 (use-package edraw
   :straight (:type git :host github :repo "misohena/el-easydraw"))
 
-(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+(with-eval-after-load 'evil
+  ;; Navigation
+  (define-key evil-normal-state-map (kbd "gd") #'xref-find-definitions)
+  (define-key evil-normal-state-map (kbd "gD") #'xref-find-definitions-other-window)
+  (define-key evil-normal-state-map (kbd "gr") #'xref-find-references)
+  (define-key evil-normal-state-map (kbd "gi") #'eglot-find-implementation)
+
+  ;; Documentation
+  (define-key evil-normal-state-map (kbd "K") #'eldoc-print-current-symbol-info)
+
+  ;; Rename
+  (define-key evil-normal-state-map (kbd "gR") #'eglot-rename)
+
+  ;; Code actions
+  (define-key evil-normal-state-map (kbd "ga") #'eglot-code-actions)
+
+  ;; Format
+  (define-key evil-normal-state-map (kbd "gf") #'eglot-format))
+
+(setq major-mode-remap-alist
+      '((go-mode . go-ts-mode)
+        (python-mode . python-ts-mode)
+        (c-mode . c-ts-mode)
+        (c++-mode . c++-ts-mode)
+        (c-or-c++-mode . c-or-c++-ts-mode)
+        (bash-mode . bash-ts-mode)
+        (js-mode . js-ts-mode)
+        (typescript-mode . tsx-ts-mode)
+        (json-mode . json-ts-mode)
+        (yaml-mode . yaml-ts-mode)))
+
+(use-package consult
+  :straight t)
+
+(use-package embark
+  :straight t
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim)
+   ("C-h B" . embark-bindings)))
+
+;;;; Evil
+
+(use-package evil-collection
+  :straight t
+  :after evil
+  :config
+  (evil-collection-init))
+
+;;;; Git
+
+(use-package magit
+  :straight t)
+
+;;;; Useful Consult bindings
+
+(global-set-key (kbd "M-s g") #'consult-ripgrep)
+(global-set-key (kbd "M-s l") #'consult-line)
+
+;;;; Better minibuffer completion
+
+(setq completion-ignore-case t
+      read-buffer-completion-ignore-case t
+      read-file-name-completion-ignore-case t)
+
+;;;; Corfu
+
+(setq corfu-auto t
+      corfu-auto-prefix 1
+      corfu-cycle t)
+
+;;;; Embark + Consult integration
+
+(with-eval-after-load 'embark
+  (require 'consult))
+
+(global-auto-revert-mode 1)
+
+;; somne functons
+(defun open-config ()
+  (interactive)
+  (find-file user-init-file))
+
+;; my extra basic keybindings
+;; core
+(global-set-key (kbd "C-x i") #'open-config)
+(global-set-key (kbd "C-x e") #'eval-buffer)
+(global-set-key (kbd "C-x r") #'eval-region)
+;; user
+(global-set-key (kbd "C-c h") #'windmove-left)
+(global-set-key (kbd "C-c j") #'windmove-down)
+(global-set-key (kbd "C-c k") #'windmove-up)
+(global-set-key (kbd "C-c l") #'windmove-right)
+
+
+;; lsp
+(define-prefix-command 'lsp)
+(global-set-key (kbd "C-c l") 'lsp)
+
+(global-set-key (kbd "C-c l s") #'consult-imenu)
+(defun my/workspace-symbols ()
+  (interactive)
+  (if (and (fboundp 'eglot-workspace-symbols)
+           (eglot-current-server))
+      (condition-case err
+          (call-interactively #'eglot-workspace-symbols)
+        (error
+         (message "Eglot workspace symbols failed: %s; using Consult"
+                  (error-message-string err))
+         (call-interactively #'consult-imenu-multi)))
+    (call-interactively #'consult-imenu-multi)))
+(global-set-key (kbd "C-c l S") #'my/workspace-symbols)
+
+(global-set-key (kbd "C-c l r") #'eglot-rename)
+(global-set-key (kbd "C-c l d") #'xref-find-definitions)
+(global-set-key (kbd "C-c l f") #'xref-find-references)
+(global-set-key (kbd "C-c l i") #'xref-find-implementations)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -139,3 +237,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
