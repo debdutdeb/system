@@ -21,7 +21,7 @@ if not version then
 	load_non_plugin_userspace_lua()
 	return
 end
-if version.api_level ~= 14 and version.minor ~= 12 then
+if version.api_level ~= 14 or version.minor ~= 12 then
 	vim.notify("api_level 14 is required for the current config to work, working commit is 70958dae75efc797fe85b29df11fb2ea2ebf9401, debdutdeb/neovim fork, `git clone https://github.com/debdutdeb/neovim && cd neovim && make && ls build/bin`", 1)
 	load_non_plugin_userspace_lua()
 	return
