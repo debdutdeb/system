@@ -1,3 +1,4 @@
+-- this file doesn't change across neovim version shifts
 if not vim then
 	vim = {} -- this is just to shut up the lsp warnings
 end

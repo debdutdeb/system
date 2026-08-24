@@ -1,3 +1,5 @@
+-- treesitter should be part of neovim now
+
 local grammers = {
 	"c",
 	"tsx",

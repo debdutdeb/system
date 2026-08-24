@@ -1,7 +1,4 @@
-return {
-	"folke/persistence.nvim",
-	enabled = vim.g.vscode == nil,
-	opts = {
+require 'persistence'.setup {
 		-- hack to support branches kinda
 		dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/") .. (function()
 			-- add branch info
@@ -27,6 +24,4 @@ return {
 		options = { "buffers", "curdir", "tabpages", "winsize" },
 		pre_save = nil,
 		save_empty = false,
-	},
-	lazy = false,
-}
+	}

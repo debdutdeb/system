@@ -28,6 +28,8 @@ local sessions = create_augroup("my/sessions-management", { clear = true })
 
 create_autocommand("VimEnter", {
 	callback = function(_)
+		-- FIXME(api_level=14): currently treesitter is breaking
+		if true then return end
 		if vim.g.vscode then return end
 		-- create a scratch buffer
 		if vim.bo.filetype == "lazy" then return end
@@ -131,7 +133,7 @@ create_autocommand("QuickFixCmdPost", {
 
 create_autocommand({ "TextYankPost" }, {
 	callback = function()
-		require('vim.highlight').on_yank({ higroup = 'Visual', timeout = 200 })
+		vim.hl.on_yank({ higroup = 'Visual', timeout = 200 })
 	end,
 	group = create_augroup("my/yank-post-highlight", { clear = true }),
 })
@@ -142,4 +144,12 @@ create_autocommand("FileType", {
 		vim.api.nvim_buf_set_keymap(0, "n", "q", ":q<cr>", { silent = true })
 	end,
 	pattern = { "qf", "help", "fugitive", "git" },
+})
+
+create_autocommand("FileType", {
+	group = create_augroup("my/treesitter-only-enable", { clear = true }),
+	pattern = require 'userspace.filetypes-that-need-code-things',
+	callback = function (ev)
+		vim.treesitter.start(ev.buf, vim.bo[ev.buf].filetype)
+	end
 })

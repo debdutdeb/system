@@ -6,7 +6,9 @@ if chaotic_color ~= nil then
 	default_with_optional_save_colorscheme = chaotic_color.maybe_save_colorscheme + actions.select_default
 end
 
-return {
+local telescope = require 'telescope'
+
+telescope.setup {
 	defaults = {
 		border = false,
 		path_display = { "smart" },
@@ -109,3 +111,5 @@ return {
 		},
 	},
 }
+
+telescope.load_extension 'fzf'

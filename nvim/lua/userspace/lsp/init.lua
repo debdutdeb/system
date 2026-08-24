@@ -1,6 +1,6 @@
 --[[ https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations ]]
 
-require("debdut.lsp.handlers")
+require("userspace.lsp.handlers")
 
 vim.diagnostic.config({
 	virtual_text = true,
@@ -119,7 +119,7 @@ end
 require("mason-lspconfig").setup {}
 
 for name, extension in pairs(language_servers) do
-	local ok, config = pcall(require, "debdut.lsp.settings." .. name)
+	local ok, config = pcall(require, "userspace.lsp.settings." .. name)
 	if not ok then
 		config = {}
 	end

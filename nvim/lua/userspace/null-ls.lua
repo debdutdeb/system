@@ -4,21 +4,6 @@ if not null_ls_status_ok then
 end
 
 local formatting = null_ls.builtins.formatting
-
-local function get_prettier_path()
-	local dirs = vim.fs.find("node_modules", {
-		upward = true,
-		limit = 1,
-		path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)),
-	})
-	if #dirs == 0 then
-		return "prettier"
-	end
-	if vim.fn.filereadable(dirs[1] .. "/.bin/prettier") then
-		return dirs[1] .. "/.bin/prettier"
-	end
-end
-
 null_ls.setup({
 	debug = false,
 	sources = {
