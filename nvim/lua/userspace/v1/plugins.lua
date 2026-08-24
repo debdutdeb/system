@@ -78,7 +78,7 @@ end
 
 pack_add({
     "nvim-lua/plenary.nvim",
-    "userspacedeb/chaos.nvim",
+    "debdutdeb/chaos.nvim",
     -- TREESITTER
     {
         src = 'nvim-treesitter/nvim-treesitter', 
@@ -108,7 +108,7 @@ pack_add({
     "saadparwaiz1/cmp_luasnip",
     
     {
-        src = "userspacedeb/nvim-fzf",
+        src = "debdutdeb/nvim-fzf",
         name = "mine-fzf",
         condition = function ()
             local loaded, _ = pcall(require, 'telescope')
@@ -196,17 +196,18 @@ pack_add({
 
 require("chaos").setup_commands()
 
-require("nvim-treesitter.config").setup(require("userspace.treesitter"))
-require("userspace.treesitter_context")
+require("nvim-treesitter.config").setup(require("userspace.v1.treesitter"))
+require("userspace.v1.treesitter_context")
 
-require("userspace.telescope")
+require("userspace.v1.telescope")
 
-require "userspace.completions"
+require "userspace.v1.completions"
 
-require 'userspace.lsp'
-require 'userspace.null-ls'
-require 'userspace.persistence'
--- require'userspace.harpoon'
-require'userspace.oil'
-require'userspace.tmux'
-require'userspace.git'
+require 'userspace.v1.lsp'
+require 'userspace.v1.null-ls'
+require 'userspace.v1.persistence'
+-- require'userspace.v1.harpoon'
+require'userspace.v1.oil'
+require'userspace.v1.tmux'
+
+require'userspace.v1.git'

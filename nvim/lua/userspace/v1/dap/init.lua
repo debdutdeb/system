@@ -90,9 +90,9 @@ end
 
 local Remap = require("chaos.keymaps")
 
---require("userspace.dap.delve")
---require("userspace.dap.zig")
--- require("userspace.dap.typescript")
+--require("userspace.v1.dap.delve")
+--require("userspace.v1.dap.zig")
+-- require("userspace.v1.dap.typescript")
 
 dapui.setup({
 	controls = { enabled = false },
