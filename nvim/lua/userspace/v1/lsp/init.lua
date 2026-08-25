@@ -1,6 +1,6 @@
 --[[ https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations ]]
 
-require("userspace.v1.lsp.handlers")
+compat:require("lsp.handlers")
 
 vim.diagnostic.config({
 	virtual_text = true,
@@ -119,7 +119,7 @@ end
 require("mason-lspconfig").setup {}
 
 for name, extension in pairs(language_servers) do
-	local ok, config = pcall(require, "userspace.v1.lsp.settings." .. name)
+	local ok, config = pcall(require, compat:modpath "lsp.settings." .. name)
 	if not ok then
 		config = {}
 	end

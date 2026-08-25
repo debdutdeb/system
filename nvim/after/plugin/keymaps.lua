@@ -341,23 +341,4 @@ leadernnoremap("plr", "<cmd>NeovimProjectLoadRecent<cr>")
 leadernnoremap("plh", "<cmd>NeovimProjectLoadHistory<cr>")
 leadernnoremap("pll", "<cmd>NeovimProjectLoad<cr>")
 
-leadernnoremap("dpt", function()
-	-- disable plugin telescope
-	require("lazy.core.loader").deactivate(require("lazy.core.config").plugins["telescope.nvim"])
-end)
-
-leadernnoremap("lpt", function()
-	-- load plugin telescope
-	require("lazy.core.loader").load("telescope")
-	vim.notify("loaded telescope")
-end)
-
-leadernnoremap("tn", function ()
-	telescope_builtin = nil
-end)
-
-leadernnoremap("tt", function()
-	telescope_builtin = require("telescope.builtin")
-end)
-
 nnoremap("<C-b>", "<cmd>Neotree toggle action=show position=right<cr>")

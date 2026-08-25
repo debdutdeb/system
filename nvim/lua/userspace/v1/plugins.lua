@@ -196,18 +196,18 @@ pack_add({
 
 require("chaos").setup_commands()
 
-require("nvim-treesitter.config").setup(require("userspace.v1.treesitter"))
-require("userspace.v1.treesitter_context")
+require("nvim-treesitter.config").setup(compat:require("treesitter"))
+compat:require("treesitter_context")
 
-require("userspace.v1.telescope")
+compat:require("telescope")
 
-require "userspace.v1.completions"
+compat:require "completions"
 
-require 'userspace.v1.lsp'
-require 'userspace.v1.null-ls'
-require 'userspace.v1.persistence'
--- require'userspace.v1.harpoon'
-require'userspace.v1.oil'
-require'userspace.v1.tmux'
+compat:require 'lsp'
+compat:require 'null-ls'
+compat:require 'persistence'
+-- compat:require'harpoon'
+compat:require'oil'
+compat:require'tmux'
 
-require'userspace.v1.git'
+compat:require'git'

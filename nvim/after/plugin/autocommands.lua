@@ -32,7 +32,6 @@ create_autocommand("VimEnter", {
 		if true then return end
 		if vim.g.vscode then return end
 		-- create a scratch buffer
-		if vim.bo.filetype == "lazy" then return end
 
 		local scratch_bufnr = vim.api.nvim_create_buf( --[[list this in bufferlist?]] true, --[[is this a scratch buffer?]]
 			true)
@@ -148,7 +147,7 @@ create_autocommand("FileType", {
 
 create_autocommand("FileType", {
 	group = create_augroup("my/treesitter-only-enable", { clear = true }),
-	pattern = require 'userspace.v1.filetypes-that-need-code-things',
+	pattern = compat:require 'filetypes-that-need-code-things',
 	callback = function (ev)
 		vim.treesitter.start(ev.buf, vim.bo[ev.buf].filetype)
 	end
