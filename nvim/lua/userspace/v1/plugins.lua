@@ -100,12 +100,8 @@ pack_add({
    { src = "nvim-telescope/telescope-fzf-native.nvim", name = "telescope-fzf-native", build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build" },
    
    -- co,pletions
-    "hrsh7th/nvim-cmp",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-buffer",
-    { src = "L3MON4D3/LuaSnip", build = "make install_jsregexp" , name = "luasnip" },
-    "saadparwaiz1/cmp_luasnip",
+	{ src = "saghen/blink.cmp", version = "bae4bae0eedd1fa55f34b685862e94a222d5c6f8", name = "blinkcmp" },
+    { src = "rafamadriz/friendly-snippets", build = "make install_jsregexp" , name = "snippets", version = "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
     
     {
         src = "debdutdeb/nvim-fzf",

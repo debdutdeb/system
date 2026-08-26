@@ -4,6 +4,11 @@
       "rev": "73e89eb3e536a4dd8f991c963bd37189520c9919",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
+    "blinkcmp": {
+      "rev": "bae4bae0eedd1fa55f34b685862e94a222d5c6f8",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "'bae4bae0eedd1fa55f34b685862e94a222d5c6f8'"
+    },
     "chaos.nvim": {
       "rev": "7947051124f34d554f76a9878b9d408c7e94c676",
       "src": "https://github.com/debdutdeb/chaos.nvim"
@@ -135,6 +140,11 @@
     "snacks.nvim": {
       "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
       "src": "https://github.com/folke/snacks.nvim"
+    },
+    "snippets": {
+      "rev": "572f5660cf05f8cd8834e096d7b4c921ba18e175",
+      "src": "https://github.com/rafamadriz/friendly-snippets",
+      "version": "'572f5660cf05f8cd8834e096d7b4c921ba18e175'"
     },
     "surround": {
       "rev": "0d6882635817a2677749a330127d12ac30a4f3c8",

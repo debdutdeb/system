@@ -1,7 +1,5 @@
 --[[ https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations ]]
 
-compat:require("lsp.handlers")
-
 vim.diagnostic.config({
 	virtual_text = true,
 	update_in_insert = true,
@@ -116,13 +114,12 @@ local function client_on_attach(client, bufnr)
 	require "lsp_signature".on_attach({}, bufnr)
 end
 
-require("mason-lspconfig").setup {}
-
 for name, extension in pairs(language_servers) do
 	local ok, config = pcall(require, compat:modpath "lsp.settings." .. name)
 	if not ok then
 		config = {}
 	end
 
-	require("lspconfig")[name].setup(vim.tbl_extend('force', config, { on_attach = client_on_attach }, extension))
+	vim.lsp.config(name, vim.tbl_extend('force', config, { on_attach = client_on_attach }, extension))
+	vim.lsp.enable(name)
 end
