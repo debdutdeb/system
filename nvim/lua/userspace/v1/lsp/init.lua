@@ -80,28 +80,11 @@ local manual_installs = {
 	"perltidy",
 }
 
-require("mason-null-ls").setup {}
-
-require("mason").setup {}
-
 local ensure_installed = {}
 
 for _, list in ipairs({ language_servers, formatters, linters, debug_servers, vim.tbl_keys(language_servers) }) do
 	vim.list_extend(ensure_installed, list)
 end
-
-require("mason-tool-installer").setup {
-	ensure_installed = ensure_installed,
-	auto_update = false,
-	run_on_start = true,
-	integrations = {
-		["mason-lspconfig"] = true,
-		["mason-null-ls"] = true,
-		["mason-nvim-dap"] = true,
-	},
-	-- debounce_hours = 7 * 24,
-	-- start_delay = 5,
-}
 
 local function client_on_attach(client, bufnr)
 	if client.name == "ts_ls" then return end

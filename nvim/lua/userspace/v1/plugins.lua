@@ -115,15 +115,9 @@ pack_add({
     --lsp
     "neovim/nvim-lspconfig",
     "folke/neodev.nvim",
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-	"jay-babu/mason-null-ls.nvim",
     -- Schema information
     "b0o/SchemaStore.nvim",
     
-	"nvimtools/none-ls.nvim",
-	"jay-babu/mason-null-ls.nvim",
 	"nvimtools/none-ls.nvim",
 	"nvimtools/none-ls-extras.nvim",
 
