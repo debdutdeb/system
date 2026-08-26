@@ -181,17 +181,19 @@ pack_add({
     },
 
     
-	colorscheme({ src = 'savq/melange-nvim', name = "melagne", }, false),
+	colorscheme({ src = 'savq/melange-nvim', name = "melange", }, true),
 	colorscheme({ src = 'JoosepAlviste/palenightfall.nvim', name = "palenightfall", config = function()
         require 'palenightfall'.setup { transparent = true }
-        vim.cmd 'colorscheme palenightfall'
     end, condition = function ()
         return false
     end }, false),
 	colorscheme({
 		src = "HoNamDuong/hybrid.nvim",
         name = "hybrid",
-	}, true),
+	}, false),
+
+	"folke/snacks.nvim",
+	"coder/claudecode.nvim",
 })
 
 require("chaos").setup_commands()
@@ -211,3 +213,5 @@ compat:require'oil'
 compat:require'tmux'
 
 compat:require'git'
+
+require "claudecode".setup {}
