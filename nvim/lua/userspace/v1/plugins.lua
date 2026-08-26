@@ -49,7 +49,7 @@ local function pack_add(all)
         if type(plugin) == 'table' then
             local spec = vim.deepcopy(plugin)
             spec.src = github_prefix .. spec.src
-            spec.data = spec
+            spec.data = vim.deepcopy(spec)
             table.insert(plugins, spec)
             
             if spec.build then
