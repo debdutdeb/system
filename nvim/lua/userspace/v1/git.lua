@@ -1,4 +1,7 @@
-require 'gitsigns'.setup{
+-- gitsigns is conditionally loaded for only git directories
+local loaded, g = pcall(require, 'gitsigns')
+if not loaded then return end
+g.setup{
 			signs                             = {
 				add          = { text = '|' },
 				change       = { text = '|' },
