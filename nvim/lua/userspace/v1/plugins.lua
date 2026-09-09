@@ -61,7 +61,7 @@ local function pack_add(all)
         end
     end
     pack_build_initialize(init_specs)
-    vim.pack.add(plugins, { load = _load })
+    vim.pack.add(plugins, { load = _load, confirm = false })
 end
 
 ---@param plugin InnerPluginSpec
@@ -171,7 +171,7 @@ pack_add({
     },
 
     
-	colorscheme({ src = 'savq/melange-nvim', name = "melange", }, true),
+	colorscheme({ src = 'savq/melange-nvim', name = "melange", }, false),
 	colorscheme({ src = 'JoosepAlviste/palenightfall.nvim', name = "palenightfall", config = function()
         require 'palenightfall'.setup { transparent = true }
     end, condition = function ()
@@ -181,9 +181,39 @@ pack_add({
 		src = "HoNamDuong/hybrid.nvim",
         name = "hybrid",
 	}, false),
+	{ src = "folke/tokyonight.nvim", name = "tokyonight-night", config = function()
+		require 'tokyonight'.setup {
+			comments = { italic = true },
+		}
+		vim.cmd.colorscheme "tokyonight-day"
+	end,
+	},
 
 	"folke/snacks.nvim",
 	"coder/claudecode.nvim",
+
+	{ src = "folke/todo-comments.nvim", name = "todocomments", config = function() 
+		require "todo-comments".setup {
+		  gui_style = {
+			fg = "NONE",
+			bg = "BOLD",
+		  },
+		  
+		  keywords = {
+			FIX = { icon = "", color = "error", alt = { "FIXME", "BUG", "FIXIT", "ISSUE" } },
+			TODO = { icon = "", color = "info" },
+			HACK = { icon = "", color = "warning" },
+			WARN = { icon = "", color = "warning", alt = { "WARNING", "XXX" } },
+			PERF = { icon = "", color = "default", alt = { "OPTIMIZE", "PERFORMANCE", "OPTIM" } },
+			NOTE = { icon = "", color = "hint", alt = { "INFO" } },
+			TEST = { icon = "", color = "test", alt = { "TESTING", "PASSED", "FAILED", "TESTCASE" } },
+			
+			-- Custom tags (also without icons)
+			REVIEW = { icon = "", color = "info" },
+			IMPORTANT = { icon = "", color = "error", alt = { "URGENT", "VIP" } },
+		  },
+		}
+	end, },
 })
 
 require("chaos").setup_commands()
@@ -205,3 +235,4 @@ compat:require'tmux'
 compat:require'git'
 
 require "claudecode".setup {}
+

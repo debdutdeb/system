@@ -149,6 +149,7 @@ create_autocommand("FileType", {
 	group = create_augroup("my/treesitter-only-enable", { clear = true }),
 	pattern = compat:require 'filetypes-that-need-code-things',
 	callback = function (ev)
-		vim.treesitter.start(ev.buf, vim.bo[ev.buf].filetype)
+		-- vim.treesitter.start(ev.buf, vim.bo[ev.buf].filetype)
+		vim.treesitter.start()
 	end
 })
