@@ -226,3 +226,8 @@ for_window [title="hover_image_pinterest_weird_rat"] floating enable, sticky ena
 # for_window [title="hover_image_pinterest_weird_rat"] move right 10000px, move down 10000px
 
 exec_always --no-startup-id ~/.scripts/hover_img
+
+exec --no-startup-id xrandr --output eDP-1 --scale 0.7x0.7
+
+exec --no-startup-id flameshot
+exec_always --no-startup-id nitrogen --random --set-zoom-fill $HOME/pictures
