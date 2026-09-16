@@ -11,8 +11,9 @@ vim.opt.conceallevel = 0                        -- so that `` is visible in mark
 vim.opt.fileencoding = "utf-8"                  -- the encoding written to a file
 vim.opt.hlsearch = false                        -- don't highlight all matches on previous search pattern
 vim.opt.ignorecase = true                       -- ignore case in search patterns
-vim.opt.mouse =
-"a"                                             --  "disable the mouse (I hate it)" was my old opinion, now i don't care, rather it's proven helpful
+--vim.opt.mouse =
+-- "a"                                             --  "disable the mouse (I hate it)" was my old opinion, now i don't care, rather it's proven helpful
+vim.opt.mouse = "" -- disabling again, on laptop is a problem. also have never really used it at all
 vim.opt.pumheight = 10                          -- pop up menu height
 vim.opt.showmode = true
 vim.opt.showtabline = 1                         -- always show tabs
