@@ -52,7 +52,7 @@ local language_servers = {
 		-- https://github.com/neovim/nvim-lspconfig/blob/94dda50b2d9a29d0b76562a9027029538840e2d7/lua/lspconfig/configs/ansiblels.lua#L26
 		autostart = true,
 	},
-	terraformls = {
+	tofu = {
 		autostart = true,
 	},
 }

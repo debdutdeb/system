@@ -3,6 +3,19 @@ if not null_ls_status_ok then
 	return
 end
 
+local helpers = require('null-ls.helpers')
+local tofu_formatter = helpers.make_builtin({
+	name = "tofu_formatter",
+	meta = { description = ""},
+	method = null_ls.methods.FORMATTING,
+	filetypes = { "terraform" },
+	generator = helpers.formatter_factory {
+		command = "tofu",
+		args = {"fmt", "-"},
+		to_stdin = true,
+	},
+})
+
 local formatting = null_ls.builtins.formatting
 null_ls.setup({
 	debug = false,
@@ -27,6 +40,7 @@ null_ls.setup({
 		-- eslint_d is using +2g memory, not good
 	    require("none-ls.diagnostics.eslint_d"), -- like eslint but faster?
 		-- code_actions.gitsigns,
+		tofu_formatter,
 	},
 })
 

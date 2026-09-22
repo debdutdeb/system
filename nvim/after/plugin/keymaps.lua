@@ -206,7 +206,17 @@ leadernnoremap("ld", {
 	callback = "Telescope diagnostics",
 })
 leadernnoremap("lf", function()
-	vim.lsp.buf.format({ async = true })
+	local null_ls_client = vim.lsp.get_clients({ name = "null-ls" })[1]
+	if null_ls_client then
+		vim.lsp.buf.format {
+			id = null_ls_client.id,
+			bufnr = vim.api.nvim_get_current_buf(),
+			timeout_ms = 2000,
+			async = true,
+		}
+	else
+		vim.lsp.buf.format({ async = true })
+	end
 end)
 leadernnoremap("lj", vim.lsp.diagnostic.goto_prev)
 leadernnoremap("lk", vim.lsp.diagnostic.goto_next)
