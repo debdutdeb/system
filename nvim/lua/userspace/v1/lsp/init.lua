@@ -36,7 +36,7 @@ local language_servers = {
 	gopls = {
 		autostart = false,
 	},
-	ts_ls = {
+	tsc = {
 		autostart = false,
 	},
 	pyright = {
@@ -90,7 +90,7 @@ for _, list in ipairs({ language_servers, formatters, linters, debug_servers, vi
 end
 
 local function client_on_attach(client, bufnr)
-	if client.name == "ts_ls" then return end
+	-- if client.name == "tsgo" then return end
 
 	if client.server_capabilities.inlayHintProvider ~= nil and client.server_capabilities.inlayHintProvider then
 		-- :h vim.lsp.inlay_hint
