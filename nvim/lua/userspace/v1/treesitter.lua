@@ -1,6 +1,6 @@
 -- treesitter should be part of neovim now
 
-local grammers = {
+local grammars = {
 	"c",
 	"tsx",
 	"javascript",
@@ -9,7 +9,8 @@ local grammers = {
 	"rust",
 	"typescript",
 	"cpp",
-	"jsonc", -- for devcontainers
+	"json",
+	-- "jsonc", -- for devcontainers
 	"vim",
 	-- "help",
 	"vimdoc",
@@ -20,7 +21,7 @@ local grammers = {
 	"zig",
 	"lua",
 	"html",
-	"org",
+	-- "org",
 	"dockerfile",
 }
 
@@ -35,6 +36,27 @@ local parser_install_dir =
 -- UPDATE Since 0.8.0, Neovim bundles parsers and queries for c, lua, vim, and help. If you use nvim-treesitter, you must make sure these parsers are installed via nvim-treesitter so that both parser and queries (which are always installed) are taken from nvim-treesitter. (It's important for this that your nvim-treesitter plugin directory comes before both /usr/local/share/nvim/* and /usr/lib/nvim in your runtimepath.)
 vim.opt.runtimepath:prepend(parser_install_dir)
 
+
+-- can't find tree-sitter.config help page.
+-- according to docs
+-- Note: You only need to call `setup` if you want to set non-default
+-- options!
+--
+-- Parameters: ~
+-- • {opts}  `(table?)` Optional parameters:
+--           • {install_dir} (`string?`, default `stdpath('data')/site/`)
+--             directory to install parsers and queries to. Note: will be
+--             prepended to |runtimepath|.
+return {
+	setup = function()
+		local ok, ts = pcall(require, 'nvim-treesitter')
+		if not ok then return end
+		ts.setup({install_dir=parser_install_dir})
+		ts.install(grammars, {summary=false}):wait(30000)
+	end,
+}
+
+--[[
 return {
 	parser_install_dir = parser_install_dir,
 	ensure_installed = grammers, -- one of "all" or a list of languages
@@ -57,7 +79,8 @@ return {
 	},
 	indent = {
 		enable = true,
-		disable = { --[["python", "css"--]]
+		disable = { 
+			--"python", "css"
 		},
 	},
 	playground = {
@@ -100,3 +123,4 @@ return {
 		},
 	},
 }
+--]]

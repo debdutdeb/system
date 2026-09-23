@@ -261,7 +261,8 @@ pack_add({
 
 require("chaos").setup_commands()
 
-require("nvim-treesitter.config").setup(compat:require("treesitter"))
+--require("nvim-treesitter.config").setup(compat:require("treesitter"))
+compat:require("treesitter").setup()
 compat:require("treesitter_context")
 
 compat:require("telescope")
