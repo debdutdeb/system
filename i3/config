@@ -206,6 +206,9 @@ assign [class=^firefox$] 2
 assign [class=^g|Google-chrome$] 3
 assign [class=^jetbrains-studio$] 4
 
+for_window [class=^firefox$] focus
+for_window [class=^g|Google-chrome$] focus
+
 for_window [class="Emulator"] floating enable
 
 # grep:bindings
@@ -220,6 +223,9 @@ bindsym $mod+s exec --no-startup-id ~/.scripts/launch_rofi.sh
 bindsym $mod+w exec --no-startup-id rofi -show window
 #bindsym $alt+k exec --no-startup-id rofi -show keys
 bindsym $alt+r exec --no-startup-id rofi -show run
+
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
 #qhy not
 for_window [title="hover_image_pinterest_weird_rat"] floating enable, sticky enable, border none
