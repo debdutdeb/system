@@ -1,25 +1,31 @@
 local settings = {
 	settings = {
-		typescript = {
+		["js/ts"] = {
 			inlayHints = {
-				includeInlayParameterNameHints = "all",
-				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayVariableTypeHints = true,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayEnumMemberValueHints = true,
-			},
-		},
-		javascript = {
-			inlayHints = {
-				includeInlayParameterNameHints = "all",
-				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayVariableTypeHints = true,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayEnumMemberValueHints = true,
+				parameterNames = {
+					enabled = "literals",
+					suppressWhenArgumentMatchesName = true,
+				},
+
+				parameterTypes = {
+					enabled = false,
+				},
+
+				variableTypes = {
+					enabled = false,
+				},
+
+				propertyDeclarationTypes = {
+					enabled = false,
+				},
+
+				functionLikeReturnTypes = {
+					enabled = false,
+				},
+
+				enumMemberValues = {
+					enabled = false,
+				},
 			},
 		},
 	},
