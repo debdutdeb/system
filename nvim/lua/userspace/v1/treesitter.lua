@@ -1,4 +1,9 @@
 -- treesitter should be part of neovim now
+-- queries can't be found otherwise. weird.
+local treesitter_root =
+  vim.fn.stdpath("data") .. "/site/pack/core/opt/treesitter"
+
+vim.opt.runtimepath:append(treesitter_root .. "/runtime")
 
 local grammars = {
 	"c",
@@ -34,7 +39,7 @@ local parser_install_dir =
 -- reference: https://github.com/nvim-treesitter/nvim-treesitter/issues/3092
 -- Specifically (quoting https://github.com/clason):
 -- UPDATE Since 0.8.0, Neovim bundles parsers and queries for c, lua, vim, and help. If you use nvim-treesitter, you must make sure these parsers are installed via nvim-treesitter so that both parser and queries (which are always installed) are taken from nvim-treesitter. (It's important for this that your nvim-treesitter plugin directory comes before both /usr/local/share/nvim/* and /usr/lib/nvim in your runtimepath.)
-vim.opt.runtimepath:prepend(parser_install_dir)
+--vim.opt.runtimepath:prepend(parser_install_dir)
 
 
 -- can't find tree-sitter.config help page.
