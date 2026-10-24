@@ -3,6 +3,9 @@
 (ido-mode)
 (tool-bar-mode -1)
 
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -89,34 +92,10 @@
 
 (set-face-attribute 'default nil :height 160)
 
-(use-package markdown-mode
-  :straight t
-  :mode ("\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "multimarkdown"))
-
-(set-frame-font "ubuntu mono" nil t)
+(set-frame-font "Ubuntu Mono" nil t)
 
 (use-package edraw
   :straight (:type git :host github :repo "misohena/el-easydraw"))
-
-(with-eval-after-load 'evil
-  ;; Navigation
-  (define-key evil-normal-state-map (kbd "gd") #'xref-find-definitions)
-  (define-key evil-normal-state-map (kbd "gD") #'xref-find-definitions-other-window)
-  (define-key evil-normal-state-map (kbd "gr") #'xref-find-references)
-  (define-key evil-normal-state-map (kbd "gi") #'eglot-find-implementation)
-
-  ;; Documentation
-  (define-key evil-normal-state-map (kbd "K") #'eldoc-print-current-symbol-info)
-
-  ;; Rename
-  (define-key evil-normal-state-map (kbd "gR") #'eglot-rename)
-
-  ;; Code actions
-  (define-key evil-normal-state-map (kbd "ga") #'eglot-code-actions)
-
-  ;; Format
-  (define-key evil-normal-state-map (kbd "gf") #'eglot-format))
 
 (setq major-mode-remap-alist
       '((go-mode . go-ts-mode)
@@ -217,6 +196,18 @@
 (global-set-key (kbd "C-c l f") #'xref-find-references)
 (global-set-key (kbd "C-c l i") #'xref-find-implementations)
 
+;; treesitter configurations
+;;(add-to-list 'treesit-language-source-alist
+;;             '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "main" "tree-sitter-markdown/src"))
+;;(add-to-list 'treesit-language-source-alist
+;;             '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "main" "tree-sitter-markdown-inline/src"))
+(use-package markdown-ts-mode
+  :ensure t
+  :mode ("\\.md\\'" . markdown-ts-mode)
+  :defer 't
+  :config
+  (add-to-list 'treesit-language-source-alist '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
+  (add-to-list 'treesit-language-source-alist '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
